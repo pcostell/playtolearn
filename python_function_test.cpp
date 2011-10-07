@@ -1,7 +1,5 @@
 #define BOOST_TEST_MODULE PythonFunction test
 #include <boost/test/unit_test.hpp> 
-// Using the /included directory as a hack b/c we couldn't get the library linked properly.
-// See: http://www.boost.org/doc/libs/1_35_0/libs/test/doc/components/utf/compilation.html
 
 /* Good Boost Unit Test Tutorial:
 http://www.boost.org/doc/libs/1_47_0/libs/test/doc/html/tutorials/new-year-resolution.html
