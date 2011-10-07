@@ -90,7 +90,7 @@ boost:
 	rm -rf boost_${BOOST_VERSION}
 
 clean:
-	rm -rf $(OBJS) $(TARGET) $(DEPS) $(TEST_OBJS) $(TEST_DEPS) $(TARGET_OBJS) $(TARGET_DEPS)
+	rm -rf $(OBJS) $(TARGET) $(DEPS) $(TEST_OBJS) $(TEST_DEPS) $(TARGET_OBJS) $(TARGET_DEPS) test
  
 dist-clean:
 	@make clean

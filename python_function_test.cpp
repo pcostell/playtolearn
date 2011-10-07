@@ -10,14 +10,31 @@ http://www.boost.org/doc/libs/1_47_0/libs/test/doc/html/tutorials/new-year-resol
 #include <map>
 #include "python_function.hpp"
 
+
+
+struct ValidSetup {
+	std::map<std::string, std::string> data;
+	EduGame::PythonFunction func;
+
+	static const std::string validFunctionString;
+
+	ValidSetup() : func(validFunctionString){
+		data["state"] = 11;
+	}
+};
+
+const std::string ValidSetup::validFunctionString = "def translate(m):\n\tm['state'] = '14'";
+
+BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
+
 BOOST_AUTO_TEST_CASE( normal_use_test )
 {
-	std::map<std::string, std::string> data;
-	data["state"] = "11";
-	std::string pythonFunction("def translate(m):\n\tm['state'] = '14'");
-	EduGame::PythonFunction func(pythonFunction);
 	func.execute("translate", data);
 	BOOST_CHECK_EQUAL(data["state"], "14");
 }
 
-// EOF
+BOOST_AUTO_TEST_CASE( bad_method_name) {
+	func.execute("garbage", data);
+}
+
+BOOST_AUTO_TEST_SUITE_END();
