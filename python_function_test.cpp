@@ -19,7 +19,7 @@ struct ValidSetup {
 	static const std::string validFunctionString;
 
 	ValidSetup() : func(validFunctionString){
-		data["state"] = 11;
+		data["state"] = "11";
 	}
 };
 
@@ -29,12 +29,13 @@ BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
 
 BOOST_AUTO_TEST_CASE( normal_use_test )
 {
+	BOOST_CHECK_EQUAL(data["state"], "11");
 	func.execute("translate", data);
 	BOOST_CHECK_EQUAL(data["state"], "14");
 }
 
 BOOST_AUTO_TEST_CASE( bad_method_name) {
-	func.execute("garbage", data);
+	BOOST_CHECK_THROW(func.execute("garbage", data), EduGame::PythonFunction::PythonExecutionError);
 }
 
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
