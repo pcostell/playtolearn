@@ -22,7 +22,7 @@ struct ValidSetup {
 	}
 };
 
-const string ValidSetup::validFunctionString = "def translate(m):\n\tprint m['state']\n\tm['state'] = '14'";
+const string ValidSetup::validFunctionString = "def translate(m):\n\treturn 2";
 
 BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
 

@@ -3,7 +3,6 @@
 #include <map>
 #include <string>
 
-#include <Python.h>
 #include <boost/python.hpp>
 #include <stdexcept>
 

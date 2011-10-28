@@ -1,4 +1,4 @@
-#include <Python.h>
+#include <boost/python/detail/wrap_python.hpp>
 
 #include "python_function.hpp"
 
@@ -26,10 +26,20 @@ PythonFunction::PythonFunction(const string & pythonCode) {
     object mainNamespace = mainModule.attr("__dict__");
 
     // redirect stdout and stderr output.
-    PyRun_SimpleString("import cStringIO");
-    PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.stderr = cStringIO.StringIO()");
-    PyRun_SimpleString("sys.stdout = cStringIO.StringIO()");
+    #ifdef PYTHON_VERSION_3
+			std::cout << "I'm HERE" << std::endl;
+ 			PyRun_SimpleString("import io");
+ 			PyRun_SimpleString("import sys");
+			PyRun_SimpleString("sys.stderr = io.StringIO()");
+			PyRun_SimpleString("sys.stdout = io.StringIO()");
+		#else
+			std::cout << "I'm HERasdfasE" << std::endl;
+			PyRun_SimpleString("import cStringIO");
+			PyRun_SimpleString("import sys");
+			PyRun_SimpleString("sys.stderr = cStringIO.StringIO()");
+			PyRun_SimpleString("sys.stdout = cStringIO.StringIO()");
+		#endif
+
 
     object ignored = exec(str(pythonCode), mainNamespace);
     } catch ( error_already_set ) {
