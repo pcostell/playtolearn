@@ -52,7 +52,7 @@ int PythonFunction::execute(const string & functionName, const map<string, strin
 
     object result = processFunction(pythonMap);
 
-    return extract<int>(result);
+    return extract<string>(result);
 
   } catch( error_already_set ) {
     handlePythonError();

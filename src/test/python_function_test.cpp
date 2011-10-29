@@ -22,15 +22,15 @@ struct ValidSetup {
 	}
 };
 
-const string ValidSetup::validFunctionString = "def translate(m):\n\tprint m['state']\n\tm['state'] = '14'";
+const string ValidSetup::validFunctionString = "def translate(m):\n\treturn 2";
 
 BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
 
 BOOST_AUTO_TEST_CASE( normal_use_test )
 {
 	BOOST_CHECK_EQUAL(data["state"], "11");
-	//func.execute("translate", data);
-	BOOST_CHECK_EQUAL(data["state"], "14");
+	string result = func.execute("translate", data);
+	BOOST_CHECK_EQUAL(result, "2");
 }
 /*
 BOOST_AUTO_TEST_CASE( bad_method_name)

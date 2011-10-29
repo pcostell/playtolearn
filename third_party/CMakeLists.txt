@@ -11,7 +11,8 @@ find_package(OpenGL)
 IF(NOT PYTHONLIBS_FOUND)
   MESSAGE(FATAL_ERROR "Could not find python libraries.")
 ENDIF()
-
+MESSAGE("Python include directories found: ${PYTHON_INCLUDE_DIRS}")
+include_directories(${PYTHON_INCLUDE_DIRS})
 
 #include_directories(/usr/include/python2.7)
 #link_directories(/usr/lib)
@@ -41,9 +42,10 @@ ENDIF()
 #######################
 
 set(BOOST_LIBS thread,python,test)
+set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS})
 
 IF(APPLE)
-  set(BOOST_ARGS ${BOOST_ARGS} toolset=darwin architecture=x86 address-model=32 threading=single)
+  set(BOOST_ARGS ${BOOST_ARGS} toolset=darwin architecture=x86 address-model=32 threading=single include=${})
 ENDIF()
 
 
@@ -79,21 +81,3 @@ ExternalProject_Add(irrlicht
   BUILD_COMMAND  ${IRRLICHT_BUILD_COMMAND}
   INSTALL_COMMAND ${IRRLICHT_INSTALL_COMMAND}
 )
-
-##################
-## Adding Files ##
-##################
-
-FILE(GLOB INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/*/include")
-FOREACH(s ${INCLUDE_DIRS})
-include_directories(${s})
-ENDFOREACH()
-
-FILE(GLOB STATIC_LIBS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*/lib/*.a")
-FOREACH(s ${STATIC_LIBS_FILES} )
-  STRING(REGEX REPLACE ".*/lib(.*)\\.a" "\\1" name "${s}")
-  add_library(${name} STATIC IMPORTED)
-   set_property(TARGET ${name} PROPERTY
-                IMPORTED_LOCATION ${s})
-  MESSAGE("Adding library \"${name}\" from location \"${s}\"")
-ENDFOREACH()

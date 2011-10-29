@@ -35,7 +35,7 @@ public:
    * state: The map to pass to the python function as a python dict.
    * Returns the return value of the python function.
    */
-	int execute(const std::string & functionName,
+	std::string execute(const std::string & functionName,
                const std::map<std::string, std::string> & state) const;
 
 private:

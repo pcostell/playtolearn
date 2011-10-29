@@ -14,7 +14,26 @@ SET (CMAKE_EXE_LINKER_FLAGS -rpath boost/lib)
 ADD_DEFINITIONS(-g)
 
 
+##############################
+## Adding Third Party Files ##
+##############################
+
 add_subdirectory(third_party)
+
+FILE(GLOB INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/*/include")
+FOREACH(s ${INCLUDE_DIRS})
+include_directories(${s})
+ENDFOREACH()
+
+FILE(GLOB STATIC_LIBS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*/lib/*.a")
+FOREACH(s ${STATIC_LIBS_FILES} )
+  STRING(REGEX REPLACE ".*/lib(.*)\\.a" "\\1" name "${s}")
+  add_library(${name} STATIC IMPORTED)
+   set_property(TARGET ${name} PROPERTY
+                IMPORTED_LOCATION ${s})
+  MESSAGE("Adding library \"${name}\" from location \"${s}\"")
+ENDFOREACH()
+
 SET(STATIC_LIBS Irrlicht boost_python )
 SET(DYNAMIC_LIBS python dl)
 
