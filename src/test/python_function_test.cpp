@@ -22,23 +22,26 @@ struct ValidSetup {
 	}
 };
 
-const string ValidSetup::validFunctionString = "def translate(m):\n\treturn 2";
+const string ValidSetup::validFunctionString = "def translate(m):\n\tif m['state'] == '11':\n\t\treturn 2\n\treturn 25";
 
 BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
 
+/* Test normal usage. */
 BOOST_AUTO_TEST_CASE( normal_use_test )
 {
 	BOOST_CHECK_EQUAL(data["state"], "11");
 	string result = func.execute("translate", data);
 	BOOST_CHECK_EQUAL(result, "2");
 }
-/*
+
+/* Test calling bad function name. */
 BOOST_AUTO_TEST_CASE( bad_method_name)
 {
 	BOOST_CHECK_THROW(func.execute("garbage", data),
                     PythonFunction::PythonExecutionError);
 }
 
+/* Test accessing date that doesn't exist. */
 BOOST_AUTO_TEST_CASE( bad_attr_access )
 {
   data.clear();
@@ -46,17 +49,19 @@ BOOST_AUTO_TEST_CASE( bad_attr_access )
                     PythonFunction::PythonExecutionError);
 }
 
+/* Test that multiple executions works. */
 BOOST_AUTO_TEST_CASE ( multiple_function_call )
 {
-  func.execute("translate", data);
-  BOOST_CHECK_EQUAL(data["state"], "14");
+  string result = func.execute("translate", data);
+  BOOST_CHECK_EQUAL(result, "2");
   data["state"] = 22;
-  func.execute("translate", data);
-  BOOST_CHECK_EQUAL(data["state"], "14");
+  result = func.execute("translate", data);
+  BOOST_CHECK_EQUAL(result, "25");
 }
-*/
+
 BOOST_AUTO_TEST_SUITE_END()
-/*
+
+/* Test that error is thrown for invalid python. */
 BOOST_AUTO_TEST_SUITE(InvalidPython)
 
 BOOST_AUTO_TEST_CASE( invalid_python_code_outside_function ) {
@@ -64,6 +69,7 @@ BOOST_AUTO_TEST_CASE( invalid_python_code_outside_function ) {
                     PythonFunction::PythonExecutionError);
 }
 
+/* Test that invalid code inside function throws error on execution. */
 BOOST_AUTO_TEST_CASE( invalid_code_inside_function ) {
   PythonFunction func("def translate(m):\n\tBLAH\n\tprint m['state']");
   map<string, string> m;
@@ -71,4 +77,4 @@ BOOST_AUTO_TEST_CASE( invalid_code_inside_function ) {
                     PythonFunction::PythonExecutionError);
 }
 
-BOOST_AUTO_TEST_SUITE_END()*/
+BOOST_AUTO_TEST_SUITE_END()

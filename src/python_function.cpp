@@ -1,7 +1,9 @@
-#include <Python.h>
+// This must be the first #include
+#include <boost/python/detail/wrap_python.hpp>
 
 #include "python_function.hpp"
 
+#include <boost/lexical_cast.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 
 #include <iostream>
@@ -26,10 +28,18 @@ PythonFunction::PythonFunction(const string & pythonCode) {
     object mainNamespace = mainModule.attr("__dict__");
 
     // redirect stdout and stderr output.
-    PyRun_SimpleString("import cStringIO");
-    PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.stderr = cStringIO.StringIO()");
-    PyRun_SimpleString("sys.stdout = cStringIO.StringIO()");
+    #ifdef PYTHON_VERSION_3
+ 			PyRun_SimpleString("import io");
+ 			PyRun_SimpleString("import sys");
+			PyRun_SimpleString("sys.stderr = io.StringIO()");
+			PyRun_SimpleString("sys.stdout = io.StringIO()");
+		#else
+			PyRun_SimpleString("import cStringIO");
+			PyRun_SimpleString("import sys");
+			PyRun_SimpleString("sys.stderr = cStringIO.StringIO()");
+			PyRun_SimpleString("sys.stdout = cStringIO.StringIO()");
+		#endif
+
 
     object ignored = exec(str(pythonCode), mainNamespace);
     } catch ( error_already_set ) {
@@ -38,7 +48,7 @@ PythonFunction::PythonFunction(const string & pythonCode) {
 }
 
 
-int PythonFunction::execute(const string & functionName, const map<string, string> & state) const {
+string PythonFunction::execute(const string & functionName, const map<string, string> & state) const {
 
 	try {
 
@@ -52,9 +62,14 @@ int PythonFunction::execute(const string & functionName, const map<string, strin
 
     object result = processFunction(pythonMap);
 
-    return extract<string>(result);
+    extract<string> strRes(result);
+    if (!strRes.check()) {
+      extract<int> intRes(result);
+      return boost::lexical_cast<string>(intRes);
+    }
+    return strRes;
 
-  } catch( error_already_set ) {
+  } catch ( error_already_set ) {
     handlePythonError();
   }
 }
@@ -68,6 +83,6 @@ void PythonFunction::handlePythonError() const {
   boost::python::object sys(boost::python::handle<>(PyImport_ImportModule("sys")));
   boost::python::object err = sys.attr("stderr");
   string err_text = boost::python::extract<string>(err.attr("getvalue")());
-  throw PythonExecutionError(err_text);
   PyErr_Clear();
+  throw PythonExecutionError(err_text);
 }
