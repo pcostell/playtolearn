@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     chdir(path);
 #endif
 
-  Display * d = new IrrlichtDisplay();
+  Display * d = new TextDisplay();
 
   d->main_display_loop();
 
