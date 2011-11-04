@@ -25,29 +25,34 @@ namespace Backend {
 class AttributeMap {
 public:
   /**
+   * size returns the number of attribute/value pairs in this map.
+   */
+  std::size_t size() const;
+
+  /**
    * attribute_exists returns true if and only if the attribute with the
    * specified name exists in the map.
    */
   bool attribute_exists(const std::string& attribute) const;
-  
+
   /**
    * get_value returns the value associated with the particular attribute name
    * specified, converted to the specified data type.
    */
   template <typename T>
   T value(const std::string& attribute) const;
-  
+
   /**
    * set_value sets the value associated with the given attribute name. If the
    * attribute doesn't already exist in the map, it will be inserted.
    */
   void set_value(const std::string& attribute, const std::string& value);
-  
+
 private:
   //////////////////////
   // member variables //
   //////////////////////
-  
+
   std::map<std::string, std::string> attributes_;
 };
 
@@ -71,6 +76,10 @@ std::istream& operator>>(std::istream& input, AttributeMap& attr_map);
 ////////////////////////////////////
 
 /** public */
+
+inline std::size_t AttributeMap::size() const {
+  return attributes_.size();
+}
 
 inline bool AttributeMap::attribute_exists(const std::string& attribute) const {
   return attributes_.count(attribute);
