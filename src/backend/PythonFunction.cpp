@@ -1,11 +1,8 @@
 // This must be the first #include
 #include <boost/python/detail/wrap_python.hpp>
-
-#include "python_function.hpp"
-
+#include "PythonFunction.hpp"
 #include <boost/lexical_cast.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
-
 #include <iostream>
 
 using namespace PlayToLearn::Backend;
