@@ -9,6 +9,7 @@
 
 #include "display/Display.hpp"
 #include "display/text/TextDisplay.hpp"
+#include "display/graphics/IrrlichtDisplay.hpp"
 
 using namespace PlayToLearn;
 
@@ -30,7 +31,7 @@ int main(int argc, char **argv)
   handleOSXPaths();
   #endif
 
-  display = new Frontend::TextDisplay();
+  display = new Frontend::IrrlichtDisplay();
 
   display->register_interaction_function(interaction);
   display->register_draw_scene_function(drawScene);
