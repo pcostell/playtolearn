@@ -9,7 +9,7 @@ http://www.boost.org/doc/libs/1_47_0/libs/test/doc/html/tutorials/new-year-resol
 #include "python_function.hpp"
 
 using namespace std;
-using namespace EduGame;
+using namespace PlayToLearn::Backend;
 
 struct ValidSetup {
 	map<string, string> data;

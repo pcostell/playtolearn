@@ -5,6 +5,8 @@
 
 #include <irrlicht.h>
 
+namespace PlayToLearn {
+namespace Frontend {
 
 class IrrlichtDisplay : public Display {
 public:
@@ -18,3 +20,6 @@ private:
   irr::gui::IGUIEnvironment* guienv;
   irr::IrrlichtDevice * device;
 };
+
+} // namespace Frontend
+} // namespace PlayToLearn

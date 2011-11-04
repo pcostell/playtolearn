@@ -6,7 +6,8 @@
 #include <boost/python.hpp>
 #include <stdexcept>
 
-namespace EduGame {
+namespace PlayToLearn {
+namespace Backend {
 
 /**
  * Allows for the execution of a python function from c++. Passes a map
@@ -44,5 +45,5 @@ private:
 	boost::python::object mainModule;
 };
 
-
-} /* namespace EduGame */
+} // namespace Backend
+} // namespace PlayToLearn

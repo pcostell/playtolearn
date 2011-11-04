@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-using namespace EduGame;
+using namespace PlayToLearn::Backend;
 
 using namespace boost::python;
 using namespace std;

@@ -169,15 +169,15 @@ if(APPLE)
   LIST(APPEND SRCS ${MAC_RESOURCES})
 ENDIF()
 
-add_executable(edugame WIN32 MACOSX_BUNDLE ${SRCS})
-target_link_libraries(edugame Irrlicht boost_python ${EXTRA_LIBS} ${DYNAMIC_LIBS})
+add_executable(playtolearn WIN32 MACOSX_BUNDLE ${SRCS})
+target_link_libraries(playtolearn Irrlicht boost_python ${EXTRA_LIBS} ${DYNAMIC_LIBS})
 set (LIBS ${LIBS} boost_python)
 
 IF(APPLE)
-  set_target_properties(edugame PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/OSXResources/Info.plist")
+  set_target_properties(playtolearn PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/OSXResources/Info.plist")
 ENDIF()
 
-install(TARGETS edugame RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
+install(TARGETS playtolearn RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
 
 LIST(APPEND TEST_ALL_SRCS ${SRCS})
 FILE(GLOB main "src/frontend/FEEngine.cpp")
