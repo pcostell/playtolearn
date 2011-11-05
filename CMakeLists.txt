@@ -45,6 +45,7 @@ ENDIF()
 
 STRING(REGEX REPLACE ".*/libpython(.)\\...*" "\\1" PYTHON_VERSION_MAJOR "${PYTHON_LIBRARIES}")
 STRING(REGEX REPLACE ".*/libpython.\\.(.).*" "\\1" PYTHON_VERSION_MINOR "${PYTHON_LIBRARIES}")
+SET(PYTHON_VERSION ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
 
 IF (${PYTHON_VERSION_MAJOR} VERSION_EQUAL "3")
   ADD_DEFINITIONS(-DPYTHON_VERSION_3)
@@ -141,11 +142,18 @@ FOREACH(s ${STATIC_LIBS_FILES} )
   MESSAGE("Adding library \"${name}\" from location \"${s}\"")
 ENDFOREACH()
 
-SET(STATIC_LIBS Irrlicht boost_python )
-SET(DYNAMIC_LIBS python dl m)
+#######################
+## SETTING LIBRARIES ##
+#######################
 
-if(UNIX AND NOT APPLE)
-	SET(DYNAMIC_LIBS ${DYNAMIC_LIBS} GL GLU Xxf86vm Xext X11)
+SET(STATIC_LIBS Irrlicht boost_python )
+SET(DYNAMIC_LIBS dl m)
+
+IF(APPLE)
+  list(APPEND DYNAMIC_LIBS python)
+elseif(UNIX)
+  list(APPEND DYNAMIC_LIBS python${PYTHON_VERSION})
+  list(APPEND DYNAMIC_LIBS GL GLU Xxf86vm Xext X11)
 endif()
 
 #############
