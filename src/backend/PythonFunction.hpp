@@ -1,10 +1,9 @@
 #pragma once
 
-#include <map>
-#include <string>
-
-#include <boost/python.hpp>
 #include <stdexcept>
+#include <string>
+#include <map>
+#include <boost/python.hpp>
 
 namespace PlayToLearn {
 namespace Backend {
