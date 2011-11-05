@@ -1,8 +1,8 @@
 /*
- * File: TextInteractionResponse.cpp
+ * File: TextResponse.cpp
  */
 
-#include "TextInteractionResponse.hpp"
+#include "TextResponse.hpp"
 
 using namespace std;
 

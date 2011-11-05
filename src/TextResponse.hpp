@@ -1,5 +1,5 @@
 /*
- * File: TextInteractionResponse.hpp
+ * File: TextResponse.hpp
  */
 
 #pragma once
@@ -18,12 +18,19 @@ namespace PlayToLearn {
 class TextResponse : public InteractionResponse {
 public:
   /**
-   * TODO: comment
+   * The Ptr typedef allows us to refer to shared_ptr<TextResponse> smart
+   * pointers as TextResponse::Ptr. A const version is provided as well.
    */
-  explicit InteractionResponse(const Backend::AttributeMap& data);
-  
+  typedef boost::shared_ptr<TextResponse> Ptr;
+  typedef boost::shared_ptr<const TextResponse> ConstPtr;
   /**
    * TODO: comment
+   */
+  explicit TextResponse(const Backend::AttributeMap& data);
+  
+  /**
+   * The type enum describes what kind of interaction this response represents.
+   * This version always returns IR_TEXT.
    */
   Type type() const;
   
