@@ -23,13 +23,14 @@ void drawScene() {
 
 }
 
+#ifdef __APPLE__
 void handleOSXPaths();
+#endif
 
 int main(int argc, char **argv)
 {
   #ifdef __APPLE__
-  //handleOSXPaths();
-  /* This will only fix THIS cpp. For now, just run only in directory with files */
+  handleOSXPaths();
   #endif
 
   display = new Frontend::IrrlichtDisplay();
@@ -43,6 +44,7 @@ int main(int argc, char **argv)
   return 0;
 }
 
+#ifdef __APPLE__
 /*
  * This function ensures that relative paths in OSX operate from the bundle's
  * resource directory.
@@ -57,5 +59,6 @@ void handleOSXPaths() {
   }
   CFRelease(resourcesURL);
 
-  int ret = chdir(path);
+  chdir(path);
 }
+#endif

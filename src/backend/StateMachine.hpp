@@ -151,7 +151,7 @@ inline void StateMachine::add_transition_fn(const TransitionFn& transition_fn) {
 }
 
 inline void StateMachine::remove_transition_fn(TransitionFn::ID id) {
-  transitoin_fn_map_.erase(id);
+  transition_fn_map_.erase(id);
 }
 
 } // namespace Backend

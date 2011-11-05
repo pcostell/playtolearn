@@ -61,11 +61,15 @@ public:
   static const int kInvalid = -1;
   
 private:
-  /* member variables */
+  //////////////////////
+  // member variables //
+  //////////////////////
   
   int value_;
   
-  /* class variables */
+  /////////////////////
+  // class variables //
+  /////////////////////
   
   static int next_available_id_;
 };

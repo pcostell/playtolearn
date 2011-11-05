@@ -29,8 +29,8 @@ public:
   typedef UniqueID<State> ID;
   
   /**
-   * object_iterator and const_object_iterator define iterators over
-   * the transition functions associated with this state.
+   * object_iterator and const_object_iterator define iterators over the object-
+   * -transition function mappings associated with this state.
    */
   typedef std::map<Object::ID, TransitionFn::ID>::iterator object_iterator;
   typedef std::map<Object::ID, TransitionFn::ID>::const_iterator const_object_iterator;
@@ -79,19 +79,7 @@ public:
    */
   const_object_iterator object_end() const;
   object_iterator object_end();
-  
-  /**
-   * object_cbegin behaves like object_begin, except it forces a const
-   * iterator to be returned.
-   */
-  const_object_iterator object_cbegin() const;
-  
-  /**
-   * object_cend behaves like object_end, except it forces a const
-   * iterator to be returned.
-   */
-  const_object_iterator object_cend() const;
-  
+
 private:
   //////////////////////
   // member variables //
@@ -117,7 +105,7 @@ inline bool State::object_exists(Object::ID id) const {
 }
 
 inline void State::insert_object(Object::ID object_id, TransitionFn::ID fn_id) {
-  object_ids_.insert(id);
+  object_ids_[object_id] = fn_id;
 }
 
 inline void State::remove_object(Object::ID id) {
@@ -138,14 +126,6 @@ inline State::const_object_iterator State::object_end() const {
 
 inline State::object_iterator State::object_end() {
   return object_ids_.end();
-}
-
-inline State::const_object_iterator State::object_cbegin() const {
-  return object_ids_.cbegin();
-}
-
-inline State::const_object_iterator State::object_cend() const {
-  return object_ids_.cend();
 }
 
 } // namespace Backend

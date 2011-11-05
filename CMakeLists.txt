@@ -18,13 +18,11 @@ ADD_DEFINITIONS(-g)
 
 include(ExternalProject)
 
-set (Python_ADDITIONAL_VERSIONS 3.1)
-set (FIND_LIBRARY_USE_LIB64_PATHS true)
-include(FindPythonLibs)
-
 if(UNIX)
 	FIND_LIBRARY(X11_LIBRARY X11)
 endif()
+
+MESSAGE("X11: ${X11_FOUND}")
 
 ######################
 ## GENERIC PACKAGES ##
@@ -33,29 +31,30 @@ endif()
 find_package(GLUT)
 find_package(OpenGL)
 
+######################
+## PYTHON LIBRARIES ##
+######################
+
+set (Python_ADDITIONAL_VERSIONS 3.1)
+set (FIND_LIBRARY_USE_LIB64_PATHS true)
+include(FindPythonLibs)
+
 IF(NOT PYTHONLIBS_FOUND)
   MESSAGE(FATAL_ERROR "Could not find python libraries.")
 ENDIF()
 
-STRING(REGEX REPLACE ".*/libpython3(.*)\\.so" "\\1" PYTHON_VERSION_3 "${PYTHON_LIBRARIES}")
-STRING(REGEX REPLACE ".*/libpython2(.*)\\.so" "\\1" PYTHON_VERSION_2 "${PYTHON_LIBRARIES}")
+STRING(REGEX REPLACE ".*/libpython(.)\\...*" "\\1" PYTHON_VERSION_MAJOR "${PYTHON_LIBRARIES}")
+STRING(REGEX REPLACE ".*/libpython.\\.(.).*" "\\1" PYTHON_VERSION_MINOR "${PYTHON_LIBRARIES}")
 
-MESSAGE("${PYTHON_VERSION_3}")
-IF (${PYTHON_VERSION_3})
-ADD_DEFINITIONS(-DPYTHON_VERSION_3)
+IF (${PYTHON_VERSION_MAJOR} VERSION_EQUAL "3")
+  ADD_DEFINITIONS(-DPYTHON_VERSION_3)
 ENDIF()
 
+MESSAGE("Python version: ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
 MESSAGE("Python include directory: ${PYTHON_INCLUDE_DIRS}")
 MESSAGE("Python library: ${PYTHON_LIBRARIES}")
 
 include_directories(${PYTHON_INCLUDE_DIRS})
-# Don't need to link since PYTHON_LIBRARIES IS THE LIBRARY
-#link_directories(${PYTHON_LIBRARIES})
-
-  #add_library(python SHARED IMPORTED)
-  #set_property(TARGET python PROPERTY
-  #              IMPORTED_LOCATION ${PYTHON_LIBRARIES})
-
 
 ######################
 ## APPLE FRAMEWORKS ##
@@ -110,7 +109,7 @@ IF(APPLE)
   set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
 ELSE()
   set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make)
-  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
+  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../lib && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../lib/ && cp -r <SOURCE_DIR>/include ../)
 ENDIF()
 
 ExternalProject_Add(irrlicht
@@ -143,7 +142,7 @@ FOREACH(s ${STATIC_LIBS_FILES} )
 ENDFOREACH()
 
 SET(STATIC_LIBS Irrlicht boost_python )
-SET(DYNAMIC_LIBS python dl)
+SET(DYNAMIC_LIBS python2.7 dl)
 
 if(UNIX AND NOT APPLE)
 	SET(DYNAMIC_LIBS ${DYNAMIC_LIBS} GL GLU Xxf86vm Xext X11)

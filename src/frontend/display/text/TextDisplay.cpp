@@ -1,6 +1,4 @@
-
 #include "TextDisplay.hpp"
-#include "../../../Object.hpp"
 
 #include <iostream>
 
@@ -27,9 +25,9 @@ void handleResponse(boost::shared_ptr<InteractionResponse> ir) {
   }
 }
 
-void TextDisplay::draw_object(const Object & object) {
-  cout << object.get_description() << endl;
-}
+//void TextDisplay::draw_object(const Object & object) {
+//  cout << object.get_description() << endl;
+//}
 
 //////////////////////
 // Helper functions //

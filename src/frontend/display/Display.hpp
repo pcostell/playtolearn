@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "../../Object.hpp"
+//#include "../../Object.hpp"
 
 
 namespace PlayToLearn {
@@ -22,7 +22,7 @@ public:
   virtual void main_display_loop() {};
 
   virtual void display_dialog() {};
-  virtual void draw_object(const Object & npc) {};
+  //virtual void draw_object(const Object & npc) {};
 
 
   void register_draw_scene_function(void (*fn)());
