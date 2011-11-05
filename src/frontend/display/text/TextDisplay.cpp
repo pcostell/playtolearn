@@ -9,7 +9,7 @@ void TextDisplay::main_display_loop() {
 
   cout << "Welcome to PlayToLearn" << endl;
   while (true) {
-    boost::shared_ptr<InteractionResponse> ir = Interaction(0);
+    boost::shared_ptr<InteractionResponse> ir(Interaction(0));
     handleResponse(ir);
     DrawScene();
     cout << "> ";

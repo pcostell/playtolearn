@@ -5,6 +5,9 @@
 #include <stdexcept>
 #include <string>
 
+#include <boost/shared_ptr.hpp>
+#include "../../InteractionResponse.hpp"
+
 //#include "../../Object.hpp"
 
 
@@ -26,11 +29,11 @@ public:
 
 
   void register_draw_scene_function(void (*fn)());
-  void register_interaction_function(void (*fn)(int id));
+  void register_interaction_function(boost::shared_ptr<InteractionResponse> (*fn)(int id));
 
 protected:
   void DrawScene();
-  void Interaction(int id);
+  boost::shared_ptr<InteractionResponse> Interaction(int id);
 
 private:
   void (*_drawScene)();
