@@ -21,7 +21,7 @@ public:
   /**
    * TODO: comment
    */
-  const AttributeMap& register_interaction(Interaction::ID const AttributeMap& interaction);
+  const AttributeMap& register_interaction(const AttributeMap& interaction);
   
 private:
   //////////////////////

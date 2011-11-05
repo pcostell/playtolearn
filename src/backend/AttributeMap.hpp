@@ -25,15 +25,34 @@ namespace Backend {
 class AttributeMap {
 public:
   /**
+   * iterator represents a read-only iterator over attribute/value pairs in this
+   * map. const_iterator is the same type, but is provided for consistency.
+   */
+  typedef std::map<std::string, std::string>::const_iterator iterator;
+  typedef std::map<std::string, std::string>::const_iterator const_iterator;
+  
+  /**
    * size returns the number of attribute/value pairs in this map.
    */
   std::size_t size() const;
+  
+  /**
+   * begin returns an iterator to the first attribute/value pair in the map. It
+   * is made read-only in order to control what can be modified.
+   */
+  iterator begin() const;
+  
+  /**
+   * end returns an iterator to the end of the internal attribute/value map. It
+   * is read-only for the same reason stated for begin.
+   */
+  iterator end() const;
 
   /**
-   * attribute_exists returns true if and only if the attribute with the
-   * specified name exists in the map.
+   * contains returns true if and only if the attribute with the specified
+   * name exists in the map.
    */
-  bool attribute_exists(const std::string& attribute) const;
+  bool contains(const std::string& attribute) const;
 
   /**
    * get_value returns the value associated with the particular attribute name
@@ -81,7 +100,15 @@ inline std::size_t AttributeMap::size() const {
   return attributes_.size();
 }
 
-inline bool AttributeMap::attribute_exists(const std::string& attribute) const {
+inline AttributeMap::iterator AttributeMap::begin() const {
+  return attributes_.begin();
+}
+
+inline AttributeMap::iterator AttributeMap::end() const {
+  return attributes_.end();
+}
+
+inline bool AttributeMap::contains(const std::string& attribute) const {
   return attributes_.count(attribute);
 }
 

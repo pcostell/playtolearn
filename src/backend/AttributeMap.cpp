@@ -41,11 +41,12 @@ istream& operator>>(istream& input, AttributeMap& attr_map) {
   getline(input, line);
   size_t num_pairs = boost::lexical_cast<size_t>(line);
   
-  pair<string, string> entry;
+  string new_attribute;
+  string new_value;
   for (size_t i = 0; i < num_pairs; ++i) {
-    getline(input, entry.first);
-    getline(input, entry.second);
-    attr_map.insert(entry);
+    getline(input, new_attribute);
+    getline(input, new_value);
+    attr_map.set_value(new_attribute, new_value);
   }
   
   assert(!input.fail());
