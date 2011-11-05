@@ -28,7 +28,8 @@ void handleOSXPaths();
 int main(int argc, char **argv)
 {
   #ifdef __APPLE__
-  handleOSXPaths();
+  //handleOSXPaths();
+  /* This will only fix THIS cpp. For now, just run only in directory with files */
   #endif
 
   display = new Frontend::IrrlichtDisplay();
@@ -56,5 +57,5 @@ void handleOSXPaths() {
   }
   CFRelease(resourcesURL);
 
-  chdir(path);
+  int ret = chdir(path);
 }

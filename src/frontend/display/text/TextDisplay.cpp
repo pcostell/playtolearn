@@ -10,15 +10,21 @@ using namespace std;
 void TextDisplay::main_display_loop() {
 
   cout << "Welcome to PlayToLearn" << endl;
-  Interaction(0);
-  /*
   while (true) {
+    boost::shared_ptr<InteractionResponse> ir = Interaction(0);
+    handleResponse(ir);
     DrawScene();
     cout << "> ";
     string line = GetLine();
     Interaction(0);
     cout << "You said: " << line << endl;
-  }*/
+  }
+}
+
+void handleResponse(boost::shared_ptr<InteractionResponse> ir) {
+  switch (ir->type()) {
+
+  }
 }
 
 void TextDisplay::draw_object(const Object & object) {

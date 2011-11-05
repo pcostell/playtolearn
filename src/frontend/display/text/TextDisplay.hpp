@@ -14,6 +14,7 @@ public:
   void draw_object(const Object & object);
 
 private:
+  void handleInteraction(boost::shared_ptr<InteractionResponse> ir);
   std::string GetLine();
 };
 

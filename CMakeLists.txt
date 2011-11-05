@@ -82,7 +82,7 @@ ENDIF()
 #######################
 
 set(BOOST_LIBS thread,python,test)
-set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS} architecture=x86 address-model=32 threading=single instruction-set=i686)
+set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS})
 
 IF(APPLE)
   set(BOOST_ARGS ${BOOST_ARGS} toolset=darwin architecture=x86 address-model=32 threading=single)
@@ -164,20 +164,28 @@ FOREACH(t ${TEST_SRCS})
 ENDFOREACH()
 
 if(APPLE)
-  FILE(GLOB MAC_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/OSXResources/*")
-  set_source_files_properties( ${MAC_RESOURCES} PROPERTIES MAC_OSX_PACKAGE_LOCATION Resources)
+  set (MACOSX_BUNDLE true)
+  set (MACOSX_BUNDLE_BUNDLE_NAME playtolearn)
+  set (MACOSX_BUNDLE_ICON_FILE "${CMAKE_CURRENT_SOURCE_DIR}/OSXResources/stanfordicon.icns")
+
+  FILE(GLOB_RECURSE MAC_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/OSXResources/*")
+
+  set_source_files_properties( "${MAC_RESOURCES}" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  LIST(APPEND SRCS ${MEDIA_RESOURCES})
   LIST(APPEND SRCS ${MAC_RESOURCES})
 ENDIF()
+MESSAGE("${SRCS}")
 
 add_executable(playtolearn WIN32 MACOSX_BUNDLE ${SRCS})
 target_link_libraries(playtolearn Irrlicht boost_python ${EXTRA_LIBS} ${DYNAMIC_LIBS})
 set (LIBS ${LIBS} boost_python)
 
-IF(APPLE)
-  set_target_properties(playtolearn PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/OSXResources/Info.plist")
+
+if(APPLE)
+  set_target_properties(playtolearn PROPERTIES RESOURCE "${MAC_RESOURCES}")
 ENDIF()
 
-install(TARGETS playtolearn RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
+install(TARGETS playtolearn RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
 LIST(APPEND TEST_ALL_SRCS ${SRCS})
 FILE(GLOB main "src/frontend/FEEngine.cpp")

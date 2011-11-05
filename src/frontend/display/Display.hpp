@@ -15,7 +15,7 @@ class Display {
 public:
   class Error : public std::runtime_error {
   public:
-    explicit Error (const std::string& what) : std::runtime_error(what) {}
+    explicit Error (const std::string& what);
   };
 
   virtual ~Display() {};
@@ -25,12 +25,12 @@ public:
   virtual void draw_object(const Object & npc) {};
 
 
-  void register_draw_scene_function(void (*fn)()) { _drawScene = fn;}
-  void register_interaction_function(void (*fn)(int id)) { _interact = fn;}
+  void register_draw_scene_function(void (*fn)());
+  void register_interaction_function(void (*fn)(int id));
 
 protected:
-  void DrawScene() { _drawScene(); }
-  void Interaction(int id) { _interact(id); }
+  void DrawScene();
+  void Interaction(int id);
 
 private:
   void (*_drawScene)();
