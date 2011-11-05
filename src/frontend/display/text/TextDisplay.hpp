@@ -2,10 +2,9 @@
 #pragma once
 
 #include "../Display.hpp"
-#include "../../InteractionResponse.hpp"
+#include "../../../TextResponse.hpp"
 
 #include <string>
-#include <boost/shared_ptr.hpp>
 
 
 namespace PlayToLearn {
@@ -18,7 +17,9 @@ public:
   //void draw_object(const Object & object);
 
 private:
-  void handleInteraction(boost::shared_ptr<InteractionResponse> ir);
+  void handleResponse(InteractionResponse::Ptr ir);
+  void handleTextResponse(TextResponse::Ptr ir);
+
   std::string GetLine();
 };
 

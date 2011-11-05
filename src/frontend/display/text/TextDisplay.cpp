@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+using namespace PlayToLearn;
 using namespace PlayToLearn::Frontend;
 using namespace std;
 
@@ -11,18 +12,21 @@ void TextDisplay::main_display_loop() {
   while (true) {
     boost::shared_ptr<InteractionResponse> ir(Interaction(0));
     handleResponse(ir);
-    DrawScene();
     cout << "> ";
     string line = GetLine();
-    Interaction(0);
-    cout << "You said: " << line << endl;
   }
 }
 
-void handleResponse(boost::shared_ptr<InteractionResponse> ir) {
+void TextDisplay::handleResponse(InteractionResponse::Ptr ir) {
   switch (ir->type()) {
-
+    case InteractionResponse::IR_TEXT:
+      handleTextResponse(boost::static_pointer_cast<TextResponse>(ir));
+      break;
   }
+}
+
+void TextDisplay::handleTextResponse(TextResponse::Ptr ir) {
+  cout << ir->text() << endl;
 }
 
 //void TextDisplay::draw_object(const Object & object) {

@@ -17,6 +17,7 @@ namespace PlayToLearn {
 TextResponse::TextResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data) {
   // TODO: implement
+  text_ = data.value<string>("text");
 }
 
 } // namespace PlayToLearn

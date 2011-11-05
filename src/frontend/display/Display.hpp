@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <string>
 
-#include <boost/shared_ptr.hpp>
 #include "../../InteractionResponse.hpp"
 
 //#include "../../Object.hpp"
@@ -29,7 +28,7 @@ public:
 
 
   void register_draw_scene_function(void (*fn)());
-  void register_interaction_function(boost::shared_ptr<InteractionResponse> (*fn)(int id));
+  void register_interaction_function(InteractionResponse::Ptr (*fn)(int id));
 
 protected:
   void DrawScene();
@@ -37,7 +36,7 @@ protected:
 
 private:
   void (*_drawScene)();
-  void (*_interact)(int);
+  InteractionResponse::Ptr (*_interact)(int);
 };
 
 } // namespace Frontend
