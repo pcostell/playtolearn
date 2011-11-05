@@ -4,7 +4,10 @@
 
 #pragma once
 
+#include "UniqueID.hpp"
 #include "backend/AttributeMap.hpp"
+#include "backend/State.hpp"
+#include "backend/Object.hpp"
 #include <boost/shared_ptr.hpp>
 #include <string>
 
@@ -56,6 +59,52 @@ public:
    * this object.
    */
   virtual Type type() const = 0;
+  
+  /**
+   * state_id returns the ID of the state the player was in when the interaction
+   * occurred. This is provided primarily for debugging purposes.
+   */
+  Backend::State::ID state_id() const;
+  
+  /**
+   * object_id returns the ID of the interactive object which triggered the
+   * interaction. This is provided primarily for debugging purposes.
+   */
+  Backend::Object::ID object_id() const;
+  
+  /**
+   * forced_interaction returns the ID of the Object which this interaction
+   * response wants the game logic to interact with next. If no such interaction
+   * needs to occur, it will have the value kInvalid.
+   */
+  Backend::Object::ID forced_interaction() const;
+  
+private:
+  //////////////////////
+  // member variables //
+  //////////////////////
+  
+  Backend::State::ID state_id_;
+  Backend::Object::ID object_id_;
+  Backend::Object::ID forced_interaction_id_;
 };
+
+///////////////////////////////////////////
+// InteractionResponse inlined functions //
+///////////////////////////////////////////
+
+/** public */
+
+inline Backend::State::ID InteractionResponse::state_id() const {
+  return state_id_;
+}
+
+inline Backend::Object::ID InteractionResponse::object_id() const {
+  return object_id_;
+}
+
+inline Backend::Object::ID InteractionResponse::forced_interaction() const {
+  return forced_interaction_id_;
+}
 
 } // namespace PlayToLearn
