@@ -26,6 +26,8 @@ if(UNIX)
 	FIND_LIBRARY(X11_LIBRARY X11)
 endif()
 
+MESSAGE("X11: ${X11_FOUND}")
+
 ######################
 ## GENERIC PACKAGES ##
 ######################
@@ -82,7 +84,7 @@ ENDIF()
 #######################
 
 set(BOOST_LIBS thread,python,test)
-set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS} architecture=x86 address-model=32 threading=single instruction-set=i686)
+set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS})
 
 IF(APPLE)
   set(BOOST_ARGS ${BOOST_ARGS} toolset=darwin architecture=x86 address-model=32 threading=single)
@@ -110,7 +112,7 @@ IF(APPLE)
   set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
 ELSE()
   set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make)
-  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
+  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../lib && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../lib/ && cp -r <SOURCE_DIR>/include ../)
 ENDIF()
 
 ExternalProject_Add(irrlicht
@@ -143,7 +145,7 @@ FOREACH(s ${STATIC_LIBS_FILES} )
 ENDFOREACH()
 
 SET(STATIC_LIBS Irrlicht boost_python )
-SET(DYNAMIC_LIBS python dl)
+SET(DYNAMIC_LIBS python2.6 dl)
 
 if(UNIX AND NOT APPLE)
 	SET(DYNAMIC_LIBS ${DYNAMIC_LIBS} GL GLU Xxf86vm Xext X11)

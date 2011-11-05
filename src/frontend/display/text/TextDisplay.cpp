@@ -1,6 +1,5 @@
 
 #include "TextDisplay.hpp"
-#include "../../../Object.hpp"
 
 #include <iostream>
 
@@ -21,9 +20,9 @@ void TextDisplay::main_display_loop() {
   }*/
 }
 
-void TextDisplay::draw_object(const Object & object) {
-  cout << object.get_description() << endl;
-}
+//void TextDisplay::draw_object(const Object & object) {
+//  cout << object.get_description() << endl;
+//}
 
 //////////////////////
 // Helper functions //

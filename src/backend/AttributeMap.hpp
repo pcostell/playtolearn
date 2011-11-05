@@ -119,14 +119,14 @@ inline bool AttributeMap::contains(const std::string& attribute) const {
 /** public */
 
 template <typename T>
-T AttributeMap::value(const std::string& attribute) const {
+inline T AttributeMap::value(const std::string& attribute) const {
   // We perform the conversion using lexical_cast. If the attribute's value is
   // invalid, the operation will throw a bad_lexical_cast exception.
   return boost::lexical_cast<T>(value<std::string>(attribute));
 }
 
 template <>
-std::string AttributeMap::value<std::string>(const std::string& attribute) const {
+inline std::string AttributeMap::value<std::string>(const std::string& attribute) const {
   // Check that the attribute name is in the map. If it isn't, this is a
   // programming error that can't be recovered.
   std::map<std::string, std::string>::const_iterator itr = attributes_.find(attribute);

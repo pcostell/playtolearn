@@ -23,7 +23,9 @@ void drawScene() {
 
 }
 
+#ifdef __APPLE__
 void handleOSXPaths();
+#endif
 
 int main(int argc, char **argv)
 {
@@ -42,6 +44,7 @@ int main(int argc, char **argv)
   return 0;
 }
 
+#ifdef __APPLE__
 /*
  * This function ensures that relative paths in OSX operate from the bundle's
  * resource directory.
@@ -58,3 +61,4 @@ void handleOSXPaths() {
 
   chdir(path);
 }
+#endif
