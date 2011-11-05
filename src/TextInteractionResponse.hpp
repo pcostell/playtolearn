@@ -1,47 +1,12 @@
 /*
- * File: InteractionResponse.hpp
+ * File: TextInteractionResponse.hpp
  */
 
 #pragma once
 
-#include "../backend/AttributeMap.hpp"
-#include <string>
+#include "InteractionResponse.hpp"
 
 namespace PlayToLearn {
-
-/////////////////////////////////////////
-// InteractionResponse class interface //
-/////////////////////////////////////////
-
-/**
- * TODO: comment
- */
-class InteractionResponse {
-public:
-  /**
-   * The type enum describes what kind of interaction this response represents.
-   */
-  enum Type {
-    IR_TEXT,
-    IR_FREE_RESPONSE,
-    IR_MULTIPLE_CHOICE,
-  };
-  
-  /**
-   * TODO: comment
-   */
-  explicit InteractionResponse(const Backend::AttributeMap& data);
-  
-  /**
-   * TODO: comment
-   */
-  virtual ~InteractionResponse();
-  
-  /**
-   * TODO: comment
-   */
-  virtual Type type() const = 0;
-};
 
 //////////////////////////////////
 // TextResponse class interface //

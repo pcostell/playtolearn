@@ -39,7 +39,7 @@ PythonFunction::PythonFunction(const string & pythonCode) {
 
 
     object ignored = exec(str(pythonCode), mainNamespace);
-    } catch ( error_already_set ) {
+    } catch (const error_already_set&) {
       handlePythonError();
     }
 }
@@ -66,7 +66,7 @@ string PythonFunction::execute(const string & functionName, const map<string, st
     }
     return strRes;
 
-  } catch ( error_already_set ) {
+  } catch (const error_already_set&) {
     handlePythonError();
   }
 }
