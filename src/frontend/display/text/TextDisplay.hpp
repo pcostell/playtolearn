@@ -2,7 +2,10 @@
 #pragma once
 
 #include "../Display.hpp"
+#include "../../../TextResponse.hpp"
+
 #include <string>
+
 
 namespace PlayToLearn {
 namespace Frontend {
@@ -14,6 +17,9 @@ public:
   //void draw_object(const Object & object);
 
 private:
+  void handleResponse(InteractionResponse::Ptr ir);
+  void handleTextResponse(TextResponse::Ptr ir);
+
   std::string GetLine();
 };
 

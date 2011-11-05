@@ -27,6 +27,7 @@ TextResponse::TextResponse(const Backend::AttributeMap& data) :
   text_(data.value<string>(kTextAttribute))
 {
   // TODO: implement
+  text_ = data.value<string>("text");
 }
 
 } // namespace PlayToLearn

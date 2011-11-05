@@ -1,23 +1,32 @@
-
 #include "TextDisplay.hpp"
 
 #include <iostream>
 
+using namespace PlayToLearn;
 using namespace PlayToLearn::Frontend;
 using namespace std;
 
 void TextDisplay::main_display_loop() {
 
   cout << "Welcome to PlayToLearn" << endl;
-  Interaction(0);
-  /*
   while (true) {
-    DrawScene();
+    boost::shared_ptr<InteractionResponse> ir(Interaction(0));
+    handleResponse(ir);
     cout << "> ";
     string line = GetLine();
-    Interaction(0);
-    cout << "You said: " << line << endl;
-  }*/
+  }
+}
+
+void TextDisplay::handleResponse(InteractionResponse::Ptr ir) {
+  switch (ir->type()) {
+    case InteractionResponse::IR_TEXT:
+      handleTextResponse(boost::static_pointer_cast<TextResponse>(ir));
+      break;
+  }
+}
+
+void TextDisplay::handleTextResponse(TextResponse::Ptr ir) {
+  cout << ir->text() << endl;
 }
 
 //void TextDisplay::draw_object(const Object & object) {

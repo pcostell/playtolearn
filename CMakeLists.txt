@@ -18,10 +18,6 @@ ADD_DEFINITIONS(-g)
 
 include(ExternalProject)
 
-set (Python_ADDITIONAL_VERSIONS 3.1)
-set (FIND_LIBRARY_USE_LIB64_PATHS true)
-include(FindPythonLibs)
-
 if(UNIX)
 	FIND_LIBRARY(X11_LIBRARY X11)
 endif()
@@ -35,29 +31,31 @@ MESSAGE("X11: ${X11_FOUND}")
 find_package(GLUT)
 find_package(OpenGL)
 
+######################
+## PYTHON LIBRARIES ##
+######################
+
+set (Python_ADDITIONAL_VERSIONS 3.1)
+set (FIND_LIBRARY_USE_LIB64_PATHS true)
+include(FindPythonLibs)
+
 IF(NOT PYTHONLIBS_FOUND)
   MESSAGE(FATAL_ERROR "Could not find python libraries.")
 ENDIF()
 
-STRING(REGEX REPLACE ".*/libpython3(.*)\\.so" "\\1" PYTHON_VERSION_3 "${PYTHON_LIBRARIES}")
-STRING(REGEX REPLACE ".*/libpython2(.*)\\.so" "\\1" PYTHON_VERSION_2 "${PYTHON_LIBRARIES}")
+STRING(REGEX REPLACE ".*/libpython(.)\\...*" "\\1" PYTHON_VERSION_MAJOR "${PYTHON_LIBRARIES}")
+STRING(REGEX REPLACE ".*/libpython.\\.(.).*" "\\1" PYTHON_VERSION_MINOR "${PYTHON_LIBRARIES}")
+SET(PYTHON_VERSION ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
 
-MESSAGE("${PYTHON_VERSION_3}")
-IF (${PYTHON_VERSION_3})
-ADD_DEFINITIONS(-DPYTHON_VERSION_3)
+IF (${PYTHON_VERSION_MAJOR} VERSION_EQUAL "3")
+  ADD_DEFINITIONS(-DPYTHON_VERSION_3)
 ENDIF()
 
+MESSAGE("Python version: ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
 MESSAGE("Python include directory: ${PYTHON_INCLUDE_DIRS}")
 MESSAGE("Python library: ${PYTHON_LIBRARIES}")
 
 include_directories(${PYTHON_INCLUDE_DIRS})
-# Don't need to link since PYTHON_LIBRARIES IS THE LIBRARY
-#link_directories(${PYTHON_LIBRARIES})
-
-  #add_library(python SHARED IMPORTED)
-  #set_property(TARGET python PROPERTY
-  #              IMPORTED_LOCATION ${PYTHON_LIBRARIES})
-
 
 ######################
 ## APPLE FRAMEWORKS ##
@@ -144,11 +142,18 @@ FOREACH(s ${STATIC_LIBS_FILES} )
   MESSAGE("Adding library \"${name}\" from location \"${s}\"")
 ENDFOREACH()
 
-SET(STATIC_LIBS Irrlicht boost_python )
-SET(DYNAMIC_LIBS python2.6 dl)
+#######################
+## SETTING LIBRARIES ##
+#######################
 
-if(UNIX AND NOT APPLE)
-	SET(DYNAMIC_LIBS ${DYNAMIC_LIBS} GL GLU Xxf86vm Xext X11)
+SET(STATIC_LIBS Irrlicht boost_python )
+SET(DYNAMIC_LIBS dl m)
+
+IF(APPLE)
+  list(APPEND DYNAMIC_LIBS python)
+elseif(UNIX)
+  list(APPEND DYNAMIC_LIBS python${PYTHON_VERSION})
+  list(APPEND DYNAMIC_LIBS GL GLU Xxf86vm Xext X11)
 endif()
 
 #############
@@ -166,20 +171,28 @@ FOREACH(t ${TEST_SRCS})
 ENDFOREACH()
 
 if(APPLE)
-  FILE(GLOB MAC_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/OSXResources/*")
-  set_source_files_properties( ${MAC_RESOURCES} PROPERTIES MAC_OSX_PACKAGE_LOCATION Resources)
+  set (MACOSX_BUNDLE true)
+  set (MACOSX_BUNDLE_BUNDLE_NAME playtolearn)
+  set (MACOSX_BUNDLE_ICON_FILE "${CMAKE_CURRENT_SOURCE_DIR}/OSXResources/stanfordicon.icns")
+
+  FILE(GLOB_RECURSE MAC_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/OSXResources/*")
+
+  set_source_files_properties( "${MAC_RESOURCES}" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  LIST(APPEND SRCS ${MEDIA_RESOURCES})
   LIST(APPEND SRCS ${MAC_RESOURCES})
 ENDIF()
+MESSAGE("${SRCS}")
 
 add_executable(playtolearn WIN32 MACOSX_BUNDLE ${SRCS})
 target_link_libraries(playtolearn Irrlicht boost_python ${EXTRA_LIBS} ${DYNAMIC_LIBS})
 set (LIBS ${LIBS} boost_python)
 
-IF(APPLE)
-  set_target_properties(playtolearn PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/OSXResources/Info.plist")
+
+if(APPLE)
+  set_target_properties(playtolearn PROPERTIES RESOURCE "${MAC_RESOURCES}")
 ENDIF()
 
-install(TARGETS playtolearn RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
+install(TARGETS playtolearn RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
 LIST(APPEND TEST_ALL_SRCS ${SRCS})
 FILE(GLOB main "src/frontend/FEEngine.cpp")

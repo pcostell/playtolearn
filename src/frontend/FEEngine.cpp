@@ -7,16 +7,24 @@
 #include <fstream>
 #include <functional>
 
+#include "../InteractionResponse.hpp"
 #include "display/Display.hpp"
 #include "display/text/TextDisplay.hpp"
 #include "display/graphics/IrrlichtDisplay.hpp"
 
+#include "../backend/Engine.hpp"
+#include "../backend/AttributeMap.hpp"
+#include "../TextResponse.hpp"
+
 using namespace PlayToLearn;
 
 Frontend::Display * display;
+Backend::Engine * backend;
 
-void interaction(int id) {
-  std::cout << "BLAH" << std::endl;
+InteractionResponse::Ptr interaction(int id) {
+  Backend::AttributeMap m;
+  m.set_value("text", "HAHAHAHA");
+  return InteractionResponse::Ptr(new TextResponse(m));
 }
 
 void drawScene() {
@@ -33,7 +41,8 @@ int main(int argc, char **argv)
   handleOSXPaths();
   #endif
 
-  display = new Frontend::IrrlichtDisplay();
+  display = new Frontend::TextDisplay();
+  backend = new Backend::Engine();
 
   display->register_interaction_function(interaction);
   display->register_draw_scene_function(drawScene);
