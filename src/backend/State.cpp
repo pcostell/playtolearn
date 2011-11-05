@@ -15,8 +15,9 @@ namespace Backend {
 
 /** public */
 
-State::State(ID id) : id_(id)
-{ /* empty body */ }
+State::State(ID id) : id_(id) {
+  // empty body
+}
 
 } // namespace Backend
 } // namespace PlayToLearn

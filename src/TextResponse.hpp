@@ -23,6 +23,7 @@ public:
    */
   typedef boost::shared_ptr<TextResponse> Ptr;
   typedef boost::shared_ptr<const TextResponse> ConstPtr;
+  
   /**
    * TODO: comment
    */
