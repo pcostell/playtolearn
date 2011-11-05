@@ -18,8 +18,9 @@ namespace Backend {
 
 TransitionFn::TransitionFn(const AttributeMap& response, ID id) :
   id_(id),
-  response_(response)
-{ /* empty body */ }
+  response_(response) {
+  // empty body
+}
 
 State::ID TransitionFn::next_state(const AttributeMap& interaction) const {
   return State::ID();

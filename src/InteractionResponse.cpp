@@ -14,7 +14,7 @@ namespace PlayToLearn {
 
 /** public */
 
-InteractionResponse::InteractionResponse(const AttributeMap& data) {
+InteractionResponse::InteractionResponse(const Backend::AttributeMap& data) {
   // TODO: implement
 }
 

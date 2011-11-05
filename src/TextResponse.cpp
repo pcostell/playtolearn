@@ -1,8 +1,8 @@
 /*
- * File: TextInteractionResponse.cpp
+ * File: TextResponse.cpp
  */
 
-#include "TextInteractionResponse.hpp"
+#include "TextResponse.hpp"
 
 using namespace std;
 
@@ -14,11 +14,8 @@ namespace PlayToLearn {
 
 /** public */
 
-TextResponse::TextResponse(const AttributeMap& data) : InteractionResponse(data) {
-  // TODO: implement
-}
-
-TextResponse::~TextResponse() {
+TextResponse::TextResponse(const Backend::AttributeMap& data) :
+  InteractionResponse(data) {
   // TODO: implement
 }
 
