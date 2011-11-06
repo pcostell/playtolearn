@@ -18,11 +18,9 @@ ADD_DEFINITIONS(-g)
 
 include(ExternalProject)
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
 	FIND_LIBRARY(X11_LIBRARY X11)
 endif()
-
-MESSAGE("X11: ${X11_FOUND}")
 
 ######################
 ## GENERIC PACKAGES ##
@@ -114,7 +112,7 @@ ELSE()
 ENDIF()
 
 ExternalProject_Add(irrlicht
-  PREFIX irrlicht/
+  PREFIX third_party/irrlicht/
   URL http://www.stanford.edu/~pcostell/irrlicht-1.7.2.tar.gz
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND ""
@@ -170,6 +168,13 @@ FOREACH(t ${TEST_SRCS})
   LIST(REMOVE_ITEM SRCS ${t})
 ENDFOREACH()
 
+# Remove main from ALL_NONMAIN_SRCS
+LIST(APPEND ALL_NONMAIN_SRCS ${SRCS})
+FILE(GLOB main "src/frontend/FEEngine.cpp")
+LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main})
+
+add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
+
 if(APPLE)
   set (MACOSX_BUNDLE true)
   set (MACOSX_BUNDLE_BUNDLE_NAME playtolearn)
@@ -183,10 +188,8 @@ if(APPLE)
 ENDIF()
 MESSAGE("${SRCS}")
 
-add_executable(playtolearn WIN32 MACOSX_BUNDLE ${SRCS})
-target_link_libraries(playtolearn Irrlicht boost_python ${EXTRA_LIBS} ${DYNAMIC_LIBS})
-set (LIBS ${LIBS} boost_python)
-
+add_executable(playtolearn WIN32 MACOSX_BUNDLE ${main})
+target_link_libraries(playtolearn playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
 
 if(APPLE)
   set_target_properties(playtolearn PROPERTIES RESOURCE "${MAC_RESOURCES}")
@@ -194,12 +197,11 @@ ENDIF()
 
 install(TARGETS playtolearn RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR} RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
-LIST(APPEND TEST_ALL_SRCS ${SRCS})
-FILE(GLOB main "src/frontend/FEEngine.cpp")
-LIST(REMOVE_ITEM TEST_ALL_SRCS ${main})
+
+
 FOREACH(t ${TEST_SRCS})
   STRING(REGEX REPLACE ".*/(.*)\\.cpp" "\\1" name "${t}")
-  add_executable(${name} ${t} ${TEST_ALL_SRCS})
-  target_link_libraries(${name} ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
+  add_executable(${name} ${t})
+  target_link_libraries(${name} playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
   add_test(${name} ${name})
 ENDFOREACH()
