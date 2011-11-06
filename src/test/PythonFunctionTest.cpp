@@ -6,7 +6,7 @@ http://www.boost.org/doc/libs/1_47_0/libs/test/doc/html/tutorials/new-year-resol
 */
 #include <string>
 #include <map>
-#include "python_function.hpp"
+#include "../Backend/PythonFunction.hpp"
 
 using namespace std;
 using namespace PlayToLearn::Backend;
