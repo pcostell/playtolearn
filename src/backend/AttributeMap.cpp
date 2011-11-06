@@ -10,18 +10,6 @@ using namespace std;
 namespace PlayToLearn {
 namespace Backend {
 
-/////////////////////////////////////////////////////////
-// AttributeMap member function implementation details //
-/////////////////////////////////////////////////////////
-
-/** public */
-
-void AttributeMap::set_value(const string& attribute, const string& value) {
-  assert(attribute.find('\n') == string::npos);
-  assert(value.find('\n') == string::npos);
-  attributes_[attribute] = value;
-}
-
 ///////////////////////////////////////////////////////
 // AttributeMap free function implementation details //
 ///////////////////////////////////////////////////////

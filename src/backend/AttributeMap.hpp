@@ -63,9 +63,12 @@ public:
 
   /**
    * set_value sets the value associated with the given attribute name. If the
-   * attribute doesn't already exist in the map, it will be inserted.
+   * attribute doesn't already exist in the map, it will be inserted. The type
+   * of value inserted into the map is templatized so that any data type may
+   * be converted into a string.
    */
-  void set_value(const std::string& attribute, const std::string& value);
+  template <typename T>
+  void set_value(const std::string& attribute, const T& value);
 
 private:
   //////////////////////
@@ -132,6 +135,27 @@ inline std::string AttributeMap::value<std::string>(const std::string& attribute
   std::map<std::string, std::string>::const_iterator itr = attributes_.find(attribute);
   assert(itr != attributes_.end());
   return itr->second;
+}
+
+template <typename T>
+inline void AttributeMap::set_value(const std::string& attribute, const T& value) {
+  // We perform the conversion using lexical_cast. The given value cannot be
+  // converted to a string, the operation will throw a bad_lexcial_cast
+  // exception.
+  set_value(attribute, boost::lexical_cast<std::string>(value));
+}
+
+template <>
+inline void AttributeMap::set_value(const std::string& attribute, const std::string& value) {
+  assert(attribute.find('\n') == std::string::npos);
+  assert(value.find('\n') == std::string::npos);
+  attributes_[attribute] = value;
+}
+
+template <>
+inline void AttributeMap::set_value(const std::string& attribute, const char* const& value) {
+  // Convert from C style string to C++ style string:
+  set_value(attribute, std::string(value));
 }
 
 } // namespace Backend

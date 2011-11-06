@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include "../UniqueID.hpp"
+#include <string>
+
 namespace PlayToLearn {
 namespace Backend {
 
@@ -21,6 +24,20 @@ public:
    * interactive object.
    */
   typedef UniqueID<Object> ID;
+  
+  /**
+   * The kObjectIDAttribute constant represents the name of the attribute that
+   * should be paired with the corresponding object ID involved in an
+   * interaction.
+   */
+  static const std::string kObjectIDAttribute;
+  
+  /**
+   * The kForcedInteractionIDAttribute constant represents the name of the
+   * attribute that should be paired with the corresponding object ID with which
+   * an interaction should occur.
+   */
+  static const std::string kForcedInteractionIDAttribute;
 };
 
 } // namespace Backend
