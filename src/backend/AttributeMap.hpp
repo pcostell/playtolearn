@@ -142,14 +142,20 @@ inline void AttributeMap::set_value(const std::string& attribute, const T& value
   // We perform the conversion using lexical_cast. The given value cannot be
   // converted to a string, the operation will throw a bad_lexcial_cast
   // exception.
-  set_value(boost::lexical_cast<std::string>(value));
+  set_value(attribute, boost::lexical_cast<std::string>(value));
 }
 
 template <>
-inline void AttributeMap::set_value<std::string>(const std::string& attribute, const std::string& value) {
+inline void AttributeMap::set_value(const std::string& attribute, const std::string& value) {
   assert(attribute.find('\n') == std::string::npos);
   assert(value.find('\n') == std::string::npos);
   attributes_[attribute] = value;
+}
+
+template <>
+inline void AttributeMap::set_value(const std::string& attribute, const char* const& value) {
+  // Convert from C style string to C++ style string:
+  set_value(attribute, std::string(value));
 }
 
 } // namespace Backend
