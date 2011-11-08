@@ -10,6 +10,10 @@ namespace Frontend {
 
 class IrrlichtDisplay : public Display {
 public:
+
+  typedef boost::shared_ptr<IrrlichtDisplay> Ptr;
+  typedef boost::shared_ptr<const IrrlichtDisplay> ConstPtr;
+
   IrrlichtDisplay();
   ~IrrlichtDisplay();
   void main_display_loop();

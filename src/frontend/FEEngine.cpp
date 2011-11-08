@@ -24,7 +24,7 @@ Backend::Engine * backend;
 InteractionResponse::Ptr interaction(int id) {
   Backend::AttributeMap m;
   m.set_value("text", "HAHAHAHA");
-  return InteractionResponse::Ptr(new TextResponse(m));
+  InteractionResponse::Ptr ir = InteractionResponse::Ptr(new TextResponse(m));
 }
 
 void drawScene() {

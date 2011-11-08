@@ -5,7 +5,10 @@
 #include <stdexcept>
 #include <string>
 
+#include <boost/shared_ptr.hpp>
+
 #include "../../InteractionResponse.hpp"
+
 
 //#include "../../Object.hpp"
 
@@ -15,6 +18,10 @@ namespace Frontend {
 
 class Display {
 public:
+
+  typedef boost::shared_ptr<Display> Ptr;
+  typedef boost::shared_ptr<const Display> ConstPtr;
+
   class Error : public std::runtime_error {
   public:
     explicit Error (const std::string& what);
@@ -25,6 +32,10 @@ public:
 
   virtual void display_dialog() {};
   //virtual void draw_object(const Object & npc) {};
+
+  virtual void handle_text_response(TextResponse::Ptr response) {};
+  virtual void handle_free_response_response(FreeResponseResponse::Ptr response) {}
+  virtual void handle_multiple_choice_response(MultipleChoiceResponse::Ptr response) {}
 
 
   void register_draw_scene_function(void (*fn)());
