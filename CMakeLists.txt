@@ -180,6 +180,10 @@ LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main})
 
 add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
 
+#############
+## BUNDLES ##
+#############
+
 if(APPLE)
   set (MACOSX_BUNDLE true)
   set (MACOSX_BUNDLE_BUNDLE_NAME playtolearn)
@@ -205,7 +209,9 @@ install(TARGETS playtolearn
         BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
-
+##################
+## TEST BUNDLES ##
+##################
 
 FOREACH(t ${TEST_SRCS})
   STRING(REGEX REPLACE ".*/(.*)\\.cpp" "\\1" name "${t}")
