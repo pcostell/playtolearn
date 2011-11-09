@@ -49,5 +49,16 @@ private:
   std::string answer_;
 };
 
+
+/////////////////////////////////////////////////////
+// FreeResponseAnswerINteraction inlined functions //
+/////////////////////////////////////////////////////
+
+/** public */
+
+inline Interaction::Type FreeResponseAnswerInteraction::type() const {
+  return INTERACT_FREE_RESPONSE_ANSWER;
+}
+
 } // namespace Frontend
 } // namespace PlayToLearn

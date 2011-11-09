@@ -26,7 +26,7 @@ public:
    * is specified, the underlying value is the constant, kInvalidID. For a new
    * unique ID, the create class function should be used.
    */
-  explicit UniqueID(int value = kInvalidIDentifier);
+  explicit UniqueID(int value = kInvalidID);
 
   /**
    * value returns the identifying integer so that it may be displayed.

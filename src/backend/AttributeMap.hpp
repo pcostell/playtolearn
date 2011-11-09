@@ -30,18 +30,18 @@ public:
    */
   typedef std::map<std::string, std::string>::const_iterator iterator;
   typedef std::map<std::string, std::string>::const_iterator const_iterator;
-  
+
   /**
    * size returns the number of attribute/value pairs in this map.
    */
   std::size_t size() const;
-  
+
   /**
    * begin returns an iterator to the first attribute/value pair in the map. It
    * is made read-only in order to control what can be modified.
    */
   iterator begin() const;
-  
+
   /**
    * end returns an iterator to the end of the internal attribute/value map. It
    * is read-only for the same reason stated for begin.
@@ -69,13 +69,13 @@ public:
    */
   template <typename T>
   void set_value(const std::string& attribute, const T& value);
-  
+
   /**
    * clear erases all elements in the AttributeMap so that afterward, it is
    * completely empty.
    */
   void clear();
-  
+
 private:
   //////////////////////
   // member variables //

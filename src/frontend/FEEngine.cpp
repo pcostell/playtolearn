@@ -1,11 +1,6 @@
 
-#ifdef __APPLE__
-#include "CoreFoundation/CoreFoundation.h"
-#endif
-
 #include <iostream>
 #include <fstream>
-#include <functional>
 
 #include <boost/scoped_ptr.hpp>
 
@@ -17,6 +12,8 @@
 #include "backend/Engine.hpp"
 #include "backend/AttributeMap.hpp"
 #include "frontend/TextResponse.hpp"
+
+#include "util/Constants.hpp"
 
 namespace PlayToLearn {
 namespace Frontend {
@@ -32,7 +29,7 @@ boost::scoped_ptr<Backend::Engine> backend(new Backend::Engine());
 // Function prototypes //
 /////////////////////////
 
-void handleOSXPaths();
+void loadFrontendEngine();
 
 ////////////////////////
 // Callback functions //
@@ -40,8 +37,11 @@ void handleOSXPaths();
 
 InteractionResponse::Ptr interaction(int id) {
   Backend::AttributeMap m;
-  m.set_value("text", "HAHAHAHA");
-  InteractionResponse::Ptr ir = InteractionResponse::Ptr(new TextResponse(m));
+  m.set_value(Util::kTextAttribute, "HAHAHAHA");
+  m.set_value(Util::kObjectIDAttribute, id);
+  m.set_value(Util::kStateIDAttribute, 0);
+  std::cout << m.value<std::string>(Util::kTextAttribute) << std::endl;
+  return InteractionResponse::Ptr(new TextResponse(m));
 }
 
 void drawScene() {
@@ -61,25 +61,6 @@ void loadFrontendEngine() {
   display->register_draw_scene_function(drawScene);
   display->register_load_game_function(loadGame);
   display->main_display_loop();
-}
-
-/*
- * This function ensures that relative paths in OSX operate from the bundle's
- * resource directory.
- */
-void handleOSXPaths() {
-  #ifdef __APPLE__
-  CFBundleRef mainBundle = CFBundleGetMainBundle();
-  CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
-  char path[PATH_MAX];
-  if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path, PATH_MAX))
-  {
-      exit(-1);
-  }
-  CFRelease(resourcesURL);
-
-  chdir(path);
-  #endif
 }
 
 } // namespace Frontend

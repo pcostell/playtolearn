@@ -16,7 +16,7 @@ namespace Util {
 /**
  * kInvalid is a constant which represents an invalid ID's integer.
  */
-const int kInvalidIDentifier = -1;
+const int kInvalidID = -1;
 
 ///////////////////////////////////////////
 // AttributeMap attribute name constants //
