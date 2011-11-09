@@ -21,7 +21,5 @@ TextAnswerInteraction::TextAnswerInteraction(Backend::Object::ID object_id) :
   // empty body
 }
 
-
-
 } // namespace Frontend
 } // namespace PlayToLearn

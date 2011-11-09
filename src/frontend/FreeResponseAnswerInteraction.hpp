@@ -16,7 +16,7 @@ namespace Frontend {
 /**
  * The FreeResponseAnswerInteraction class represents the specific type of
  * Interaction object generated when the user answers a free response question.
- * It stores the answer provided as data.
+ * It stores the answer provided internally.
  */
 class FreeResponseAnswerInteraction : public Interaction {
 public:
@@ -42,6 +42,13 @@ public:
   Type type() const;
   
   /**
+   * This version of requesting_data returns false, since a
+   * FreeResponseAnswerInteraction is created in response to a free response
+   * interaction and is expecting a state transition in return.
+   */
+  bool requesting_data() const;
+  
+  /**
    * answer returns the free response answer given by the user which this
    * FreeResponseAnswerInteraction object stores.
    */
@@ -64,6 +71,10 @@ private:
 
 inline Interaction::Type FreeResponseAnswerInteraction::type() const {
   return INTERACT_FREE_RESPONSE_ANSWER;
+}
+
+inline bool FreeResponseAnswerInteraction::requesting_data() const {
+  return false;
 }
 
 inline const std::string& FreeResponseAnswerInteraction::answer() const {

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "frontend/Interaction.hpp"
 #include "backend/StateMachine.hpp"
 #include <utility>
 
@@ -33,9 +34,11 @@ public:
   void move_player(double dx, double dy);
   
   /**
-   * TODO: comment
+   * register_interaction handles the backend processing required when the user
+   * interacts with some object in the game world. It returns a pointer to the
+   * InteractionResponse object associated with the interaction request.
    */
-  const AttributeMap& register_interaction(const AttributeMap& interaction);
+  Frontend::InteractionResponse::Ptr register_interaction(Frontend::Interaction::Ptr interaction);
 
 private:
   //////////////////////

@@ -63,5 +63,12 @@ const std::string kNumMCChoicesAttribute("num_mc_choices");
  */
 const std::string kMCChoiceAttribute("mc_choice_");
 
+/**
+ * The kMCAnswerAttribute constant represents the name of the attribute that
+ * should be paired with the integer representing a user's selection in response
+ * to a multiple choice question.
+ */
+const std::string kMCAnswerIndexAttribute("mc_answer_index");
+
 } // namespace Util
 } // namespace PlayToLearn

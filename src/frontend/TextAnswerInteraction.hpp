@@ -41,6 +41,13 @@ public:
    * always returns INTERACT_TEXT_ANSWER.
    */
   Type type() const;
+  
+  /**
+   * This version of requesting_data returns false, since a
+   * TextAnswerInteraction is created in response to a text-based interaction
+   * and is expecting a state transition in return.
+   */
+  bool requesting_data() const;
 };
 
 /////////////////////////////////////////////
@@ -51,6 +58,10 @@ public:
 
 inline Interaction::Type TextAnswerInteraction::type() const {
   return INTERACT_TEXT_ANSWER;
+}
+
+inline bool TextAnswerInteraction::requesting_data() const {
+  return false;
 }
 
 } // namespace Frontend

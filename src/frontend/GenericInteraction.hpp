@@ -38,6 +38,13 @@ public:
    * always returns INTERACT_GENERIC.
    */
   Type type() const;
+  
+  /**
+   * This version of requesting_data returns true, since a GenericInteraction
+   * is created to initiate an interaction and is expecting information about
+   * that interaction in return.
+   */
+  bool requesting_data() const;
 };
 
 //////////////////////////////////////////
@@ -48,6 +55,10 @@ public:
 
 inline Interaction::Type GenericInteraction::type() const {
   return INTERACT_GENERIC;
+}
+
+inline bool GenericInteraction::requesting_data() const {
+  return true;
 }
 
 } // namespace Frontend
