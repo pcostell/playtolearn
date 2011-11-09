@@ -1,7 +1,8 @@
 
 #include "frontend/display/Display.hpp"
 
-using namespace PlayToLearn::Frontend;
+namespace PlayToLearn {
+namespace Frontend {
 
 ///////////////////////////////////
 // Display::Error public methods //
@@ -40,3 +41,6 @@ PlayToLearn::InteractionResponse::Ptr Display::Interaction(int id) {
 void Display::LoadGame() {
   loadGame_();
 }
+
+} // namespace Frontend
+} // namespace PlayToLearn

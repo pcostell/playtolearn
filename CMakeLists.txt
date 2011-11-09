@@ -6,7 +6,6 @@ project (EduGame)
 set (EduGame_VERSION_MAJOR 0)
 set (EduGame_VERSION_MINOR 1)
 
-ADD_DEFINITIONS(-g)
 
 ###############################################
 #           THIRD PARTY LIBRARIES             #
@@ -83,7 +82,7 @@ endif()
 ## BOOOST LIBRARIES ##
 #######################
 
-set(BOOST_LIBS thread,python,test)
+set(BOOST_LIBS thread,python,test,log)
 set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS})
 
 IF(APPLE)
@@ -162,6 +161,10 @@ endif()
 #############
 ## SOURCES ##
 #############
+
+# Compiler options
+ADD_DEFINITIONS(-g)
+ADD_DEFINITIONS(-Wall)
 
 include_directories(src)
 
