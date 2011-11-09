@@ -1,13 +1,13 @@
 /*
- * File: midend/TextAnswerInteraction.hpp
+ * File: frontend/TextAnswerInteraction.hpp
  */
 
 #pragma once
 
-#include "midend/Interaction.hpp"
+#include "frontend/Interaction.hpp"
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 ///////////////////////////////////////////
 // TextAnswerInteraction class interface //
@@ -29,13 +29,13 @@ public:
    */
   typedef boost::shared_ptr<TextAnswerInteraction> Ptr;
   typedef boost::shared_ptr<const TextAnswerInteraction> ConstPtr;
-  
+
   /**
    * The TextAnswerInteraction constructor simply forwards the specified
    * object_id to the superclass, Interaction.
    */
   explicit TextAnswerInteraction(Backend::Object::ID object_id);
-  
+
   /**
    * type returns what kind of interaction this object represents. This version
    * always returns INTERACT_TEXT_ANSWER.
@@ -49,9 +49,9 @@ public:
 
 /** public */
 
-Interaction::Type TextAnswerInteraction::type() const {
+inline Interaction::Type TextAnswerInteraction::type() const {
   return INTERACT_TEXT_ANSWER;
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

@@ -69,6 +69,7 @@ string PythonFunction::execute(const string & functionName, const map<string, st
   } catch (const error_already_set&) {
     handlePythonError();
   }
+  return string();
 }
 
 ///////////////////////

@@ -5,6 +5,11 @@
 #include "frontend/TextResponse.hpp"
 #include "frontend/FreeResponseResponse.hpp"
 
+#include "frontend/FreeResponseAnswerInteraction.hpp"
+#include "frontend/TextAnswerInteraction.hpp"
+#include "frontend/GenericInteraction.hpp"
+#include "frontend/Interaction.hpp"
+
 #include <string>
 
 
@@ -23,13 +28,13 @@ public:
 
 private:
   void displayInteraction(InteractionResponse::Ptr response);
-  void handleInteraction(InteractionResponse::Ptr response);
+  Interaction::Ptr handleInteraction(InteractionResponse::Ptr response);
 
   void displayTextInteraction(TextResponse::Ptr response);
-  void handleTextInteraction(TextResponse::Ptr response);
+  TextAnswerInteraction::Ptr handleTextInteraction(TextResponse::Ptr response);
 
   void displayFreeResponseInteraction(FreeResponseResponse::Ptr response);
-  void handleFreeResponseInteraction(FreeResponseResponse::Ptr response);
+  FreeResponseAnswerInteraction::Ptr handleFreeResponseInteraction(FreeResponseResponse::Ptr response);
 
   InteractionResponse::Ptr current_response_;
 

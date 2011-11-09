@@ -1,13 +1,14 @@
 /*
- * File: midend/Interaction.cpp
+ * File: frontend/Interaction.cpp
  */
 
-#include "midend/Interaction.hpp"
+#include "util/Constants.hpp"
+#include "frontend/Interaction.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 ///////////////////////////////////////////////
 // Interaction member implementation details //
@@ -17,8 +18,12 @@ namespace Midend {
 
 Interaction::Interaction(Backend::Object::ID object_id) : object_id_(object_id)
 {
-  set_value(Backend::Object::kObjectIDAttribute, object_id.value());
+  set_value(Util::kObjectIDAttribute, object_id.value());
 }
 
-} // namespace Midend
+Interaction::~Interaction() {
+  // empty bodied
+}
+
+} // namespace Frontend
 } // namespace PlayToLearn

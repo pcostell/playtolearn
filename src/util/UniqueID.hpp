@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "Constants.hpp"
+
 namespace PlayToLearn {
 namespace Util {
 
@@ -19,58 +21,46 @@ template <typename T>
 class UniqueID {
 public:
   /**
-   * The UniqueID default constructor initializes a UniqueID with the invalid
-   * ID as its underlying value. If the client wants a new ID, use the create
-   * factory function instead.
-   */
-  UniqueID();
-  
-  /**
    * This UniqueID constructor takes a single argument representing the
-   * underlying integer value that should represent this particular ID. No
-   * default constructor is offered because the create class function should be
-   * used instead.
+   * underlying integer value that should represent this particular ID. If no ID
+   * is specified, the underlying value is the constant, kInvalidID. For a new
+   * unique ID, the create class function should be used.
    */
-  explicit UniqueID(int value);
-  
+  explicit UniqueID(int value = kInvalidIDentifier);
+
   /**
    * value returns the identifying integer so that it may be displayed.
    */
   int value() const;
-  
+
   /**
    * Two UniqueIDs can be compared for equality or inequality.
    */
   bool operator==(const UniqueID& other) const;
   bool operator!=(const UniqueID& other) const;
-  
+
   /**
    * Comparison of UniqueIDs using the < operator is only provided so that they
    * may be stored in set and map structures. It provides no meaningful insight.
    */
   bool operator<(const UniqueID& other) const;
-  
+
   /**
    * create is a factory function which generates a unique identifying ID.
    */
   static const UniqueID create();
-  
-  /**
-   * kInvalid is a constant which represents an invalid ID's integer.
-   */
-  static const int kInvalid = -1;
-  
+
 private:
   //////////////////////
   // member variables //
   //////////////////////
-  
+
   int value_;
-  
+
   /////////////////////
   // class variables //
   /////////////////////
-  
+
   static int next_available_id_;
 };
 
@@ -105,10 +95,6 @@ inline bool UniqueID<T>::operator<(const UniqueID& other) const {
 ////////////////////////////////////////
 
 /** public */
-
-template <typename T>
-UniqueID<T>::UniqueID() : value_(kInvalid)
-{ /* empty body */ }
 
 template <typename T>
 UniqueID<T>::UniqueID(int value) : value_(value)

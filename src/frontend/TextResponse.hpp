@@ -1,13 +1,14 @@
 /*
- * File: midend/TextResponse.hpp
+ * File: frontend/TextResponse.hpp
  */
 
 #pragma once
 
-#include "midend/InteractionResponse.hpp"
+#include "frontend/InteractionResponse.hpp"
 #include <string>
 
 namespace PlayToLearn {
+namespace Frontend {
 
 //////////////////////////////////
 // TextResponse class interface //
@@ -26,13 +27,6 @@ public:
    */
   typedef boost::shared_ptr<TextResponse> Ptr;
   typedef boost::shared_ptr<const TextResponse> ConstPtr;
-  
-  /**
-   * The kTextAttribute constant represents the name of the attribute that
-   * should be paired with the corresponding text field needed by a
-   * TextResponse object.
-   */
-  static const std::string kTextAttribute;
   
   /**
    * The TextResponse constructor creates an TextResponse object populated with
@@ -74,4 +68,5 @@ inline const std::string& TextResponse::text() const {
   return text_;
 }
 
+} // namespace Frontend
 } // namespace PlayToLearn

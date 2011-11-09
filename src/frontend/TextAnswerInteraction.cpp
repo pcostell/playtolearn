@@ -1,13 +1,13 @@
 /*
- * File: midend/TextAnswerInteraction.cpp
+ * File: frontend/TextAnswerInteraction.cpp
  */
 
-#include "midend/TextAnswerInteraction.hpp"
+#include "frontend/TextAnswerInteraction.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 /////////////////////////////////////////////////////////
 // TextAnswerInteraction member implementation details //
@@ -21,5 +21,5 @@ TextAnswerInteraction::TextAnswerInteraction(Backend::Object::ID object_id) :
   // empty body
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

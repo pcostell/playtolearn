@@ -9,14 +9,6 @@ using namespace std;
 namespace PlayToLearn {
 namespace Backend {
 
-/////////////////////
-// State constants //
-/////////////////////
-
-/** public */
-
-const string State::kStateIDAttribute("state_id");
-
 /////////////////////////////////////////
 // State member implementation details //
 /////////////////////////////////////////

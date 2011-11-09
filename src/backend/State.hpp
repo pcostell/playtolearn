@@ -37,13 +37,6 @@ public:
   typedef std::map<Object::ID, TransitionFn::ID>::const_iterator const_object_iterator;
   
   /**
-   * The kStateIDAttribute constant represents the name of the attribute that
-   * should be paired with the corresponding text field needed by a TextResponse
-   * object.
-   */
-  static const std::string kStateIDAttribute;
-  
-  /**
    * The State constructor initializes a State object with a unique identifier.
    * If no such identifier is specified, the ID chosen will simply be the next
    * available one.

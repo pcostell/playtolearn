@@ -1,20 +1,14 @@
 /*
- * File: midend/TextResponse.cpp
+ * File: frontend/TextResponse.cpp
  */
 
-#include "TextResponse.hpp"
+#include "util/Constants.hpp"
+#include "frontend/TextResponse.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
-
-////////////////////////////
-// TextResponse constants //
-////////////////////////////
-
-/** public */
-
-const string TextResponse::kTextAttribute("ir_text");
+namespace Frontend {
 
 ////////////////////////////////////////////////
 // TextResponse member implementation details //
@@ -24,9 +18,10 @@ const string TextResponse::kTextAttribute("ir_text");
 
 TextResponse::TextResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data),
-  text_(data.value<string>(kTextAttribute))
+  text_(data.value<string>(Util::kTextAttribute))
 {
   // empty body
 }
 
+} // namespace Frontend
 } // namespace PlayToLearn

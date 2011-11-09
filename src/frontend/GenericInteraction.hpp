@@ -1,13 +1,13 @@
 /*
- * File: midend/GenericInteraction.hpp
+ * File: frontend/GenericInteraction.hpp
  */
 
 #pragma once
 
-#include "midend/Interaction.hpp"
+#include "frontend/Interaction.hpp"
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 ////////////////////////////////////////
 // GenericInteraction class interface //
@@ -26,13 +26,13 @@ public:
    */
   typedef boost::shared_ptr<GenericInteraction> Ptr;
   typedef boost::shared_ptr<const GenericInteraction> ConstPtr;
-  
+
   /**
    * The GenericInteraction constructor simply forwards the specified object_id
    * to the superclass, Interaction.
    */
   explicit GenericInteraction(Backend::Object::ID object_id);
-  
+
   /**
    * type returns what kind of interaction this object represents. This version
    * always returns INTERACT_GENERIC.
@@ -46,9 +46,9 @@ public:
 
 /** public */
 
-Interaction::Type GenericInteraction::type() const {
+inline Interaction::Type GenericInteraction::type() const {
   return INTERACT_GENERIC;
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

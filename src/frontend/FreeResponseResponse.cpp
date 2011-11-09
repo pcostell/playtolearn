@@ -1,21 +1,14 @@
 /*
- * File: midend/FreeResponseResponse.cpp
+ * File: frontend/FreeResponseResponse.cpp
  */
 
-#include "midend/FreeResponseResponse.hpp"
+#include "util/Constants.hpp"
+#include "frontend/FreeResponseResponse.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
-namespace Midend {
-
-////////////////////////////////////
-// FreeResponseResponse constants //
-////////////////////////////////////
-
-/** public */
-
-const string FreeResponseResponse::kFreeResponseTextAttribute("ir_free_response_text");
+namespace Frontend {
 
 ////////////////////////////////////////////////////////
 // FreeResponseResponse member implementation details //
@@ -25,10 +18,10 @@ const string FreeResponseResponse::kFreeResponseTextAttribute("ir_free_response_
 
 FreeResponseResponse::FreeResponseResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data),
-  text_(data.value<string>(kFreeResponseTextAttribute))
+  text_(data.value<string>(Util::kTextAttribute))
 {
   // empty body
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

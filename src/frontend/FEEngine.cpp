@@ -25,8 +25,8 @@ namespace Frontend {
 // Global variables //
 //////////////////////
 
-boost::scoped_ptr<Display> display;
-boost::scoped_ptr<Backend::Engine> backend;
+boost::scoped_ptr<Display> display(new Frontend::TextDisplay());
+boost::scoped_ptr<Backend::Engine> backend(new Backend::Engine());
 
 /////////////////////////
 // Function prototypes //
@@ -57,9 +57,6 @@ void loadGame() {
 //////////////////////
 
 void loadFrontendEngine() {
-  display = boost::scoped_ptr<Display>(new Frontend::TextDisplay());
-  backend = boost::scoped_ptr<Backend::Engine>(new Backend::Engine());
-
   display->register_interaction_function(interaction);
   display->register_draw_scene_function(drawScene);
   display->register_load_game_function(loadGame);
@@ -92,17 +89,10 @@ void handleOSXPaths() {
 // Main function //
 ///////////////////
 
-void initializeLogging() {
-  boost::logging::core::get()->set_filter
-  (
-    flt::attr< logging::trivial::severity_level >("Severity") >= boost::logging::trivial::info
-  )
-}
-
 int main(int argc, char **argv)
 {
   //handleOSXPaths();
-  loadFrontendEngine();
+  PlayToLearn::Frontend::loadFrontendEngine();
   return 0;
 }
 

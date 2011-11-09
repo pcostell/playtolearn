@@ -34,13 +34,16 @@ void Display::DrawScene() {
   drawScene_();
 }
 
-InteractionResponse::Ptr Display::Interaction(int id) {
+PlayToLearn::InteractionResponse::Ptr Display::Interaction(int id) {
   return interact_(id);
 }
 
 void Display::LoadGame() {
   loadGame_();
 }
+<<<<<<< HEAD
 
 } // namespace Frontend
 } // namespace PlayToLearn
+=======
+>>>>>>> master

@@ -1,5 +1,5 @@
 /*
- * File: midend/InteractionResponse.hpp
+ * File: frontend/InteractionResponse.hpp
  */
 
 #pragma once
@@ -10,6 +10,7 @@
 #include <boost/shared_ptr.hpp>
 
 namespace PlayToLearn {
+namespace Frontend {
 
 /////////////////////////////////////////
 // InteractionResponse class interface //
@@ -30,52 +31,52 @@ public:
    */
   typedef boost::shared_ptr<InteractionResponse> Ptr;
   typedef boost::shared_ptr<const InteractionResponse> ConstPtr;
-  
+
   /**
    * The Type enum describes what kind of interaction this response represents.
    */
   enum Type {
     IR_TEXT,
     IR_FREE_RESPONSE,
-    IR_MULTIPLE_CHOICE,
-    IR_NEW_LEVEL,
+    //IR_MULTIPLE_CHOICE,
+    //IR_NEW_LEVEL,
   };
-  
+
   /**
    * The InteractionResponse constructor creates an InteractionResponse object
    * populated with information supplied by the specified AttributeMap.
    */
   explicit InteractionResponse(const Backend::AttributeMap& data);
-  
+
   /**
    * The InteractionResponse destructor is declared virtual so that the class
    * may be used polymorphically.
    */
   virtual ~InteractionResponse();
-  
+
   /**
    * type returns the specific subclass of InteractionResponse represented by
    * this object.
    */
   virtual Type type() const = 0;
-  
+
   /**
    * state_id returns the ID of the state the player was in when the interaction
    * occurred. This is provided primarily for debugging purposes.
    */
   Backend::State::ID state_id() const;
-  
+
   /**
    * object_id returns the ID of the interactive object which triggered the
    * interaction. This is provided primarily for debugging purposes.
    */
   Backend::Object::ID object_id() const;
-  
+
 private:
   //////////////////////
   // member variables //
   //////////////////////
-  
+
   Backend::State::ID state_id_;
   Backend::Object::ID object_id_;
 };
@@ -94,4 +95,5 @@ inline Backend::Object::ID InteractionResponse::object_id() const {
   return object_id_;
 }
 
+} // namespace Frontend
 } // namespace PlayToLearn
