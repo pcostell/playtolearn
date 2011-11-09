@@ -12,12 +12,13 @@ void TextDisplay::main_display_loop() {
   //InteractionResponse::Ptr ir(Interaction(0));
   //handleDisplayInteraction(ir);
   LoadGame();
-  InteractionResponse::Ptr ir(Interaction(0));
-  displayInteraction(ir);
+  Interaction::Ptr it(new GenericInteraction(Backend::Object::ID(0)));
+  current_response_ = Interaction(it);
 
   while (current_response_) {
-    /*Interaction::Ptr interaction = */handleInteraction(current_response_);
-    //if(interaction) current_response_ = Interaction(interaction);
+    displayInteraction(current_response_);
+    Interaction::Ptr interaction = handleInteraction(current_response_);
+    if(interaction) current_response_ = Interaction(interaction);
   }
 }
 

@@ -2,6 +2,8 @@
 #pragma once
 
 #include "frontend/InteractionResponse.hpp"
+#include "frontend/Interaction.hpp"
+
 #include <functional>
 #include <stdexcept>
 #include <string>
@@ -29,18 +31,18 @@ public:
   //virtual void draw_object(const Object & npc) {};
 
   void register_draw_scene_function(void (*fn)());
-  void register_interaction_function(InteractionResponse::Ptr (*fn)(int id));
+  void register_interaction_function(InteractionResponse::Ptr (*fn)(Interaction::Ptr response));
   void register_load_game_function(void (*fn)());
 
 protected:
   void DrawScene();
-  boost::shared_ptr<InteractionResponse> Interaction(int id);
+  InteractionResponse::Ptr Interaction(Interaction::Ptr interaction);
   void LoadGame();
 
 private:
   void (*drawScene_)();
   void (*loadGame_)();
-  InteractionResponse::Ptr (*interact_)(int);
+  InteractionResponse::Ptr (*interact_)(Interaction::Ptr);
 };
 
 } // namespace Frontend

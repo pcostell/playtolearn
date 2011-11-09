@@ -35,12 +35,11 @@ void loadFrontendEngine();
 // Callback functions //
 ////////////////////////
 
-InteractionResponse::Ptr interaction(int id) {
+InteractionResponse::Ptr interaction(Interaction::Ptr interaction) {
   Backend::AttributeMap m;
   m.set_value(Util::kTextAttribute, "HAHAHAHA");
-  m.set_value(Util::kObjectIDAttribute, id);
+  m.set_value(Util::kObjectIDAttribute, interaction->object_id().value());
   m.set_value(Util::kStateIDAttribute, 0);
-  std::cout << m.value<std::string>(Util::kTextAttribute) << std::endl;
   return InteractionResponse::Ptr(new TextResponse(m));
 }
 

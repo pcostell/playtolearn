@@ -18,7 +18,7 @@ void Display::register_draw_scene_function(void (*fn)()) {
   drawScene_ = fn;
 }
 
-void Display::register_interaction_function(InteractionResponse::Ptr (*fn)(int id)) {
+void Display::register_interaction_function(InteractionResponse::Ptr (*fn)(Interaction::Ptr)) {
   interact_ = fn;
 }
 
@@ -34,8 +34,8 @@ void Display::DrawScene() {
   drawScene_();
 }
 
-InteractionResponse::Ptr Display::Interaction(int id) {
-  return interact_(id);
+InteractionResponse::Ptr Display::Interaction(Interaction::Ptr interaction) {
+  return interact_(interaction);
 }
 
 void Display::LoadGame() {
