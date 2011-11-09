@@ -181,7 +181,7 @@ LIST(APPEND ALL_NONMAIN_SRCS ${SRCS})
 FILE(GLOB main "src/frontend/FEEngine.cpp")
 LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main})
 
-#add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
+add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
 
 #############
 ## BUNDLES ##
@@ -200,8 +200,8 @@ if(APPLE)
   LIST(APPEND SRCS ${MAC_RESOURCES})
 ENDIF()
 
-add_executable(playtolearn WIN32 MACOSX_BUNDLE ${main} ${ALL_NONMAIN_SRCS})
-target_link_libraries(playtolearn ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
+add_executable(playtolearn WIN32 MACOSX_BUNDLE ${main})
+target_link_libraries(playtolearn playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
 
 if(APPLE)
   set_target_properties(playtolearn PROPERTIES RESOURCE "${MAC_RESOURCES}")
@@ -218,7 +218,7 @@ install(TARGETS playtolearn
 
 FOREACH(t ${TEST_SRCS})
   STRING(REGEX REPLACE ".*/(.*)\\.cpp" "\\1" name "${t}")
-  add_executable(${name} ${t} ${ALL_NONMAIN_SRCS})
-  target_link_libraries(${name} ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
+  add_executable(${name} ${t})
+  target_link_libraries(${name} playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
   add_test(${name} ${name})
 ENDFOREACH()
