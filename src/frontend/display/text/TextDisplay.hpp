@@ -2,7 +2,8 @@
 #pragma once
 
 #include "frontend/display/Display.hpp"
-#include "midend/TextResponse.hpp"
+#include "frontend/TextResponse.hpp"
+#include "frontend/FreeResponseResponse.hpp"
 
 #include <string>
 
@@ -27,7 +28,8 @@ private:
   void displayTextInteraction(TextResponse::Ptr response);
   void handleTextInteraction(TextResponse::Ptr response);
 
-
+  void displayFreeResponseInteraction(FreeResponseResponse::Ptr response);
+  void handleFreeResponseInteraction(FreeResponseResponse::Ptr response);
 
   InteractionResponse::Ptr current_response_;
 

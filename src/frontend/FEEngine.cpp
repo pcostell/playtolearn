@@ -7,14 +7,14 @@
 #include <fstream>
 #include <functional>
 
-#include "midend/InteractionResponse.hpp"
+#include "frontend/InteractionResponse.hpp"
 #include "display/Display.hpp"
 #include "display/text/TextDisplay.hpp"
 #include "display/graphics/IrrlichtDisplay.hpp"
 
 #include "backend/Engine.hpp"
 #include "backend/AttributeMap.hpp"
-#include "midend/TextResponse.hpp"
+#include "frontend/TextResponse.hpp"
 
 using namespace PlayToLearn;
 
@@ -31,21 +31,22 @@ void drawScene() {
 
 }
 
-#ifdef __APPLE__
+void loadGame() {
+
+}
+
 void handleOSXPaths();
-#endif
 
 int main(int argc, char **argv)
 {
-  #ifdef __APPLE__
-  handleOSXPaths();
-  #endif
+  //handleOSXPaths();
 
   display = new Frontend::TextDisplay();
   backend = new Backend::Engine();
 
   display->register_interaction_function(interaction);
   display->register_draw_scene_function(drawScene);
+  display->register_load_game_function(loadGame);
   display->main_display_loop();
 
   delete display;
@@ -53,12 +54,12 @@ int main(int argc, char **argv)
   return 0;
 }
 
-#ifdef __APPLE__
 /*
  * This function ensures that relative paths in OSX operate from the bundle's
  * resource directory.
  */
 void handleOSXPaths() {
+  #ifdef __APPLE__
   CFBundleRef mainBundle = CFBundleGetMainBundle();
   CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
   char path[PATH_MAX];
@@ -69,5 +70,5 @@ void handleOSXPaths() {
   CFRelease(resourcesURL);
 
   chdir(path);
+  #endif
 }
-#endif

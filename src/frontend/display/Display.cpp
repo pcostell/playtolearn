@@ -14,11 +14,15 @@ Display::Error::Error(const std::string & what) : std::runtime_error(what) {}
 ////////////////////////////
 
 void Display::register_draw_scene_function(void (*fn)()) {
-  _drawScene = fn;
+  drawScene_ = fn;
 }
 
 void Display::register_interaction_function(InteractionResponse::Ptr (*fn)(int id)) {
-  _interact = fn;
+  interact_ = fn;
+}
+
+void Display::register_load_game_function(void (*fn)()) {
+  loadGame_ = fn;
 }
 
 ///////////////////////////////
@@ -26,9 +30,13 @@ void Display::register_interaction_function(InteractionResponse::Ptr (*fn)(int i
 ///////////////////////////////
 
 void Display::DrawScene() {
-  _drawScene();
+  drawScene_();
 }
 
 PlayToLearn::InteractionResponse::Ptr Display::Interaction(int id) {
-  return _interact(id);
+  return interact_(id);
+}
+
+void Display::LoadGame() {
+  loadGame_();
 }

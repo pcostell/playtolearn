@@ -11,7 +11,7 @@ void TextDisplay::main_display_loop() {
   cout << "Welcome to PlayToLearn" << endl;
   //InteractionResponse::Ptr ir(Interaction(0));
   //handleDisplayInteraction(ir);
-  //LoadGame();
+  LoadGame();
   InteractionResponse::Ptr ir(Interaction(0));
   displayInteraction(ir);
 
@@ -21,8 +21,7 @@ void TextDisplay::main_display_loop() {
   }
 }
 
-//Interaction::ptr
-void TextDisplay::handleInteraction(InteractionResponse::Ptr response) {
+Interaction::Ptr TextDisplay::handleInteraction(InteractionResponse::Ptr response) {
   switch (response->type()) {
     case InteractionResponse::IR_TEXT:
       //return
@@ -34,14 +33,14 @@ void TextDisplay::handleInteraction(InteractionResponse::Ptr response) {
   }
 }
 
-void TextDisplay::handleTextInteraction(TextResponse::Ptr response) {
-  cout << response->text() << endl;
-}
-/*
-void TextDisplay::handleFreeResponseResponse(FreeResponseResponse::Ptr response) {
+TextAnswerInteraction::Ptr TextDisplay::handleTextInteraction(TextResponse::Ptr response) {
   cout << response->text() << endl;
 }
 
+FreeResponseInteraction::Ptr TextDisplay::handleFreeResponseResponse(FreeResponseResponse::Ptr response) {
+  cout << response->text() << endl;
+}
+/*
 void TextDisplay::handleMultipleChoiceResponse(MultipleChoiceResponse::Ptr response) {
   while(true) {
     string line = GetLine();
