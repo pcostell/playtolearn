@@ -71,6 +71,14 @@ public:
    * interaction. This is provided primarily for debugging purposes.
    */
   Backend::Object::ID object_id() const;
+  
+  /**
+   * create is a factory function for the InteractionResponse class. It accepts
+   * a single AttributeMap as its argument and, depending on the
+   * interaction_response_type attribute, creates and returns the proper
+   * InteractionResponse object.
+   */
+  static Ptr create(const Backend::AttributeMap& data);
 
 private:
   //////////////////////

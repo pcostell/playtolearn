@@ -5,6 +5,7 @@
 #pragma once
 
 #include "frontend/Interaction.hpp"
+#include "frontend/InteractionResponse.hpp"
 #include "backend/StateMachine.hpp"
 #include <utility>
 

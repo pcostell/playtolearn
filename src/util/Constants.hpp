@@ -36,6 +36,14 @@ const std::string kStateIDAttribute("state_id");
 const std::string kObjectIDAttribute("object_id");
 
 /**
+ * The kInteractionResponseType attribute represents the name of the attribute
+ * that should be paired with the type of InteractionResponse object described
+ * by the AttributeMap which contains the related data. See the below constants
+ * for the corresponding values.
+ */
+const std::string kInteractionResponseTypeAttribute("interaction_response_type");
+
+/**
  * The kTextAttribute constant represents the name of the attribute that should
  * be paired with text describing a question or dialog.
  */
@@ -69,6 +77,20 @@ const std::string kMCChoiceAttribute("mc_choice_");
  * to a multiple choice question.
  */
 const std::string kMCAnswerIndexAttribute("mc_answer_index");
+
+//////////////////////////////////
+// AttributeMap value constants //
+//////////////////////////////////
+
+/**
+ * The following constants represent the various values associated with the
+ * interaction response type attribute for different InteractionResponse
+ * subclasses.
+ */
+const std::string kTextResponseTypeValue("text_response");
+const std::string kFreeResponseResponseTypeValue("free_response_response");
+const std::string kMultipleChoiceResponseTypeValue("multiple_choice_response");
+const std::string kNewLevelResponseTypeValue("new_level_response");
 
 } // namespace Util
 } // namespace PlayToLearn
