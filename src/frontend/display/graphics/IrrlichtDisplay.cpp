@@ -1,5 +1,5 @@
 
-#include "IrrlichtDisplay.hpp"
+#include "frontend/display/graphics/IrrlichtDisplay.hpp"
 
 #include <string>
 #include <iostream>

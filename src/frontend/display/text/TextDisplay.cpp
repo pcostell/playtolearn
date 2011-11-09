@@ -1,4 +1,4 @@
-#include "TextDisplay.hpp"
+#include "frontend/display/text/TextDisplay.hpp"
 
 #include <iostream>
 
@@ -43,7 +43,16 @@ void TextDisplay::handleFreeResponseResponse(FreeResponseResponse::Ptr response)
 }
 
 void TextDisplay::handleMultipleChoiceResponse(MultipleChoiceResponse::Ptr response) {
+  while(true) {
+    string line = GetLine();
+    if (line.length() != 1) {
+      cout << "Please choose a character." << endl;
+    }
+    if (line[0] < 'A' || line[0] > 'A' + response.answers.size()) {
+      cout << "Please choose one of the possible answers." << endl;
+    }
 
+  }
 }
 */
 
