@@ -1,13 +1,13 @@
 /*
- * File: midend/TextAnswerInteraction.hpp
+ * File: frontend/TextAnswerInteraction.hpp
  */
 
 #pragma once
 
-#include "midend/Interaction.hpp"
+#include "frontend/Interaction.hpp"
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 ///////////////////////////////////////////
 // TextAnswerInteraction class interface //
@@ -53,5 +53,5 @@ Interaction::Type TextAnswerInteraction::type() const {
   return INTERACT_TEXT_ANSWER;
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

@@ -1,21 +1,23 @@
 /*
- * File: midend/FreeResponseResponse.hpp
+ * File: frontend/FreeResponseResponse.hpp
  */
 
 #pragma once
 
-#include "midend/InteractionResponse.hpp"
+#include "frontend/InteractionResponse.hpp"
 #include <string>
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 //////////////////////////////////////////
 // FreeResponseResponse class interface //
 //////////////////////////////////////////
 
 /**
- * TODO: comment
+ * The FreeResponseResponse class represents the specific type of
+ * InteractionResponse object which correlates to a free response question
+ * resulting from an interaction. It stores the text for the question.
  */
 class FreeResponseResponse : public InteractionResponse {
 public:
@@ -73,5 +75,5 @@ inline const std::string& FreeResponseResponse::text() const {
   return text_;
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

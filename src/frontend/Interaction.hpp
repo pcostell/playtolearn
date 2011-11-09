@@ -1,5 +1,5 @@
 /*
- * File: midend/Interaction.hpp
+ * File: frontend/Interaction.hpp
  */
 
 #pragma once
@@ -10,7 +10,7 @@
 #include <boost/shared_ptr.hpp>
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 /////////////////////////////////
 // Interaction class interface //
@@ -112,5 +112,5 @@ inline void Interaction::set_value(const std::string& attribute, const T& value)
   attribute_map_.set_value(attribute, value);
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

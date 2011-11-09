@@ -1,12 +1,13 @@
 /*
- * File: midend/InteractionResponse.hpp
+ * File: frontend/InteractionResponse.hpp
  */
 
-#include "midend/InteractionResponse.hpp"
+#include "frontend/InteractionResponse.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
+namespace Frontend {
 
 ///////////////////////////////////////////////////////
 // InteractionResponse member implementation details //
@@ -25,4 +26,5 @@ InteractionResponse::~InteractionResponse() {
   // empty body
 }
 
+} // namespace Frontend
 } // namespace PlayToLearn

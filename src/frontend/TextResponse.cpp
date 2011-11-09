@@ -1,12 +1,13 @@
 /*
- * File: midend/TextResponse.cpp
+ * File: frontend/TextResponse.cpp
  */
 
-#include "TextResponse.hpp"
+#include "frontend/TextResponse.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
+namespace Frontend {
 
 ////////////////////////////
 // TextResponse constants //
@@ -29,4 +30,5 @@ TextResponse::TextResponse(const Backend::AttributeMap& data) :
   // empty body
 }
 
+} // namespace Frontend
 } // namespace PlayToLearn

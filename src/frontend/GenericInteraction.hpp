@@ -1,13 +1,13 @@
 /*
- * File: midend/GenericInteraction.hpp
+ * File: frontend/GenericInteraction.hpp
  */
 
 #pragma once
 
-#include "midend/Interaction.hpp"
+#include "frontend/Interaction.hpp"
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 ////////////////////////////////////////
 // GenericInteraction class interface //
@@ -50,5 +50,5 @@ Interaction::Type GenericInteraction::type() const {
   return INTERACT_GENERIC;
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

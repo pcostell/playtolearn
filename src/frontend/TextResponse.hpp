@@ -1,13 +1,14 @@
 /*
- * File: midend/TextResponse.hpp
+ * File: frontend/TextResponse.hpp
  */
 
 #pragma once
 
-#include "midend/InteractionResponse.hpp"
+#include "frontend/InteractionResponse.hpp"
 #include <string>
 
 namespace PlayToLearn {
+namespace Frontend {
 
 //////////////////////////////////
 // TextResponse class interface //
@@ -74,4 +75,5 @@ inline const std::string& TextResponse::text() const {
   return text_;
 }
 
+} // namespace Frontend
 } // namespace PlayToLearn

@@ -1,5 +1,5 @@
 /*
- * File: midend/InteractionResponse.hpp
+ * File: frontend/InteractionResponse.hpp
  */
 
 #pragma once
@@ -10,6 +10,7 @@
 #include <boost/shared_ptr.hpp>
 
 namespace PlayToLearn {
+namespace Frontend {
 
 /////////////////////////////////////////
 // InteractionResponse class interface //
@@ -94,4 +95,5 @@ inline Backend::Object::ID InteractionResponse::object_id() const {
   return object_id_;
 }
 
+} // namespace Frontend
 } // namespace PlayToLearn

@@ -1,13 +1,13 @@
 /*
- * File: midend/FreeResponseResponse.cpp
+ * File: frontend/FreeResponseResponse.cpp
  */
 
-#include "midend/FreeResponseResponse.hpp"
+#include "frontend/FreeResponseResponse.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 ////////////////////////////////////
 // FreeResponseResponse constants //
@@ -30,5 +30,5 @@ FreeResponseResponse::FreeResponseResponse(const Backend::AttributeMap& data) :
   // empty body
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn

@@ -1,13 +1,13 @@
 /*
- * File: midend/GenericInteraction.cpp
+ * File: frontend/GenericInteraction.cpp
  */
 
-#include "midend/GenericInteraction.hpp"
+#include "frontend/GenericInteraction.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
-namespace Midend {
+namespace Frontend {
 
 //////////////////////////////////////////////////////
 // GenericInteraction member implementation details //
@@ -21,5 +21,5 @@ GenericInteraction::GenericInteraction(Backend::Object::ID object_id) :
   // empty body
 }
 
-} // namespace Midend
+} // namespace Frontend
 } // namespace PlayToLearn
