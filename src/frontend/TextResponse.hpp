@@ -29,13 +29,6 @@ public:
   typedef boost::shared_ptr<const TextResponse> ConstPtr;
   
   /**
-   * The kTextAttribute constant represents the name of the attribute that
-   * should be paired with the corresponding text field needed by a
-   * TextResponse object.
-   */
-  static const std::string kTextAttribute;
-  
-  /**
    * The TextResponse constructor creates an TextResponse object populated with
    * information supplied by the specified AttributeMap.
    */

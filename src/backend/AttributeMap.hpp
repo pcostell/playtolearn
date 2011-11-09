@@ -75,7 +75,7 @@ public:
    * completely empty.
    */
   void clear();
-
+  
 private:
   //////////////////////
   // member variables //

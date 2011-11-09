@@ -2,6 +2,7 @@
  * File: frontend/InteractionResponse.hpp
  */
 
+#include "util/Constants.hpp"
 #include "frontend/InteractionResponse.hpp"
 
 using namespace std;
@@ -16,8 +17,8 @@ namespace Frontend {
 /** public */
 
 InteractionResponse::InteractionResponse(const Backend::AttributeMap& data) :
-  state_id_(data.value<int>(Backend::State::kStateIDAttribute)),
-  object_id_(data.value<int>(Backend::Object::kObjectIDAttribute))
+  state_id_(data.value<int>(Util::kStateIDAttribute)),
+  object_id_(data.value<int>(Util::kObjectIDAttribute))
 {
   // empty body
 }

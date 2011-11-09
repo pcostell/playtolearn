@@ -30,12 +30,6 @@ public:
   typedef boost::shared_ptr<const FreeResponseResponse> ConstPtr;
   
   /**
-   * The kFreeResponseAttribute constant represents the name of the attribute
-   * that should be paired with the corresponding 
-   */
-  static const std::string kFreeResponseTextAttribute;
-  
-  /**
    * The FreeResponseResponse constructor creates an FreeResponseResponse object
    * populated with information supplied by the specified AttributeMap.
    */

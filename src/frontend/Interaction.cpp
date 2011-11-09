@@ -2,6 +2,7 @@
  * File: frontend/Interaction.cpp
  */
 
+#include "util/Constants.hpp"
 #include "frontend/Interaction.hpp"
 
 using namespace std;
@@ -17,7 +18,7 @@ namespace Frontend {
 
 Interaction::Interaction(Backend::Object::ID object_id) : object_id_(object_id)
 {
-  set_value(Backend::Object::kObjectIDAttribute, object_id.value());
+  set_value(Util::kObjectIDAttribute, object_id.value());
 }
 
 } // namespace Frontend

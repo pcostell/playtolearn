@@ -2,20 +2,13 @@
  * File: frontend/FreeResponseResponse.cpp
  */
 
+#include "util/Constants.hpp"
 #include "frontend/FreeResponseResponse.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Frontend {
-
-////////////////////////////////////
-// FreeResponseResponse constants //
-////////////////////////////////////
-
-/** public */
-
-const string FreeResponseResponse::kFreeResponseTextAttribute("ir_free_response_text");
 
 ////////////////////////////////////////////////////////
 // FreeResponseResponse member implementation details //
@@ -25,7 +18,7 @@ const string FreeResponseResponse::kFreeResponseTextAttribute("ir_free_response_
 
 FreeResponseResponse::FreeResponseResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data),
-  text_(data.value<string>(kFreeResponseTextAttribute))
+  text_(data.value<string>(Util::kTextAttribute))
 {
   // empty body
 }
