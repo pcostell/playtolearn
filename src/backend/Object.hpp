@@ -1,10 +1,10 @@
 /*
- * File: Object.hpp
+ * File: backend/Object.hpp
  */
 
 #pragma once
 
-#include "../UniqueID.hpp"
+#include "util/UniqueID.hpp"
 #include <string>
 
 namespace PlayToLearn {
@@ -23,7 +23,7 @@ public:
    * The Object::ID type represents a uniquely identifier for a particular
    * interactive object.
    */
-  typedef UniqueID<Object> ID;
+  typedef Util::UniqueID<Object> ID;
   
   /**
    * The kObjectIDAttribute constant represents the name of the attribute that

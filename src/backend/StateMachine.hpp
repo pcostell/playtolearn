@@ -1,12 +1,11 @@
 /*
- * File: StateMachine.hpp
+ * File: backend/StateMachine.hpp
  */
 
 #pragma once
 
-#include "../UniqueID.hpp"
-#include "State.hpp"
-#include "TransitionFn.hpp"
+#include "backend/State.hpp"
+#include "backend/TransitionFn.hpp"
 #include <map>
 
 namespace PlayToLearn {

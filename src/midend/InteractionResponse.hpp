@@ -1,15 +1,13 @@
 /*
- * File: InteractionResponse.hpp
+ * File: midend/InteractionResponse.hpp
  */
 
 #pragma once
 
-#include "UniqueID.hpp"
 #include "backend/AttributeMap.hpp"
 #include "backend/State.hpp"
 #include "backend/Object.hpp"
 #include <boost/shared_ptr.hpp>
-#include <string>
 
 namespace PlayToLearn {
 
@@ -34,7 +32,7 @@ public:
   typedef boost::shared_ptr<const InteractionResponse> ConstPtr;
   
   /**
-   * The type enum describes what kind of interaction this response represents.
+   * The Type enum describes what kind of interaction this response represents.
    */
   enum Type {
     IR_TEXT,
@@ -44,7 +42,8 @@ public:
   };
   
   /**
-   * TODO: comment
+   * The InteractionResponse constructor creates an InteractionResponse object
+   * populated with information supplied by the specified AttributeMap.
    */
   explicit InteractionResponse(const Backend::AttributeMap& data);
   
@@ -72,13 +71,6 @@ public:
    */
   Backend::Object::ID object_id() const;
   
-  /**
-   * forced_interaction returns the ID of the Object which this interaction
-   * response wants the game logic to interact with next. If no such interaction
-   * needs to occur, it will have the value kInvalid.
-   */
-  Backend::Object::ID forced_interaction() const;
-  
 private:
   //////////////////////
   // member variables //
@@ -86,7 +78,6 @@ private:
   
   Backend::State::ID state_id_;
   Backend::Object::ID object_id_;
-  Backend::Object::ID forced_interaction_id_;
 };
 
 ///////////////////////////////////////////
@@ -101,10 +92,6 @@ inline Backend::State::ID InteractionResponse::state_id() const {
 
 inline Backend::Object::ID InteractionResponse::object_id() const {
   return object_id_;
-}
-
-inline Backend::Object::ID InteractionResponse::forced_interaction() const {
-  return forced_interaction_id_;
 }
 
 } // namespace PlayToLearn

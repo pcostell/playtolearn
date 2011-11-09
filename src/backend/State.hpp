@@ -1,12 +1,12 @@
 /*
- * File: State.hpp
+ * File: backend/State.hpp
  */
 
 #pragma once
 
-#include "../UniqueID.hpp"
-#include "TransitionFn.hpp"
-#include "Object.hpp"
+#include "util/UniqueID.hpp"
+#include "backend/TransitionFn.hpp"
+#include "backend/Object.hpp"
 #include <string>
 #include <set>
 #include <map>
@@ -27,7 +27,7 @@ public:
   /**
    * The State::ID type represents a uniquely identifier for a particular state.
    */
-  typedef UniqueID<State> ID;
+  typedef Util::UniqueID<State> ID;
   
   /**
    * object_iterator and const_object_iterator define iterators over the object-

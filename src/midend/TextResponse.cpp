@@ -1,5 +1,5 @@
 /*
- * File: TextResponse.cpp
+ * File: midend/TextResponse.cpp
  */
 
 #include "TextResponse.hpp"
@@ -26,7 +26,7 @@ TextResponse::TextResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data),
   text_(data.value<string>(kTextAttribute))
 {
-  // TODO: implement
+  // empty body
 }
 
 } // namespace PlayToLearn

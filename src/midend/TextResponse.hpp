@@ -1,10 +1,11 @@
 /*
- * File: TextResponse.hpp
+ * File: midend/TextResponse.hpp
  */
 
 #pragma once
 
-#include "InteractionResponse.hpp"
+#include "midend/InteractionResponse.hpp"
+#include <string>
 
 namespace PlayToLearn {
 
@@ -13,7 +14,9 @@ namespace PlayToLearn {
 //////////////////////////////////
 
 /**
- * TODO: comment
+ * The TextResponse class represents a specific type of InteractionResponse
+ * where the response is simply text to be printed for the user's reading
+ * pleasure.
  */
 class TextResponse : public InteractionResponse {
 public:
@@ -32,18 +35,20 @@ public:
   static const std::string kTextAttribute;
   
   /**
-   * TODO: comment
+   * The TextResponse constructor creates an TextResponse object populated with
+   * information supplied by the specified AttributeMap.
    */
   explicit TextResponse(const Backend::AttributeMap& data);
   
   /**
-   * The type enum describes what kind of interaction this response represents.
-   * This version always returns IR_TEXT.
+   * type returns what kind of interaction this response represents. This
+   * version always returns IR_TEXT.
    */
   Type type() const;
   
   /**
-   * TODO: comment
+   * text returns the string which represents the text that should be printed
+   * for this particular response.
    */
   const std::string& text() const;
 

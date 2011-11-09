@@ -1,10 +1,11 @@
 /*
- * File: UniqueID.hpp
+ * File: util/UniqueID.hpp
  */
 
 #pragma once
 
 namespace PlayToLearn {
+namespace Util {
 
 ///////////////////////////////////////
 // UniqueID template class interface //
@@ -129,4 +130,5 @@ const UniqueID<T> UniqueID<T>::create() {
 template <typename T>
 int UniqueID<T>::next_available_id_ = 0;
 
+} // namespace Util
 } // namespace PlayToLearn

@@ -2,7 +2,7 @@
 #pragma once
 
 #include "frontend/display/Display.hpp"
-#include "TextResponse.hpp"
+#include "midend/TextResponse.hpp"
 
 #include <string>
 

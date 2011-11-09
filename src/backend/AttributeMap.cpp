@@ -1,8 +1,8 @@
 /*
- * File: AttributeMap.cpp
+ * File: backend/AttributeMap.cpp
  */
 
-#include "AttributeMap.hpp"
+#include "backend/AttributeMap.hpp"
 #include <boost/lexical_cast.hpp>
 
 using namespace std;
@@ -16,15 +16,15 @@ namespace Backend {
 
 /** public */
 
-ostream& operator<<(ostream& output, const AttributeMap& attr_map) {
-  output << attr_map.size() << '\n';
-  for (AttributeMap::const_iterator itr = attr_map.begin(); itr != attr_map.end(); ++itr)
+ostream& operator<<(ostream& output, const AttributeMap& attribute_map) {
+  output << attribute_map.size() << '\n';
+  for (AttributeMap::const_iterator itr = attribute_map.begin(); itr != attribute_map.end(); ++itr)
     output << itr->first << '\n' << itr->second << '\n';
   
   return output;
 }
 
-istream& operator>>(istream& input, AttributeMap& attr_map) {
+istream& operator>>(istream& input, AttributeMap& attribute_map) {
   string line;
   getline(input, line);
   size_t num_pairs = boost::lexical_cast<size_t>(line);
@@ -34,7 +34,7 @@ istream& operator>>(istream& input, AttributeMap& attr_map) {
   for (size_t i = 0; i < num_pairs; ++i) {
     getline(input, new_attribute);
     getline(input, new_value);
-    attr_map.set_value(new_attribute, new_value);
+    attribute_map.set_value(new_attribute, new_value);
   }
   
   assert(!input.fail());

@@ -1,11 +1,11 @@
 /*
- * File: TransitionFn.hpp
+ * File: backend/TransitionFn.hpp
  */
 
 #pragma once
 
-#include "../UniqueID.hpp"
-#include "AttributeMap.hpp"
+#include "util/UniqueID.hpp"
+#include "backend/AttributeMap.hpp"
 
 namespace PlayToLearn {
 namespace Backend {
@@ -30,7 +30,7 @@ public:
    * The TransitionFn::ID type represents a uniquely identifier for a particular
    * transition function.
    */
-  typedef UniqueID<TransitionFn> ID;
+  typedef Util::UniqueID<TransitionFn> ID;
   
   /**
    * The TransitionFn constructor initializes a TransitionFn object with a
@@ -49,7 +49,7 @@ public:
    * elements and environmental status. interaction is an map of attributes
    * containing all of the data which describes the transition action.
    */
-  UniqueID<State> next_state(const AttributeMap& interaction) const;
+  Util::UniqueID<State> next_state(const AttributeMap& interaction) const;
   
   /**
    * response returns the response map associated with this transition by

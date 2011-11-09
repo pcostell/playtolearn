@@ -1,14 +1,12 @@
 
 #pragma once
 
+#include "midend/InteractionResponse.hpp"
 #include <functional>
 #include <stdexcept>
 #include <string>
 
 #include <boost/shared_ptr.hpp>
-
-#include "InteractionResponse.hpp"
-
 
 namespace PlayToLearn {
 namespace Frontend {

@@ -1,8 +1,8 @@
 /*
- * File: StateMachine.cpp
+ * File: backend/StateMachine.cpp
  */
 
-#include "StateMachine.hpp"
+#include "backend/StateMachine.hpp"
 #include <cassert>
 
 using namespace std;

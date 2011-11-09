@@ -1,5 +1,5 @@
 /*
- * File: AttributeMap.hpp
+ * File: backend/AttributeMap.hpp
  */
 
 #pragma once
@@ -69,6 +69,12 @@ public:
    */
   template <typename T>
   void set_value(const std::string& attribute, const T& value);
+  
+  /**
+   * clear erases all elements in the AttributeMap so that afterward, it is
+   * completely empty.
+   */
+  void clear();
 
 private:
   //////////////////////
@@ -86,12 +92,12 @@ private:
  * operator<< describes how to serialize an AttributeMap and write it to an
  * output stream.
  */
-std::ostream& operator<<(std::ostream& output, const AttributeMap& attr_map);
+std::ostream& operator<<(std::ostream& output, const AttributeMap& attribute_map);
 
 /**
  * operator>> describes how to re-hydrate an AttributeMap from an input stream.
  */
-std::istream& operator>>(std::istream& input, AttributeMap& attr_map);
+std::istream& operator>>(std::istream& input, AttributeMap& attribute_map);
 
 ////////////////////////////////////
 // AttributeMap inlined functions //
@@ -113,6 +119,10 @@ inline AttributeMap::iterator AttributeMap::end() const {
 
 inline bool AttributeMap::contains(const std::string& attribute) const {
   return attributes_.count(attribute);
+}
+
+inline void AttributeMap::clear() {
+  attributes_.clear();
 }
 
 ////////////////////////////////////////////
