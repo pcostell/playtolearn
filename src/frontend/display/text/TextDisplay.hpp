@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "../Display.hpp"
-#include "../../../TextResponse.hpp"
+#include "frontend/display/Display.hpp"
+#include "TextResponse.hpp"
 
 #include <string>
 
@@ -18,14 +18,17 @@ public:
 
   void main_display_loop();
 
-  void handle_text_response(TextResponse::Ptr response);
-  void handle_free_response_response(FreeResponseResponse::Ptr response);
-  void handle_multiple_choice_response(MultipleChoiceResponse::Ptr response);
-
-
   //void draw_object(const Object & object);
 
 private:
+  void displayInteraction(InteractionResponse::Ptr response);
+  void handleInteraction(InteractionResponse::Ptr response);
+
+  void displayTextInteraction(TextResponse::Ptr response);
+  void handleTextInteraction(TextResponse::Ptr response);
+
+
+
   InteractionResponse::Ptr current_response_;
 
   std::string GetLine();

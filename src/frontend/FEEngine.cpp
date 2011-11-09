@@ -7,14 +7,14 @@
 #include <fstream>
 #include <functional>
 
-#include "../InteractionResponse.hpp"
+#include "InteractionResponse.hpp"
 #include "display/Display.hpp"
 #include "display/text/TextDisplay.hpp"
 #include "display/graphics/IrrlichtDisplay.hpp"
 
-#include "../backend/Engine.hpp"
-#include "../backend/AttributeMap.hpp"
-#include "../TextResponse.hpp"
+#include "backend/Engine.hpp"
+#include "backend/AttributeMap.hpp"
+#include "TextResponse.hpp"
 
 using namespace PlayToLearn;
 

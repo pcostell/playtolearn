@@ -7,10 +7,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "../../InteractionResponse.hpp"
-
-
-//#include "../../Object.hpp"
+#include "InteractionResponse.hpp"
 
 
 namespace PlayToLearn {
@@ -32,11 +29,6 @@ public:
 
   virtual void display_dialog() {};
   //virtual void draw_object(const Object & npc) {};
-
-  virtual void handle_text_response(TextResponse::Ptr response) {};
-  virtual void handle_free_response_response(FreeResponseResponse::Ptr response) {}
-  virtual void handle_multiple_choice_response(MultipleChoiceResponse::Ptr response) {}
-
 
   void register_draw_scene_function(void (*fn)());
   void register_interaction_function(InteractionResponse::Ptr (*fn)(int id));

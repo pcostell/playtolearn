@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../Display.hpp"
+#include "frontend/display/Display.hpp"
 
 #include <irrlicht.h>
 
