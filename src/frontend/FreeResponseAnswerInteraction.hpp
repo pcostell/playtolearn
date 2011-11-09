@@ -40,6 +40,12 @@ public:
    * always returns INTERACT_FREE_RESPONSE_ANSWER.
    */
   Type type() const;
+  
+  /**
+   * answer returns the free response answer given by the user which this
+   * FreeResponseAnswerInteraction object stores.
+   */
+  const std::string& answer() const;
 
 private:
   //////////////////////
@@ -58,6 +64,10 @@ private:
 
 inline Interaction::Type FreeResponseAnswerInteraction::type() const {
   return INTERACT_FREE_RESPONSE_ANSWER;
+}
+
+inline const std::string& FreeResponseAnswerInteraction::answer() const {
+  return answer_;
 }
 
 } // namespace Frontend

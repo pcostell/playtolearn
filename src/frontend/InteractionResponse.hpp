@@ -38,7 +38,7 @@ public:
   enum Type {
     IR_TEXT,
     IR_FREE_RESPONSE,
-    //IR_MULTIPLE_CHOICE,
+    IR_MULTIPLE_CHOICE,
     //IR_NEW_LEVEL,
   };
 

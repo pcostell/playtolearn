@@ -1,3 +1,7 @@
+/*
+ * File: backend/PythonFunction.cpp
+ */
+
 // This must be the first #include
 #include <boost/python/detail/wrap_python.hpp>
 #include "backend/PythonFunction.hpp"
@@ -5,20 +9,31 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <iostream>
 
-using namespace PlayToLearn::Backend;
-
 using namespace boost::python;
 using namespace std;
 
-//////////////////////
-// Public Functions //
-//////////////////////
+namespace PlayToLearn {
+namespace Backend {
 
-PythonFunction::PythonExecutionError::PythonExecutionError(const string & what_arg) : runtime_error(what_arg) {
+////////////////////////////////////////////////////////
+// PythonExecutionError member implementation details //
+////////////////////////////////////////////////////////
 
+/** public */
+
+PythonFunction::PythonExecutionError::PythonExecutionError(const string& what_arg) :
+  runtime_error(what_arg)
+{
+  // empty body
 }
 
-PythonFunction::PythonFunction(const string & pythonCode) {
+//////////////////////////////////////////////////
+// PythonFunction member implementation details //
+//////////////////////////////////////////////////
+
+/** public */
+
+PythonFunction::PythonFunction(const string& python_code) {
   try {
     Py_Initialize();
     mainModule = import("__main__");
@@ -38,43 +53,36 @@ PythonFunction::PythonFunction(const string & pythonCode) {
 		#endif
 
 
-    object ignored = exec(str(pythonCode), mainNamespace);
+    object ignored = exec(str(python_code), mainNamespace);
     } catch (const error_already_set&) {
       handlePythonError();
     }
 }
 
-
-string PythonFunction::execute(const string & functionName, const map<string, string> & state) const {
-
+string PythonFunction::execute(const string& function_name, const map<string, string>& state) const {
 	try {
-
     dict pythonMap;
-
-    for (map<string, string>::const_iterator it = state.begin(); it != state.end(); ++it) {
+    for (map<string, string>::const_iterator it = state.begin(); it != state.end(); ++it)
       pythonMap[it->first] = it->second;
-    }
-
-    object processFunction = mainModule.attr(str(functionName));
-
+    
+    object processFunction = mainModule.attr(str(function_name));
     object result = processFunction(pythonMap);
-
+    
     extract<string> strRes(result);
     if (!strRes.check()) {
       extract<int> intRes(result);
       return boost::lexical_cast<string>(intRes);
     }
+    
     return strRes;
-
   } catch (const error_already_set&) {
     handlePythonError();
   }
+  
   return string();
 }
 
-///////////////////////
-// Private Functions //
-///////////////////////
+/** private */
 
 void PythonFunction::handlePythonError() const {
   PyErr_Print();
@@ -84,3 +92,6 @@ void PythonFunction::handlePythonError() const {
   PyErr_Clear();
   throw PythonExecutionError(err_text);
 }
+
+} // namespace Backend
+} // namespace PlayToLearn

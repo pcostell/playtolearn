@@ -98,7 +98,9 @@ inline bool UniqueID<T>::operator<(const UniqueID& other) const {
 
 template <typename T>
 UniqueID<T>::UniqueID(int value) : value_(value)
-{ /* empty body */ }
+{
+  // empty body
+}
 
 ///////////////////////////////////////
 // UniqueID template class functions //

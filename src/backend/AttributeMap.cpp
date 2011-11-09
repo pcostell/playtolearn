@@ -3,7 +3,6 @@
  */
 
 #include "backend/AttributeMap.hpp"
-#include <boost/lexical_cast.hpp>
 
 using namespace std;
 

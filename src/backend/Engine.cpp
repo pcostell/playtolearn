@@ -17,6 +17,8 @@ namespace Backend {
 
 const AttributeMap& Engine::register_interaction(const AttributeMap& interaction) {
   const State& current_state = state_machine_.current_state();
+  // TODO: implement
+  return interaction;
 }
 
 } // namespace Backend

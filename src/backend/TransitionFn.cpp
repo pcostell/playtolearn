@@ -25,6 +25,7 @@ TransitionFn::TransitionFn(const AttributeMap& response, ID id) :
 
 State::ID TransitionFn::next_state(const AttributeMap& interaction) const {
   return State::ID();
+  // TODO: provide actual implementation
 }
 
 } // namespace Backend

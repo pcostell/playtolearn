@@ -22,7 +22,7 @@ Interaction::Interaction(Backend::Object::ID object_id) : object_id_(object_id)
 }
 
 Interaction::~Interaction() {
-  // empty bodied
+  // empty body
 }
 
 } // namespace Frontend

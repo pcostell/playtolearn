@@ -107,6 +107,10 @@ inline const Backend::AttributeMap& Interaction::attribute_map() const {
 
 /** protected */
 
+/*
+ * set_value is used by Interaction's subclasses as a means of modifying the
+ * data in the AttributeMap which the Interaction superclass stores.
+ */
 template <typename T>
 inline void Interaction::set_value(const std::string& attribute, const T& value) {
   attribute_map_.set_value(attribute, value);
