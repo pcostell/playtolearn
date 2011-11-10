@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "frontend/InteractionResponse.hpp"
-#include "frontend/Interaction.hpp"
+#include "frontend/InteractionResponses.hpp"
+#include "frontend/Interactions.hpp"
 
 #include <functional>
 #include <stdexcept>
@@ -32,7 +32,6 @@ public:
 
   void register_draw_scene_function(void (*fn)());
   void register_interaction_function(InteractionResponse::Ptr (*fn)(Interaction::Ptr response));
-  void register_load_game_function(void (*fn)());
 
 protected:
   void DrawScene();
@@ -41,7 +40,6 @@ protected:
 
 private:
   void (*drawScene_)();
-  void (*loadGame_)();
   InteractionResponse::Ptr (*interact_)(Interaction::Ptr);
 };
 

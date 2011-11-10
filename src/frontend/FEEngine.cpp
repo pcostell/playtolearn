@@ -4,14 +4,13 @@
 
 #include <boost/scoped_ptr.hpp>
 
-#include "frontend/InteractionResponse.hpp"
+#include "frontend/InteractionResponses.hpp"
 #include "frontend/display/Display.hpp"
 #include "frontend/display/text/TextDisplay.hpp"
 #include "frontend/display/graphics/IrrlichtDisplay.hpp"
 
 #include "backend/Engine.hpp"
 #include "backend/AttributeMap.hpp"
-#include "frontend/TextResponse.hpp"
 
 #include "util/Constants.hpp"
 
@@ -36,11 +35,15 @@ void loadFrontendEngine();
 ////////////////////////
 
 InteractionResponse::Ptr interaction(Interaction::Ptr interaction) {
+  /*
   Backend::AttributeMap m;
   m.set_value(Util::kTextAttribute, "HAHAHAHA");
   m.set_value(Util::kObjectIDAttribute, interaction->object_id().value());
   m.set_value(Util::kStateIDAttribute, 0);
   return InteractionResponse::Ptr(new TextResponse(m));
+  */
+
+  return backend->register_interaction(interaction);
 }
 
 void drawScene() {

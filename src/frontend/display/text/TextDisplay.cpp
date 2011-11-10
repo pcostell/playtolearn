@@ -9,9 +9,7 @@ using namespace std;
 void TextDisplay::main_display_loop() {
 
   cout << "Welcome to PlayToLearn" << endl;
-  //InteractionResponse::Ptr ir(Interaction(0));
-  //handleDisplayInteraction(ir);
-  LoadGame();
+  DrawScene(0);
   Interaction::Ptr it(new GenericInteraction(Backend::Object::ID(0)));
   current_response_ = Interaction(it);
 
@@ -28,8 +26,8 @@ Interaction::Ptr TextDisplay::handleInteraction(InteractionResponse::Ptr respons
       return handleTextInteraction(boost::static_pointer_cast<TextResponse>(response));
     case InteractionResponse::IR_FREE_RESPONSE:
       return handleFreeResponseInteraction(boost::static_pointer_cast<FreeResponseResponse>(response));
-    //case InteractionResponse::IR_MULTIPLE_CHOICE:
-    //  return handleMultipleChoiceResponse(boost::static_pointer_cast<MultipleChoiceResponse>(ir));
+    case InteractionResponse::IR_MULTIPLE_CHOICE:
+      return handleMultipleChoiceResponse(boost::static_pointer_cast<MultipleChoiceResponse>(response));
   }
   return boost::shared_ptr<Frontend::Interaction>();
 }
@@ -43,20 +41,20 @@ FreeResponseAnswerInteraction::Ptr TextDisplay::handleFreeResponseInteraction(Fr
   string line = GetLine();
   return boost::shared_ptr<FreeResponseAnswerInteraction>(new FreeResponseAnswerInteraction(response->object_id(), line));
 }
-/*
-void TextDisplay::handleMultipleChoiceResponse(MultipleChoiceResponse::Ptr response) {
+
+MultipleChoiceInteraction::Ptr TextDisplay::handleMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response) {
   while(true) {
     string line = GetLine();
     if (line.length() != 1) {
       cout << "Please choose a character." << endl;
-    }
-    if (line[0] < 'A' || line[0] > 'A' + response.answers.size()) {
+    } else if (line[0] < 'A' || line[0] > 'A' + response->num_choices()) {
       cout << "Please choose one of the possible answers." << endl;
+    } else {
+      return MultiplChoiceInteraction::Ptr(new MultipleChoiceInteraction(response->object_id(), line[0] - 'A'));
     }
-
   }
 }
-*/
+
 
 void TextDisplay::displayInteraction(InteractionResponse::Ptr response) {
    switch (response->type()) {
@@ -66,10 +64,9 @@ void TextDisplay::displayInteraction(InteractionResponse::Ptr response) {
    case InteractionResponse::IR_FREE_RESPONSE:
       displayFreeResponseInteraction(boost::static_pointer_cast<FreeResponseResponse>(response));
       break;
-    //case InteractionResponse::IR_MULTIPLE_CHOICE;
-      //handleMultipleChoiceResponse(boost::static_pointer_cast<MultipleChoiceResponse>(ir));
-      //break;
-  }
+    case InteractionResponse::IR_MULTIPLE_CHOICE;
+      displayMultipleChoiceInteraction(boost::static_pointer_cast<MultipleChoiceResponse>(response));
+      break;
 }
 
 void TextDisplay::displayTextInteraction(TextResponse::Ptr response) {
@@ -79,13 +76,13 @@ void TextDisplay::displayTextInteraction(TextResponse::Ptr response) {
 void TextDisplay::displayFreeResponseInteraction(FreeResponseResponse::Ptr response) {
   cout << response->text() << endl;
 }
-/*
+
 void TextDisplay::displayMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response) {
   cout << response->text() << endl;
-  for (size_t i = 0; i < response->answers.size(); ++i) {
-    cout << ('A' + i) << " : " << response->answer[i] << endl;
+  for (size_t i = 0; i < response->num_choices(); ++i) {
+    cout << ('A' + i) << " : " << response->choice(i) << endl;
   }
-}*/
+}
 
 
 //void TextDisplay::draw_object(const Object & object) {

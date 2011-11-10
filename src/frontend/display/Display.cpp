@@ -22,9 +22,6 @@ void Display::register_interaction_function(InteractionResponse::Ptr (*fn)(Inter
   interact_ = fn;
 }
 
-void Display::register_load_game_function(void (*fn)()) {
-  loadGame_ = fn;
-}
 
 ///////////////////////////////
 // Display protected methods //
@@ -36,10 +33,6 @@ void Display::DrawScene() {
 
 InteractionResponse::Ptr Display::Interaction(Interaction::Ptr interaction) {
   return interact_(interaction);
-}
-
-void Display::LoadGame() {
-  loadGame_();
 }
 
 } // namespace Frontend

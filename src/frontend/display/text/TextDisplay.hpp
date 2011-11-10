@@ -2,13 +2,9 @@
 #pragma once
 
 #include "frontend/display/Display.hpp"
-#include "frontend/TextResponse.hpp"
-#include "frontend/FreeResponseResponse.hpp"
 
-#include "frontend/FreeResponseAnswerInteraction.hpp"
-#include "frontend/TextAnswerInteraction.hpp"
-#include "frontend/GenericInteraction.hpp"
-#include "frontend/Interaction.hpp"
+#include "frontend/FreeResponseResponses.hpp"
+#include "frontend/Interactions.hpp"
 
 #include <string>
 
