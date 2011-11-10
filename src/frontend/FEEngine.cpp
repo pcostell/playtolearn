@@ -50,9 +50,6 @@ void drawScene() {
 
 }
 
-void loadGame() {
-
-}
 
 //////////////////////
 // Helper Functions //
@@ -61,7 +58,6 @@ void loadGame() {
 void loadFrontendEngine() {
   display->register_interaction_function(interaction);
   display->register_draw_scene_function(drawScene);
-  display->register_load_game_function(loadGame);
   display->main_display_loop();
 }
 

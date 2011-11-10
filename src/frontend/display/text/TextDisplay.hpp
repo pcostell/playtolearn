@@ -3,7 +3,7 @@
 
 #include "frontend/display/Display.hpp"
 
-#include "frontend/FreeResponseResponses.hpp"
+#include "frontend/InteractionResponses.hpp"
 #include "frontend/Interactions.hpp"
 
 #include <string>
@@ -31,6 +31,9 @@ private:
 
   void displayFreeResponseInteraction(FreeResponseResponse::Ptr response);
   FreeResponseAnswerInteraction::Ptr handleFreeResponseInteraction(FreeResponseResponse::Ptr response);
+
+  void displayMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response);
+  MultipleChoiceAnswerInteraction::Ptr handleMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response);
 
   InteractionResponse::Ptr current_response_;
 
