@@ -1,9 +1,9 @@
 /*
- * File: frontend/MultipleChoiceAnswerInteraction.cpp
+ * File: frontend/interactions/MultipleChoiceAnswerInteraction.cpp
  */
 
 #include "util/Constants.hpp"
-#include "frontend/MultipleChoiceAnswerInteraction.hpp"
+#include "frontend/interactions/MultipleChoiceAnswerInteraction.hpp"
 
 using namespace std;
 

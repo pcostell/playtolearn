@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "frontend/Interaction.hpp"
-#include "frontend/InteractionResponse.hpp"
+#include "frontend/Interactions.hpp"
+#include "frontend/InteractionResponses.hpp"
 #include "backend/StateMachine.hpp"
 #include "backend/TransitionFn.hpp"
 #include <utility>

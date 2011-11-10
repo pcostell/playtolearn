@@ -1,10 +1,10 @@
 /*
- * File: frontend/TextAnswerInteraction.hpp
+ * File: frontend/interactions/TextAnswerInteraction.hpp
  */
 
 #pragma once
 
-#include "frontend/Interaction.hpp"
+#include "frontend/interactions/Interaction.hpp"
 
 namespace PlayToLearn {
 namespace Frontend {

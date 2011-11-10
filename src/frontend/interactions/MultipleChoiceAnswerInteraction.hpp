@@ -1,10 +1,10 @@
 /*
- * File: frontend/MultipleChoiceAnswerInteraction.hpp
+ * File: frontend/interactions/MultipleChoiceAnswerInteraction.hpp
  */
 
 #pragma once
 
-#include "frontend/Interaction.hpp"
+#include "frontend/interactions/Interaction.hpp"
 
 namespace PlayToLearn {
 namespace Frontend {

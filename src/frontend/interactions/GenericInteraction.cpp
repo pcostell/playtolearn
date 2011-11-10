@@ -1,8 +1,8 @@
 /*
- * File: frontend/GenericInteraction.cpp
+ * File: frontend/interactions/GenericInteraction.cpp
  */
 
-#include "frontend/GenericInteraction.hpp"
+#include "frontend/interactions/GenericInteraction.hpp"
 
 using namespace std;
 

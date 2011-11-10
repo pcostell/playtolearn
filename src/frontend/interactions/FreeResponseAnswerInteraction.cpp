@@ -1,9 +1,9 @@
 /*
- * File: frontend/FreeResponseAnswerInteraction.cpp
+ * File: frontend/interactions/FreeResponseAnswerInteraction.cpp
  */
 
 #include "util/Constants.hpp"
-#include "frontend/FreeResponseAnswerInteraction.hpp"
+#include "frontend/interactions/FreeResponseAnswerInteraction.hpp"
 
 using namespace std;
 

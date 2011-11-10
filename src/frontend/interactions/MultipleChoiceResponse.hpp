@@ -1,10 +1,10 @@
 /*
- * File: frontend/MultipleChoiceResponse.hpp
+ * File: frontend/interactions/MultipleChoiceResponse.hpp
  */
 
 #pragma once
 
-#include "frontend/InteractionResponse.hpp"
+#include "frontend/interactions/InteractionResponse.hpp"
 #include <string>
 #include <vector>
 

@@ -1,12 +1,12 @@
 /*
- * File: frontend/InteractionResponse.hpp
+ * File: frontend/interactions/InteractionResponse.hpp
  */
 
 #include "util/Constants.hpp"
-#include "frontend/InteractionResponse.hpp"
-#include "frontend/TextResponse.hpp"
-#include "frontend/FreeResponseResponse.hpp"
-#include "frontend/MultipleChoiceResponse.hpp"
+#include "frontend/interactions/InteractionResponse.hpp"
+#include "frontend/interactions/TextResponse.hpp"
+#include "frontend/interactions/FreeResponseResponse.hpp"
+#include "frontend/interactions/MultipleChoiceResponse.hpp"
 #include <stdexcept>
 #include <sstream>
 #include <boost/make_shared.hpp>
