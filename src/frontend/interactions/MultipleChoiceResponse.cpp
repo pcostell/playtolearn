@@ -1,9 +1,9 @@
 /*
- * File: frontend/MultipleChoiceResponse.cpp
+ * File: frontend/interactions/MultipleChoiceResponse.cpp
  */
 
 #include "util/Constants.hpp"
-#include "frontend/MultipleChoiceResponse.hpp"
+#include "frontend/interactions/MultipleChoiceResponse.hpp"
 #include <boost/lexical_cast.hpp>
 
 using namespace std;

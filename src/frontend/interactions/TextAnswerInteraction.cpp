@@ -1,8 +1,8 @@
 /*
- * File: frontend/TextAnswerInteraction.cpp
+ * File: frontend/interactions/TextAnswerInteraction.cpp
  */
 
-#include "frontend/TextAnswerInteraction.hpp"
+#include "frontend/interactions/TextAnswerInteraction.hpp"
 
 using namespace std;
 

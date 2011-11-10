@@ -1,5 +1,5 @@
 /*
- * File: frontend/InteractionResponse.hpp
+ * File: frontend/interactions/InteractionResponse.hpp
  */
 
 #pragma once

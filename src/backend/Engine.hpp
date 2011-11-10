@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "frontend/Interaction.hpp"
-#include "frontend/InteractionResponse.hpp"
+#include "frontend/Interactions.hpp"
+#include "frontend/InteractionResponses.hpp"
 #include "backend/StateMachine.hpp"
+#include "backend/TransitionFn.hpp"
 #include <utility>
 
 namespace PlayToLearn {
@@ -21,6 +22,10 @@ namespace Backend {
  */
 class Engine {
 public:
+  /**
+   * load_level instructs the game engine to load all of the data associated
+   * with a particular level of the game.
+   */
   /**
    * player_x and player_y return the x and y coordinates of the player's
    * current location, respectively.
@@ -50,6 +55,8 @@ private:
   
   double player_x_;
   double player_y_;
+  
+  std::map<TransitionFn::ID, AttributeMap> transition_data_;
 };
 
 //////////////////////////////

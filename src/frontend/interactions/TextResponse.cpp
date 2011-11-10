@@ -1,9 +1,9 @@
 /*
- * File: frontend/TextResponse.cpp
+ * File: frontend/interactions/TextResponse.cpp
  */
 
 #include "util/Constants.hpp"
-#include "frontend/TextResponse.hpp"
+#include "frontend/interactions/TextResponse.hpp"
 
 using namespace std;
 

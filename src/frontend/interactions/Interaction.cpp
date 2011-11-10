@@ -1,9 +1,9 @@
 /*
- * File: frontend/Interaction.cpp
+ * File: frontend/interactions/Interaction.cpp
  */
 
 #include "util/Constants.hpp"
-#include "frontend/Interaction.hpp"
+#include "frontend/interactions/Interaction.hpp"
 
 using namespace std;
 
