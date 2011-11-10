@@ -82,7 +82,7 @@ endif()
 ## BOOOST LIBRARIES ##
 #######################
 
-set(BOOST_LIBS thread,python,test)
+set(BOOST_LIBS thread,python,serialization,test)
 set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS})
 
 IF(APPLE)
@@ -141,6 +141,7 @@ FOREACH(s ${STATIC_LIBS_FILES} )
   add_library(${name} STATIC IMPORTED)
    set_property(TARGET ${name}
                 PROPERTY IMPORTED_LOCATION ${s})
+
   MESSAGE("Adding library \"${name}\"\n\tfrom location \"${s}\"")
 ENDFOREACH()
 
@@ -148,7 +149,7 @@ ENDFOREACH()
 ## SETTING LIBRARIES ##
 #######################
 
-SET(STATIC_LIBS Irrlicht boost_python )
+SET(STATIC_LIBS Irrlicht boost_python boost_serialization)
 SET(DYNAMIC_LIBS dl m)
 
 IF(APPLE)

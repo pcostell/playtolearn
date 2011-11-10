@@ -4,12 +4,20 @@
 
 #pragma once
 
+
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/nvp.hpp>
+
 #include <cassert>
 #include <string>
 #include <map>
 #include <ostream>
 #include <istream>
 #include <boost/lexical_cast.hpp>
+
 
 namespace PlayToLearn {
 namespace Backend {
@@ -24,6 +32,7 @@ namespace Backend {
  */
 class AttributeMap {
 public:
+
   /**
    * iterator represents a read-only iterator over attribute/value pairs in this
    * map. const_iterator is the same type, but is provided for consistency.
@@ -82,6 +91,17 @@ private:
   //////////////////////
 
   std::map<std::string, std::string> attributes_;
+
+  /////////////////////
+  // private methods //
+  /////////////////////
+
+  /**
+   * Allows us to serialize the AttributeMap using the boost::serialization
+   * library, which includes XML output.
+   */
+  friend class boost::serialization::access;
+  template<class Archive> void serialize(Archive & ar, const unsigned int version);
 };
 
 /////////////////////////////////
@@ -167,6 +187,15 @@ inline void AttributeMap::set_value(const std::string& attribute, const char* co
   // Convert from C style string to C++ style string:
   set_value(attribute, std::string(value));
 }
+
+/** private */
+
+template<class Archive>
+void AttributeMap::serialize(Archive & ar, const unsigned int version)
+{
+  ar & boost::serialization::make_nvp("attributes", attributes_);
+}
+
 
 } // namespace Backend
 } // namespace PlayToLearn
