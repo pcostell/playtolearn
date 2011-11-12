@@ -145,6 +145,11 @@ inline bool StateMachine::contains_transition_fn(TransitionFn::ID id) const {
   return transition_fn_map_.count(id);
 }
 
+inline TransitionFn& StateMachine::transition_fn(TransitionFn::ID id) {
+  const StateMachine& const_this = *this;
+  return const_cast<TransitionFn&>(const_this.transition_fn(id));
+}
+
 inline void StateMachine::add_transition_fn(const TransitionFn& transition_fn) {
   transition_fn_map_.insert(std::make_pair(transition_fn.id(), transition_fn));
 }

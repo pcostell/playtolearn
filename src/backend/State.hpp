@@ -55,6 +55,13 @@ public:
   bool object_exists(Object::ID id) const;
   
   /**
+   * transition_fn returns the transition function associated with this state/
+   * object pair. It doesn't perform a check for existence; use object_exists
+   * before calling this function.
+   */
+  TransitionFn::ID transition_fn_id(Object::ID object_id) const;
+  
+  /**
    * insert_object inserts the object ID and transition function ID
    * into this state's map.
    */
@@ -103,6 +110,10 @@ inline State::ID State::id() const {
 
 inline bool State::object_exists(Object::ID id) const {
   return object_ids_.count(id);
+}
+
+inline TransitionFn::ID State::transition_fn_id(Object::ID object_id) const {
+  return object_ids_.find(object_id)->second;
 }
 
 inline void State::insert_object(Object::ID object_id, TransitionFn::ID fn_id) {

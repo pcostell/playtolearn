@@ -4,7 +4,6 @@
 
 #pragma once
 
-
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/string.hpp>
@@ -17,7 +16,6 @@
 #include <ostream>
 #include <istream>
 #include <boost/lexical_cast.hpp>
-
 
 namespace PlayToLearn {
 namespace Backend {
@@ -32,44 +30,43 @@ namespace Backend {
  */
 class AttributeMap {
 public:
-
   /**
    * iterator represents a read-only iterator over attribute/value pairs in this
    * map. const_iterator is the same type, but is provided for consistency.
    */
   typedef std::map<std::string, std::string>::const_iterator iterator;
   typedef std::map<std::string, std::string>::const_iterator const_iterator;
-
+  
   /**
    * size returns the number of attribute/value pairs in this map.
    */
   std::size_t size() const;
-
+  
   /**
    * begin returns an iterator to the first attribute/value pair in the map. It
    * is made read-only in order to control what can be modified.
    */
   iterator begin() const;
-
+  
   /**
    * end returns an iterator to the end of the internal attribute/value map. It
    * is read-only for the same reason stated for begin.
    */
   iterator end() const;
-
+  
   /**
    * contains returns true if and only if the attribute with the specified
    * name exists in the map.
    */
   bool contains(const std::string& attribute) const;
-
+  
   /**
    * get_value returns the value associated with the particular attribute name
    * specified, converted to the specified data type.
    */
   template <typename T>
   T value(const std::string& attribute) const;
-
+  
   /**
    * set_value sets the value associated with the given attribute name. If the
    * attribute doesn't already exist in the map, it will be inserted. The type
@@ -78,7 +75,7 @@ public:
    */
   template <typename T>
   void set_value(const std::string& attribute, const T& value);
-
+  
   /**
    * clear erases all elements in the AttributeMap so that afterward, it is
    * completely empty.
@@ -89,19 +86,17 @@ private:
   //////////////////////
   // member variables //
   //////////////////////
-
+  
   std::map<std::string, std::string> attributes_;
-
+  
   /////////////////////
   // private methods //
   /////////////////////
-
-  /**
-   * Allows us to serialize the AttributeMap using the boost::serialization
-   * library, which includes XML output.
-   */
+  
   friend class boost::serialization::access;
-  template<class Archive> void serialize(Archive & ar, const unsigned int version);
+  
+  template <typename Archive>
+  void serialize(Archive& ar, const unsigned int version);
 };
 
 /////////////////////////////////
@@ -177,8 +172,6 @@ inline void AttributeMap::set_value(const std::string& attribute, const T& value
 
 template <>
 inline void AttributeMap::set_value(const std::string& attribute, const std::string& value) {
-  assert(attribute.find('\n') == std::string::npos);
-  assert(value.find('\n') == std::string::npos);
   attributes_[attribute] = value;
 }
 
@@ -190,12 +183,10 @@ inline void AttributeMap::set_value(const std::string& attribute, const char* co
 
 /** private */
 
-template<class Archive>
-void AttributeMap::serialize(Archive & ar, const unsigned int version)
-{
+template <typename Archive>
+void AttributeMap::serialize(Archive& ar, const unsigned int version) {
   ar & boost::serialization::make_nvp("attributes", attributes_);
 }
-
 
 } // namespace Backend
 } // namespace PlayToLearn
