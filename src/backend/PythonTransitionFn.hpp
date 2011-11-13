@@ -1,5 +1,5 @@
 /*
- * File: backend/PythonFunction.hpp
+ * File: backend/PythonTransitionFn.hpp
  */
 
 #pragma once
@@ -13,15 +13,16 @@
 namespace PlayToLearn {
 namespace Backend {
 
-////////////////////////////////////
-// PythonFunction class interface //
-////////////////////////////////////
+////////////////////////////////////////
+// PythonTransitionFn class interface //
+////////////////////////////////////////
 
 /**
- * Allows for the execution of a python function from c++. Passes a map
- * from string->string for passing data between the two languages.
- **/
-class PythonFunction {
+ * The PythonTransitionFn class represents an executable Python script used by
+ * the state machine's transition operations to move game progress to a new
+ * state.
+ */
+class PythonTransitionFn {
 public:
   /**
    * Constructor
@@ -29,7 +30,7 @@ public:
    * python_code: the python code to execute.
    * TODO: more descriptive comment
    */
-  explicit PythonFunction(const std::string& python_code);
+  explicit PythonTransitionFn(const std::string& python_code);
 
   /**
    * Execute the python function.
@@ -52,23 +53,6 @@ private:
   //////////////////////
   
   void handle_python_error() const;
-};
-
-//////////////////////////////////////////
-// PythonExecutionError class interface //
-//////////////////////////////////////////
-
-/**
- * The PythonExecutionError class represents the type of exception thrown when
- * an error occurs in the execution of a Python script.
- */
-class PythonExecutionError : public std::runtime_error {
-public:
-  /**
-   * The PythonExecutionError contructor creates the error object with the
-   * specified description string.
-   */
-  explicit PythonExecutionError(const std::string& what_arg);
 };
 
 } // namespace Backend

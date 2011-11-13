@@ -1,13 +1,13 @@
 /*
- * File: backend/PythonFunction.cpp
+ * File: backend/PythonTransitionFn.cpp
  */
 
 // This must be the first #include
 #include <boost/python/detail/wrap_python.hpp>
-#include "backend/PythonFunction.hpp"
+#include "util/ErrorTypes.hpp"
+#include "backend/PythonTransitionFn.hpp"
 #include <boost/lexical_cast.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <iostream>
 
 using namespace std;
 using boost::python::object;
@@ -15,13 +15,13 @@ using boost::python::object;
 namespace PlayToLearn {
 namespace Backend {
 
-//////////////////////////////////////////////////
-// PythonFunction member implementation details //
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+// PythonTransitionFn member implementation details //
+//////////////////////////////////////////////////////
 
 /** public */
 
-PythonFunction::PythonFunction(const string& python_code) {
+PythonTransitionFn::PythonTransitionFn(const string& python_code) {
   try {
     Py_Initialize();
     main_module_ = boost::python::import("__main__");
@@ -46,7 +46,7 @@ PythonFunction::PythonFunction(const string& python_code) {
     }
 }
 
-string PythonFunction::execute(const string& function_name, const AttributeMap& attribute_map) const {
+string PythonTransitionFn::execute(const string& function_name, const AttributeMap& attribute_map) const {
   try {
     boost::python::dict python_map;
     for (AttributeMap::iterator itr = attribute_map.begin(); itr != attribute_map.end(); ++itr)
@@ -71,25 +71,13 @@ string PythonFunction::execute(const string& function_name, const AttributeMap& 
 
 /** private */
 
-void PythonFunction::handle_python_error() const {
+void PythonTransitionFn::handle_python_error() const {
   PyErr_Print();
   object sys(boost::python::handle<>(PyImport_ImportModule("sys")));
   object err = sys.attr("stderr");
   string err_text = boost::python::extract<string>(err.attr("getvalue")());
   PyErr_Clear();
-  throw PythonExecutionError(err_text);
-}
-
-////////////////////////////////////////////////////////
-// PythonExecutionError member implementation details //
-////////////////////////////////////////////////////////
-
-/** public */
-
-PythonExecutionError::PythonExecutionError(const string& what_arg) :
-  runtime_error(what_arg)
-{
-  // empty body
+  throw Util::PythonExecutionError(err_text);
 }
 
 } // namespace Backend

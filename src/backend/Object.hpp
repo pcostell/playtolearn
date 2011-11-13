@@ -15,7 +15,8 @@ namespace Backend {
 ////////////////////////////
 
 /**
- * TODO: comment
+ * The Object class represents an object in the game world with which the player
+ * can engage in an interaction.
  */
 class Object {
 public:
@@ -24,7 +25,35 @@ public:
    * interactive object.
    */
   typedef Util::UniqueID<Object> ID;
+  
+  /**
+   * The Object constructor initializes an interactive object the specified
+   * unique identifier.
+   */
+  explicit Object(ID id);
+  
+  /**
+   * id returns the unique ID of this particular interactive object.
+   */
+  ID id() const;
+
+private:
+  //////////////////////
+  // member variables //
+  //////////////////////
+  
+  ID id_;
 };
+
+//////////////////////////////
+// Object inlined functions //
+//////////////////////////////
+
+/** public */
+
+inline Object::ID Object::id() const {
+  return id_;
+}
 
 } // namespace Backend
 } // namespace PlayToLearn

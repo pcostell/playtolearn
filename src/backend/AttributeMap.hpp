@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <stdexcept>
 #include <string>
 #include <map>
 #include <boost/archive/xml_oarchive.hpp>
@@ -94,19 +93,6 @@ private:
   
   template <typename Archive>
   void serialize(Archive& ar, const unsigned int version);
-};
-
-/**
- * The MissingAttributeError class represents the exception thrown when a
- * query is made to the AttributeMap for an attribute which doesn't exist.
- */
-class MissingAttributeError : public std::runtime_error {
-public:
-  /**
-   * The MissingAttributeError constructor creates the error object with the
-   * specified description string.
-   */
-  explicit MissingAttributeError(const std::string& what_arg);
 };
 
 ////////////////////////////////////

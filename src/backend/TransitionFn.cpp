@@ -16,10 +16,7 @@ namespace Backend {
 
 /** public */
 
-TransitionFn::TransitionFn(const AttributeMap& response, ID id) :
-  id_(id),
-  response_(response)
-{
+TransitionFn::TransitionFn(ID id) : id_(id) {
   // empty body
 }
 

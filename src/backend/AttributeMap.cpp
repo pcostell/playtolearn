@@ -2,6 +2,7 @@
  * File: backend/AttributeMap.cpp
  */
 
+#include "util/ErrorTypes.hpp"
 #include "backend/AttributeMap.hpp"
 #include <sstream>
 
@@ -24,22 +25,10 @@ string AttributeMap::value<string>(const string& attribute) const {
   if (itr == attributes_.end()) {
     stringstream err_ss;
     err_ss << "Requested attribute not in map: " << attribute;
-    throw MissingAttributeError(err_ss.str());
+    throw Util::MissingAttributeError(err_ss.str());
   }
   
   return itr->second;
-}
-
-/////////////////////////////////////////////////////////
-// MissingAttributeError member implementation details //
-/////////////////////////////////////////////////////////
-
-/** public */
-
-MissingAttributeError::MissingAttributeError(const string& what_arg) :
-  runtime_error(what_arg)
-{
-  // empty body
 }
 
 } // namespace Backend
