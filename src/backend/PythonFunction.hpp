@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "backend/AttributeMap.hpp"
 #include <stdexcept>
 #include <string>
 #include <map>
@@ -23,42 +24,51 @@ namespace Backend {
 class PythonFunction {
 public:
   /**
-   * TODO: comment
-   */
-  class PythonExecutionError : public std::runtime_error {
-  public:
-    explicit PythonExecutionError(const std::string& what_arg);
-  };
-
-  /**
    * Constructor
    * Args:
    * python_code: the python code to execute.
    * TODO: more descriptive comment
    */
-	PythonFunction(const std::string& python_code);
+  explicit PythonFunction(const std::string& python_code);
 
   /**
    * Execute the python function.
    * Args:
    * function_name: The name of the python function to call.
-   * state: The map to pass to the python function as a python dict.
+   * attribute_map: The map to pass to the python function as a python dict.
    * Returns the return value of the python function.
    */
-	std::string execute(const std::string& function_name, const std::map<std::string, std::string>& state) const;
+  std::string execute(const std::string& function_name, const AttributeMap& attribute_map) const;
 
 private:
   //////////////////////
   // member variables //
   //////////////////////
   
-  boost::python::object mainModule;
+  boost::python::object main_module_;
   
   //////////////////////
   // member functions //
   //////////////////////
   
-  void handlePythonError() const;
+  void handle_python_error() const;
+};
+
+//////////////////////////////////////////
+// PythonExecutionError class interface //
+//////////////////////////////////////////
+
+/**
+ * The PythonExecutionError class represents the type of exception thrown when
+ * an error occurs in the execution of a Python script.
+ */
+class PythonExecutionError : public std::runtime_error {
+public:
+  /**
+   * The PythonExecutionError contructor creates the error object with the
+   * specified description string.
+   */
+  explicit PythonExecutionError(const std::string& what_arg);
 };
 
 } // namespace Backend

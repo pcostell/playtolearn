@@ -9,23 +9,11 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <iostream>
 
-using namespace boost::python;
 using namespace std;
+using boost::python::object;
 
 namespace PlayToLearn {
 namespace Backend {
-
-////////////////////////////////////////////////////////
-// PythonExecutionError member implementation details //
-////////////////////////////////////////////////////////
-
-/** public */
-
-PythonFunction::PythonExecutionError::PythonExecutionError(const string& what_arg) :
-  runtime_error(what_arg)
-{
-  // empty body
-}
 
 //////////////////////////////////////////////////
 // PythonFunction member implementation details //
@@ -36,47 +24,46 @@ PythonFunction::PythonExecutionError::PythonExecutionError(const string& what_ar
 PythonFunction::PythonFunction(const string& python_code) {
   try {
     Py_Initialize();
-    mainModule = import("__main__");
-    object mainNamespace = mainModule.attr("__dict__");
-
+    main_module_ = boost::python::import("__main__");
+    object main_namespace = main_module_.attr("__dict__");
+    
     // redirect stdout and stderr output.
     #ifdef PYTHON_VERSION_3
- 			PyRun_SimpleString("import io");
- 			PyRun_SimpleString("import sys");
-			PyRun_SimpleString("sys.stderr = io.StringIO()");
-			PyRun_SimpleString("sys.stdout = io.StringIO()");
-		#else
-			PyRun_SimpleString("import cStringIO");
-			PyRun_SimpleString("import sys");
-			PyRun_SimpleString("sys.stderr = cStringIO.StringIO()");
-			PyRun_SimpleString("sys.stdout = cStringIO.StringIO()");
-		#endif
-
-
-    object ignored = exec(str(python_code), mainNamespace);
-    } catch (const error_already_set&) {
-      handlePythonError();
+      PyRun_SimpleString("import io");
+      PyRun_SimpleString("import sys");
+      PyRun_SimpleString("sys.stderr = io.StringIO()");
+      PyRun_SimpleString("sys.stdout = io.StringIO()");
+    #else
+      PyRun_SimpleString("import cStringIO");
+      PyRun_SimpleString("import sys");
+      PyRun_SimpleString("sys.stderr = cStringIO.StringIO()");
+      PyRun_SimpleString("sys.stdout = cStringIO.StringIO()");
+    #endif
+    
+    object ignored = exec(boost::python::str(python_code), main_namespace);
+    } catch (const boost::python::error_already_set&) {
+      handle_python_error();
     }
 }
 
-string PythonFunction::execute(const string& function_name, const map<string, string>& state) const {
-	try {
-    dict pythonMap;
-    for (map<string, string>::const_iterator it = state.begin(); it != state.end(); ++it)
-      pythonMap[it->first] = it->second;
+string PythonFunction::execute(const string& function_name, const AttributeMap& attribute_map) const {
+  try {
+    boost::python::dict python_map;
+    for (AttributeMap::iterator itr = attribute_map.begin(); itr != attribute_map.end(); ++itr)
+      python_map[itr->first] = itr->second;
     
-    object processFunction = mainModule.attr(str(function_name));
-    object result = processFunction(pythonMap);
+    object process_function = main_module_.attr(boost::python::str(function_name));
+    object result = process_function(python_map);
     
-    extract<string> strRes(result);
-    if (!strRes.check()) {
-      extract<int> intRes(result);
-      return boost::lexical_cast<string>(intRes);
+    boost::python::extract<string> str_res(result);
+    if (!str_res.check()) {
+      boost::python::extract<int> int_res(result);
+      return boost::lexical_cast<string>(int_res);
     }
     
-    return strRes;
-  } catch (const error_already_set&) {
-    handlePythonError();
+    return str_res;
+  } catch (const boost::python::error_already_set&) {
+    handle_python_error();
   }
   
   return string();
@@ -84,13 +71,25 @@ string PythonFunction::execute(const string& function_name, const map<string, st
 
 /** private */
 
-void PythonFunction::handlePythonError() const {
+void PythonFunction::handle_python_error() const {
   PyErr_Print();
-  boost::python::object sys(boost::python::handle<>(PyImport_ImportModule("sys")));
-  boost::python::object err = sys.attr("stderr");
+  object sys(boost::python::handle<>(PyImport_ImportModule("sys")));
+  object err = sys.attr("stderr");
   string err_text = boost::python::extract<string>(err.attr("getvalue")());
   PyErr_Clear();
   throw PythonExecutionError(err_text);
+}
+
+////////////////////////////////////////////////////////
+// PythonExecutionError member implementation details //
+////////////////////////////////////////////////////////
+
+/** public */
+
+PythonExecutionError::PythonExecutionError(const string& what_arg) :
+  runtime_error(what_arg)
+{
+  // empty body
 }
 
 } // namespace Backend

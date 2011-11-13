@@ -4,17 +4,14 @@
 
 #pragma once
 
+#include <stdexcept>
+#include <string>
+#include <map>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/nvp.hpp>
-
-#include <cassert>
-#include <string>
-#include <map>
-#include <ostream>
-#include <istream>
 #include <boost/lexical_cast.hpp>
 
 namespace PlayToLearn {
@@ -99,20 +96,18 @@ private:
   void serialize(Archive& ar, const unsigned int version);
 };
 
-/////////////////////////////////
-// AttributeMap free functions //
-/////////////////////////////////
-
 /**
- * operator<< describes how to serialize an AttributeMap and write it to an
- * output stream.
+ * The MissingAttributeError class represents the exception thrown when a
+ * query is made to the AttributeMap for an attribute which doesn't exist.
  */
-std::ostream& operator<<(std::ostream& output, const AttributeMap& attribute_map);
-
-/**
- * operator>> describes how to re-hydrate an AttributeMap from an input stream.
- */
-std::istream& operator>>(std::istream& input, AttributeMap& attribute_map);
+class MissingAttributeError : public std::runtime_error {
+public:
+  /**
+   * The MissingAttributeError constructor creates the error object with the
+   * specified description string.
+   */
+  explicit MissingAttributeError(const std::string& what_arg);
+};
 
 ////////////////////////////////////
 // AttributeMap inlined functions //
@@ -151,15 +146,6 @@ inline T AttributeMap::value(const std::string& attribute) const {
   // We perform the conversion using lexical_cast. If the attribute's value is
   // invalid, the operation will throw a bad_lexical_cast exception.
   return boost::lexical_cast<T>(value<std::string>(attribute));
-}
-
-template <>
-inline std::string AttributeMap::value<std::string>(const std::string& attribute) const {
-  // Check that the attribute name is in the map. If it isn't, this is a
-  // programming error that can't be recovered.
-  std::map<std::string, std::string>::const_iterator itr = attributes_.find(attribute);
-  assert(itr != attributes_.end());
-  return itr->second;
 }
 
 template <typename T>

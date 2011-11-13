@@ -6,6 +6,7 @@
 
 #include "backend/State.hpp"
 #include "backend/TransitionFn.hpp"
+#include <stdexcept>
 #include <map>
 
 namespace PlayToLearn {
@@ -45,9 +46,9 @@ public:
   bool contains_state(State::ID id) const;
   
   /**
-   * state_fn returns a reference to the state with the specified ID. The
-   * containment of the ID is protected by an assertion. Both a const and a
-   * non-const version are provided.
+   * state_fn returns a reference to the state with the specified ID. If no such
+   * state exists, the function throws a InvalidStateError exception. Both a
+   * const and a non-const version are provided.
    */
   const State& state(State::ID id) const;
   State& state(State::ID id);
@@ -72,8 +73,9 @@ public:
   
   /**
    * transition_fn returns a reference to the transition function with the
-   * specified id. The containment of the id is protected by an assertion. Both
-   * a const and a non-const version are provided.
+   * specified id. If no such transition function exists, the function throws a
+   * InvalidTransitionFnError exception. Both a const and a non-const version
+   * are provided.
    */
   const TransitionFn& transition_fn(TransitionFn::ID id) const;
   TransitionFn& transition_fn(TransitionFn::ID id);
@@ -100,6 +102,67 @@ private:
   std::map<State::ID, State> state_map_;
   
   std::map<TransitionFn::ID, TransitionFn> transition_fn_map_;
+};
+
+///////////////////////////////////////
+// InvalidStateError class interface //
+///////////////////////////////////////
+
+/**
+ * The InvalidStateError class represents the exception thrown when a query is
+ * made to the state machine for a state whose ID doesn't exist.
+ */
+class InvalidStateError : public std::runtime_error {
+public:
+  /**
+   * The InvalidStateError constructor creates the error object with the
+   * specified description string.
+   */
+  InvalidStateError(const std::string& what_arg, State::ID id);
+  
+  /**
+   * state_id returns the ID of the state which caused the exception to be
+   * thrown.
+   */
+  State::ID state_id() const;
+
+private:
+  //////////////////////
+  // member variables //
+  //////////////////////
+  
+  State::ID state_id_;
+};
+
+//////////////////////////////////////////////
+// InvalidTransitionFnError class interface //
+//////////////////////////////////////////////
+
+/**
+ * The InvalidTransitionFnError class represents the exception thrown when a
+ * query is made to the state machine for a transition function whose ID doesn't
+ * exist.
+ */
+class InvalidTransitionFnError : public std::runtime_error {
+public:
+  /**
+   * The InvalidTransitionFnError constructor creates the error object with the
+   * specified description string.
+   */
+  InvalidTransitionFnError(const std::string& what_arg, TransitionFn::ID id);
+  
+  /**
+   * transition_fn_id returns the ID of the transition function which caused the
+   * exception to be thrown.
+   */
+  TransitionFn::ID transition_fn_id() const;
+
+private:
+  //////////////////////
+  // member variables //
+  //////////////////////
+  
+  TransitionFn::ID transition_fn_id_;
 };
 
 ////////////////////////////////////
@@ -156,6 +219,26 @@ inline void StateMachine::add_transition_fn(const TransitionFn& transition_fn) {
 
 inline void StateMachine::remove_transition_fn(TransitionFn::ID id) {
   transition_fn_map_.erase(id);
+}
+
+/////////////////////////////////////////
+// InvalidStateError inlined functions //
+/////////////////////////////////////////
+
+/** public */
+
+inline State::ID InvalidStateError::state_id() const {
+  return state_id_;
+}
+
+////////////////////////////////////////////////
+// InvalidTransitionFnError inlined functions //
+////////////////////////////////////////////////
+
+/** public */
+
+inline TransitionFn::ID InvalidTransitionFnError::transition_fn_id() const {
+  return transition_fn_id_;
 }
 
 } // namespace Backend
