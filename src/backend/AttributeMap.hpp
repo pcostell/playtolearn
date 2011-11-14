@@ -4,8 +4,10 @@
 
 #pragma once
 
+#include "util/ErrorTypes.hpp"
 #include <string>
 #include <map>
+#include <sstream>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/string.hpp>
@@ -77,6 +79,13 @@ public:
    * completely empty.
    */
   void clear();
+  
+  /**
+   * serialize reads or writes the underlying map using Boost's serialization
+   * library.
+   */
+  template <typename Archive>
+  void serialize(Archive& ar, const unsigned int version);
 
 private:
   //////////////////////
@@ -84,15 +93,6 @@ private:
   //////////////////////
   
   std::map<std::string, std::string> attributes_;
-  
-  /////////////////////
-  // private methods //
-  /////////////////////
-  
-  friend class boost::serialization::access;
-  
-  template <typename Archive>
-  void serialize(Archive& ar, const unsigned int version);
 };
 
 ////////////////////////////////////
@@ -128,32 +128,27 @@ inline void AttributeMap::clear() {
 /** public */
 
 template <typename T>
-inline T AttributeMap::value(const std::string& attribute) const {
+T AttributeMap::value(const std::string& attribute) const {
+  // Check that the attribute name is in the map:
+  std::map<std::string, std::string>::const_iterator itr = attributes_.find(attribute);
+  if (itr == attributes_.end()) {
+    std::stringstream err_ss;
+    err_ss << "Requested attribute not in map: " << attribute;
+    throw Util::MissingAttributeError(err_ss.str());
+  }
+  
   // We perform the conversion using lexical_cast. If the attribute's value is
   // invalid, the operation will throw a bad_lexical_cast exception.
-  return boost::lexical_cast<T>(value<std::string>(attribute));
+  return boost::lexical_cast<T>(itr->second);
 }
 
 template <typename T>
 inline void AttributeMap::set_value(const std::string& attribute, const T& value) {
-  // We perform the conversion using lexical_cast. The given value cannot be
+  // We perform the conversion using lexical_cast. If the given value cannot be
   // converted to a string, the operation will throw a bad_lexcial_cast
   // exception.
-  set_value(attribute, boost::lexical_cast<std::string>(value));
+  attributes_[attribute] = boost::lexical_cast<std::string>(value);
 }
-
-template <>
-inline void AttributeMap::set_value(const std::string& attribute, const std::string& value) {
-  attributes_[attribute] = value;
-}
-
-template <>
-inline void AttributeMap::set_value(const std::string& attribute, const char* const& value) {
-  // Convert from C style string to C++ style string:
-  set_value(attribute, std::string(value));
-}
-
-/** private */
 
 template <typename Archive>
 void AttributeMap::serialize(Archive& ar, const unsigned int version) {

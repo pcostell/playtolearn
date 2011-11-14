@@ -91,6 +91,13 @@ public:
    */
   void remove_transition_fn(TransitionFn::ID id);
   
+  /**
+   * serialize reads or writes the underlying state and transition function maps
+   * using Boost's serialization library.
+   */
+  template <typename Archive>
+  void serialize(Archive& ar, const unsigned int version);
+
 private:
   //////////////////////
   // member variables //
@@ -157,6 +164,18 @@ inline void StateMachine::add_transition_fn(const TransitionFn& transition_fn) {
 
 inline void StateMachine::remove_transition_fn(TransitionFn::ID id) {
   transition_fn_map_.erase(id);
+}
+
+////////////////////////////////////////////
+// StateMachine template member functions //
+////////////////////////////////////////////
+
+/** public */
+
+template <typename Archive>
+void StateMachine::serialize(Archive& ar, const unsigned int version) {
+  ar & boost::serialization::make_nvp("state_map", state_map_);
+  ar & boost::serialization::make_nvp("transition_fn_map", transition_fn_map_);
 }
 
 } // namespace Backend

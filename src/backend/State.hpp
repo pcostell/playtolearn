@@ -10,6 +10,11 @@
 #include <string>
 #include <set>
 #include <map>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/nvp.hpp>
 
 namespace PlayToLearn {
 namespace Backend {
@@ -86,6 +91,13 @@ public:
    */
   const_object_iterator object_end() const;
   object_iterator object_end();
+  
+  /**
+   * serialize reads or writes the underlying ID and map using Boost's
+   * serialization library.
+   */
+  template <typename Archive>
+  void serialize(Archive& ar, const unsigned int version);
 
 private:
   //////////////////////
@@ -137,6 +149,18 @@ inline State::const_object_iterator State::object_end() const {
 
 inline State::object_iterator State::object_end() {
   return object_ids_.end();
+}
+
+/////////////////////////////////////
+// State template member functions //
+/////////////////////////////////////
+
+/** public */
+
+template <typename Archive>
+void State::serialize(Archive& ar, const unsigned int version) {
+  ar & boost::serialization::make_nvp("id", id_);
+  ar & boost::serialization::make_nvp("object_ids", object_ids_);
 }
 
 } // namespace Backend

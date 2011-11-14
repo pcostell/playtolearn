@@ -5,6 +5,12 @@
 #pragma once
 
 #include "Constants.hpp"
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/nvp.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace PlayToLearn {
 namespace Util {
@@ -27,24 +33,31 @@ public:
    * unique ID, the create class function should be used.
    */
   explicit UniqueID(int value = kInvalidID);
-
+  
   /**
    * value returns the identifying integer so that it may be displayed.
    */
   int value() const;
-
+  
   /**
    * Two UniqueIDs can be compared for equality or inequality.
    */
   bool operator==(const UniqueID& other) const;
   bool operator!=(const UniqueID& other) const;
-
+  
   /**
    * Comparison of UniqueIDs using the < operator is only provided so that they
    * may be stored in set and map structures. It provides no meaningful insight.
    */
   bool operator<(const UniqueID& other) const;
-
+  
+  /**
+   * serialize reads or writes the underlying integer value using Boost's
+   * serialization library.
+   */
+  template <typename Archive>
+  void serialize(Archive& ar, const unsigned int version);
+  
   /**
    * create is a factory function which generates a unique identifying ID.
    */
@@ -54,13 +67,13 @@ private:
   //////////////////////
   // member variables //
   //////////////////////
-
+  
   int value_;
-
+  
   /////////////////////
   // class variables //
   /////////////////////
-
+  
   static int next_available_id_;
 };
 
@@ -100,6 +113,12 @@ template <typename T>
 UniqueID<T>::UniqueID(int value) : value_(value)
 {
   // empty body
+}
+
+template <typename T>
+template <typename Archive>
+void UniqueID<T>::serialize(Archive& ar, const unsigned int version) {
+  ar & boost::serialization::make_nvp("value", value_);
 }
 
 ///////////////////////////////////////

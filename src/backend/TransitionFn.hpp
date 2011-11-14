@@ -8,6 +8,11 @@
 //#include "backend/PythonTransitionFn.hpp"
 #include "backend/AttributeMap.hpp"
 #include <string>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/nvp.hpp>
 #include <boost/scoped_ptr.hpp>
 
 namespace PlayToLearn {
@@ -65,6 +70,13 @@ public:
    * containing all of the data which describes the transition action.
    */
   Util::UniqueID<State> next_state(const AttributeMap& interaction) const;
+  
+  /**
+   * serialize reads or writes the underlying ID using Boost's serialization
+   * library.
+   */
+  template <typename Archive>
+  void serialize(Archive& ar, const unsigned int version);
 
 private:
   //////////////////////
@@ -92,6 +104,17 @@ inline void TransitionFn::set_python_fn(const std::string& python_code) {
 
 inline void TransitionFn::reset_python_fn() {
   //python_fn_.reset();
+}
+
+////////////////////////////////////////////
+// TransitionFn template member functions //
+////////////////////////////////////////////
+
+/** public */
+
+template <typename Archive>
+void TransitionFn::serialize(Archive& ar, const unsigned int version) {
+  ar & boost::serialization::make_nvp("id", id_);
 }
 
 } // namespace Backend

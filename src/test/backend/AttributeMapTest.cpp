@@ -24,7 +24,6 @@ using namespace PlayToLearn::Backend;
 
 BOOST_AUTO_TEST_CASE( normal_use_test ) {
   AttributeMap m;
-
   m.set_value("key_string", "value");
   m.set_value("key_int", 32);
 

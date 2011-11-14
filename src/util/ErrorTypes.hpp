@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "backend/State.hpp"
-#include "backend/TransitionFn.hpp"
 #include <stdexcept>
 #include <string>
 
@@ -43,20 +41,20 @@ public:
    * The InvalidStateError constructor creates the error object with the
    * specified description string.
    */
-  InvalidStateError(const std::string& what_arg, Backend::State::ID id);
+  InvalidStateError(const std::string& what_arg, int id);
   
   /**
    * state_id returns the ID of the state which caused the exception to be
    * thrown.
    */
-  Backend::State::ID state_id() const;
+  int state_id() const;
 
 private:
   //////////////////////
   // member variables //
   //////////////////////
   
-  Backend::State::ID state_id_;
+  int state_id_;
 };
 
 /**
@@ -70,20 +68,20 @@ public:
    * The InvalidTransitionFnError constructor creates the error object with the
    * specified description string.
    */
-  InvalidTransitionFnError(const std::string& what_arg, Backend::TransitionFn::ID id);
+  InvalidTransitionFnError(const std::string& what_arg, int id);
   
   /**
    * transition_fn_id returns the ID of the transition function which caused the
    * exception to be thrown.
    */
-  Backend::TransitionFn::ID transition_fn_id() const;
+  int transition_fn_id() const;
 
 private:
   //////////////////////
   // member variables //
   //////////////////////
   
-  Backend::TransitionFn::ID transition_fn_id_;
+  int transition_fn_id_;
 };
 
 ////////////////////////////////////
@@ -109,7 +107,7 @@ public:
 
 /** public */
 
-inline Backend::State::ID InvalidStateError::state_id() const {
+inline int InvalidStateError::state_id() const {
   return state_id_;
 }
 
@@ -119,7 +117,7 @@ inline Backend::State::ID InvalidStateError::state_id() const {
 
 /** public */
 
-inline Backend::TransitionFn::ID InvalidTransitionFnError::transition_fn_id() const {
+inline int InvalidTransitionFnError::transition_fn_id() const {
   return transition_fn_id_;
 }
 

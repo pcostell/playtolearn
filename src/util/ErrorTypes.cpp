@@ -27,7 +27,7 @@ MissingAttributeError::MissingAttributeError(const string& what_arg) :
 
 /** public */
 
-InvalidStateError::InvalidStateError(const string& what_arg, Backend::State::ID id) :
+InvalidStateError::InvalidStateError(const string& what_arg, int id) :
   runtime_error(what_arg), state_id_(id)
 {
   // empty body
@@ -39,7 +39,7 @@ InvalidStateError::InvalidStateError(const string& what_arg, Backend::State::ID 
 
 /** public */
 
-InvalidTransitionFnError::InvalidTransitionFnError(const string& what_arg, Backend::TransitionFn::ID id) :
+InvalidTransitionFnError::InvalidTransitionFnError(const string& what_arg, int id) :
   runtime_error(what_arg), transition_fn_id_(id)
 {
   // empty body

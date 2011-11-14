@@ -22,7 +22,7 @@ const State& StateMachine::state(State::ID id) const {
   if (itr == state_map_.end()) {
     stringstream err_ss;
     err_ss << "Invalid state ID requested: " << id.value();
-    throw Util::InvalidStateError(err_ss.str(), id);
+    throw Util::InvalidStateError(err_ss.str(), id.value());
   }
   
   return itr->second;
@@ -33,7 +33,7 @@ const TransitionFn& StateMachine::transition_fn(TransitionFn::ID id) const {
   if (itr == transition_fn_map_.end()) {
     stringstream err_ss;
     err_ss << "Invalid transition function ID requested: " << id.value();
-    throw Util::InvalidTransitionFnError(err_ss.str(), id);
+    throw Util::InvalidTransitionFnError(err_ss.str(), id.value());
   }
   
   return itr->second;
