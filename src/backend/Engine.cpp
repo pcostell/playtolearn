@@ -16,22 +16,31 @@ namespace Backend {
 /** public */
 
 Frontend::InteractionResponse::Ptr Engine::register_interaction(Frontend::Interaction::Ptr interaction) {
+  // Check if the object has an interaction available for this state:
   const State& current_state = state_machine_.current_state();
-  if (!current_state.object_exists(interaction->object_id())) {
-    // TODO: handle default interaction, perhaps?
+  if (!current_state.object_exists(interaction->object_id()))
     return Frontend::InteractionResponse::Ptr();
-  }
+  
+  // This is the transition function associated with this object/state pair:
+  TransitionFn::ID fn_id = current_state.transition_fn_id(interaction->object_id());
   
   // Check if the frontend is simply asking for the data needed to set up an
   // interaction:
-  if (interaction->requesting_data()) {
-    // TODO: find the AttributeMap associated with this particular Object/State
-    // combination and use that to construct InteractionResponse.
-  }
+  if (interaction->requesting_data())
+    return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
   
-  // TODO: implement
-  AttributeMap data;
-  return Frontend::InteractionResponse::create(data);
+  // Move to the new state:
+  const TransitionFn& transition_fn = state_machine_.transition_fn(fn_id);
+  State::ID new_state_id = transition_fn.next_state(interaction->attribute_map());
+  state_machine_.set_current_state(new_state_id);
+  
+  // Return the proper interaction response:
+  const State& new_state = state_machine_.current_state();
+  if (!interaction->requesting_data() || !new_state.object_exists(interaction->object_id()))
+    return Frontend::InteractionResponse::Ptr();
+  
+  fn_id = new_state.transition_fn_id(interaction->object_id());
+  return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
 }
 
 } // namespace Backend

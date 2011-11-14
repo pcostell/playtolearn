@@ -33,7 +33,7 @@ public:
    * object_id to the superclass, Interaction. It also stores the answer
    * provided by the user internally.
    */
-  explicit FreeResponseAnswerInteraction(Backend::Object::ID object_id, const std::string& answer);
+  FreeResponseAnswerInteraction(Backend::Object::ID object_id, const std::string& answer);
 
   /**
    * type returns what kind of interaction this object represents. This version

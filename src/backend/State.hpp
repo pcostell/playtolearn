@@ -37,11 +37,10 @@ public:
   typedef std::map<Object::ID, TransitionFn::ID>::const_iterator const_object_iterator;
   
   /**
-   * The State constructor initializes a State object with a unique identifier.
-   * If no such identifier is specified, the ID chosen will simply be the next
-   * available one.
+   * The State constructor initializes a State object with the specified unique
+   * identifier.
    */
-  explicit State(ID id = ID::create());
+  explicit State(ID id);
   
   /**
    * id returns the unique ID of this particular state object.
@@ -53,6 +52,13 @@ public:
    * the specified ID is in this state's object map.
    */
   bool object_exists(Object::ID id) const;
+  
+  /**
+   * transition_fn returns the transition function associated with this state/
+   * object pair. It doesn't perform a check for existence; use object_exists
+   * before calling this function.
+   */
+  TransitionFn::ID transition_fn_id(Object::ID object_id) const;
   
   /**
    * insert_object inserts the object ID and transition function ID
@@ -103,6 +109,10 @@ inline State::ID State::id() const {
 
 inline bool State::object_exists(Object::ID id) const {
   return object_ids_.count(id);
+}
+
+inline TransitionFn::ID State::transition_fn_id(Object::ID object_id) const {
+  return object_ids_.find(object_id)->second;
 }
 
 inline void State::insert_object(Object::ID object_id, TransitionFn::ID fn_id) {

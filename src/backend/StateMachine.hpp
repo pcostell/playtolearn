@@ -45,9 +45,9 @@ public:
   bool contains_state(State::ID id) const;
   
   /**
-   * state_fn returns a reference to the state with the specified ID. The
-   * containment of the ID is protected by an assertion. Both a const and a
-   * non-const version are provided.
+   * state_fn returns a reference to the state with the specified ID. If no such
+   * state exists, the function throws a InvalidStateError exception. Both a
+   * const and a non-const version are provided.
    */
   const State& state(State::ID id) const;
   State& state(State::ID id);
@@ -72,8 +72,9 @@ public:
   
   /**
    * transition_fn returns a reference to the transition function with the
-   * specified id. The containment of the id is protected by an assertion. Both
-   * a const and a non-const version are provided.
+   * specified id. If no such transition function exists, the function throws a
+   * InvalidTransitionFnError exception. Both a const and a non-const version
+   * are provided.
    */
   const TransitionFn& transition_fn(TransitionFn::ID id) const;
   TransitionFn& transition_fn(TransitionFn::ID id);
@@ -143,6 +144,11 @@ inline void StateMachine::remove_state(State::ID id) {
 
 inline bool StateMachine::contains_transition_fn(TransitionFn::ID id) const {
   return transition_fn_map_.count(id);
+}
+
+inline TransitionFn& StateMachine::transition_fn(TransitionFn::ID id) {
+  const StateMachine& const_this = *this;
+  return const_cast<TransitionFn&>(const_this.transition_fn(id));
 }
 
 inline void StateMachine::add_transition_fn(const TransitionFn& transition_fn) {

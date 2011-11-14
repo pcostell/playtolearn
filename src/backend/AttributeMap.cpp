@@ -2,42 +2,33 @@
  * File: backend/AttributeMap.cpp
  */
 
+#include "util/ErrorTypes.hpp"
 #include "backend/AttributeMap.hpp"
+#include <sstream>
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Backend {
 
-///////////////////////////////////////////////////////
-// AttributeMap free function implementation details //
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////
+// AttributeMap member implementation details //
+////////////////////////////////////////////////
 
 /** public */
 
-ostream& operator<<(ostream& output, const AttributeMap& attribute_map) {
-  output << attribute_map.size() << '\n';
-  for (AttributeMap::const_iterator itr = attribute_map.begin(); itr != attribute_map.end(); ++itr)
-    output << itr->first << '\n' << itr->second << '\n';
-
-  return output;
-}
-
-istream& operator>>(istream& input, AttributeMap& attribute_map) {
-  string line;
-  getline(input, line);
-  size_t num_pairs = boost::lexical_cast<size_t>(line);
-
-  string new_attribute;
-  string new_value;
-  for (size_t i = 0; i < num_pairs; ++i) {
-    getline(input, new_attribute);
-    getline(input, new_value);
-    attribute_map.set_value(new_attribute, new_value);
+template <>
+string AttributeMap::value<string>(const string& attribute) const {
+  // Check that the attribute name is in the map. If it isn't, this is a
+  // programming error that can't be recovered.
+  map<string, string>::const_iterator itr = attributes_.find(attribute);
+  if (itr == attributes_.end()) {
+    stringstream err_ss;
+    err_ss << "Requested attribute not in map: " << attribute;
+    throw Util::MissingAttributeError(err_ss.str());
   }
-
-  assert(!input.fail());
-  return input;
+  
+  return itr->second;
 }
 
 } // namespace Backend
