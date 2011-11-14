@@ -10,9 +10,9 @@
 namespace PlayToLearn {
 namespace Backend {
 
-class ExternalTransitionFunction {
+class ExternalTransitionFn {
 public:
-  ExternalTransitionFunction(const std::string & code) {}
+  ExternalTransitionFn(const std::string & code) {}
 
   virtual std::string execute(const std::string & function_name,
                               const AttributeMap & attributes,

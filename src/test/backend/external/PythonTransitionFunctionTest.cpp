@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE PythonTransitionFunction test
+#define BOOST_TEST_MODULE PythonTransitionFn test
 #include <boost/test/unit_test.hpp>
 
 /* Good Boost Unit Test Tutorial:
@@ -6,25 +6,26 @@ http://www.boost.org/doc/libs/1_47_0/libs/test/doc/html/tutorials/new-year-resol
 */
 #include <string>
 #include <map>
-#include "backend/external/PythonTransitionFunction.hpp"
+#include "backend/external/PythonTransitionFn.hpp"
 #include "util/ErrorTypes.hpp"
 
 using namespace std;
-using namespace PlayToLearn::Backend;
+using PlayToLearn::Backend::AttributeMap;
+using PlayToLearn::Backend::PythonTransitionFn;
 
 struct ValidSetup {
 	AttributeMap data;
   AttributeMap globalState;
-	PythonTransitionFunction func;
+	PythonTransitionFn func;
 
-	static const string validFunctionString;
+	static const string validFnString;
 
-	ValidSetup() : func(validFunctionString){
+	ValidSetup() : func(validFnString){
 		data.set_value("state", "11");
 	}
 };
 
-const string ValidSetup::validFunctionString = "def translate(m, g):\n\tif m['state'] == '11':\n\t\treturn '2'\n\treturn '25'";
+const string ValidSetup::validFnString = "def translate(m, g):\n\tif m['state'] == '11':\n\t\treturn '2'\n\treturn '25'";
 
 BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
 
@@ -67,13 +68,13 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(InvalidPython)
 
 BOOST_AUTO_TEST_CASE( invalid_python_code_outside_function ) {
-  BOOST_CHECK_THROW(PythonTransitionFunction func("blahblahblah\ndef translate(m, n):\n\tprint m['state']"),
+  BOOST_CHECK_THROW(PythonTransitionFn func("blahblahblah\ndef translate(m, n):\n\tprint m['state']"),
                     PlayToLearn::Util::PythonExecutionError);
 }
 
 /* Test that invalid code inside function throws error on execution. */
 BOOST_AUTO_TEST_CASE( invalid_code_inside_function ) {
-  PythonTransitionFunction func("def translate(m, n):\n\tBLAH\n\tprint m['state']");
+  PythonTransitionFn func("def translate(m, n):\n\tBLAH\n\tprint m['state']");
   AttributeMap m, n;
   BOOST_CHECK_THROW(func.execute("translate", m, n),
                     PlayToLearn::Util::PythonExecutionError);
@@ -82,7 +83,7 @@ BOOST_AUTO_TEST_CASE( invalid_code_inside_function ) {
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_CASE( can_change_global_state ) {
-  PythonTransitionFunction func("def translate(m, n):\n\tn['hello'] = 'world'\n\treturn \"12\"");
+  PythonTransitionFn func("def translate(m, n):\n\tn['hello'] = 'world'\n\treturn \"12\"");
   AttributeMap m, n;
   BOOST_CHECK_EQUAL(func.execute("translate", m, n), "12");
   BOOST_CHECK_EQUAL(n.value<string>("hello"), "world");;
