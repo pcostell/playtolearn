@@ -107,22 +107,23 @@ ExternalProject_Add(boost
 ## IRRLICHT LIBRARIES ##
 ########################
 
-IF(APPLE)
-  set(IRRLICHT_BUILD_COMMAND cd <SOURCE_DIR>/source/Irrlicht/MacOSX && xcodebuild -project MacOSX.xcodeproj -sdk ${SDKROOT} -arch i386)
-  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
-ELSE()
-  set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make)
-  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../lib && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../lib/ && cp -r <SOURCE_DIR>/include ../)
-ENDIF()
+#IF(APPLE)
+#  set(IRRLICHT_BUILD_COMMAND cd <SOURCE_DIR>/source/Irrlicht/MacOSX && xcodebuild -project MacOSX.xcodeproj -sdk ${SDKROOT} -arch i386)
+#  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
+#ELSE()
+#  set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make)
+#  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../lib && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../lib/ && cp -r <SOURCE_DIR>/include ../)
+#ENDIF()
+#
+#ExternalProject_Add(irrlicht
+#  PREFIX third_party/irrlicht/
+#  URL http://www.stanford.edu/~pcostell/irrlicht-${IRRLICHT_VERSION}.tar.gz
+#  BUILD_IN_SOURCE 1
+#  CONFIGURE_COMMAND ""
+#  BUILD_COMMAND  ${IRRLICHT_BUILD_COMMAND}
+#  INSTALL_COMMAND ${IRRLICHT_INSTALL_COMMAND}
+#)
 
-ExternalProject_Add(irrlicht
-  PREFIX irrlicht/
-  URL http://www.stanford.edu/~pcostell/irrlicht-${IRRLICHT_VERSION}.tar.gz
-  BUILD_IN_SOURCE 1
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND  ${IRRLICHT_BUILD_COMMAND}
-  INSTALL_COMMAND ${IRRLICHT_INSTALL_COMMAND}
-)
 
 ##################
 ## Adding Files ##
