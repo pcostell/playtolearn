@@ -22,6 +22,8 @@ string PythonTransitionFn::execute(const string & function_name, const Attribute
     object processFn = python.get_function(function_name);
 
     object pyResult = processFn(pyAttributes, pyGlobalState);
+
+    Python::convert(pyGlobalState, scriptGlobalState);
     string result;
     Python::convert(pyResult, result);
     return result;
