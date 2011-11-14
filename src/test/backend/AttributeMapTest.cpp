@@ -22,7 +22,7 @@
 #include <csignal>
 
 using namespace std;
-using namespace PlayToLearn::Backend;
+using PlayToLearn::Backend::AttributeMap;
 
 BOOST_AUTO_TEST_CASE( normal_use_test ) {
   AttributeMap m;

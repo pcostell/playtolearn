@@ -7,6 +7,10 @@
 #include <stdexcept>
 #include <string>
 
+// IMPORTANT: when adding new exception types, do NOT include any other headers
+// from this project. This file is used by enough modules that it would almost
+// certainly cause a circular include dependency.
+
 namespace PlayToLearn {
 namespace Util {
 
