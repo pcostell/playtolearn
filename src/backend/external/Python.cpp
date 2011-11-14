@@ -1,9 +1,13 @@
+#include <boost/python/detail/wrap_python.hpp>
 
 #include "backend/external/Python.hpp"
 #include "util/ErrorTypes.hpp"
 
 #include <sstream>
 #include <string>
+
+using namespace std;
+using namespace boost::python;
 
 namespace PlayToLearn {
 namespace Backend {
@@ -29,12 +33,12 @@ Python::Python(const std::string& code) {
 
 
     boost::python::object ignored = exec(str(code), mainNamespace);
-  } catch (const error_already_set&) {
+  } catch (const boost::python::error_already_set&) {
     throwError();
   }
 }
 
-boost::python::object Python::get_function(const std::string& function_name) {
+boost::python::object Python::get_function(const std::string& function_name) const {
   return mainModule.attr(str(function_name));
 }
 
@@ -44,26 +48,26 @@ void Python::throwError() const {
   object err = sys.attr("stderr");
   std::string err_text = extract<std::string>(err.attr("getvalue")());
   PyErr_Clear();
-  throw PythonExecutionError(err_text);
+  throw Util::PythonExecutionError(err_text);
 }
 
 template<>
-void convert(const AttributeMap & source, boost::python::dict & dest) {
-  for (CPPType::const_iterator it = source.begin(); it != source.end(); ++it)
+void Python::convert(const AttributeMap & source, boost::python::dict & dest) {
+  for (AttributeMap::const_iterator it = source.begin(); it != source.end(); ++it)
     dest[it->first] = it->second;
 }
 
 template<>
-void convert(const boost::python::dict & source, AttributeMap & dest) {
+void Python::convert(const boost::python::dict & source, AttributeMap & dest) {
   size_t count = extract<size_t>(source.attr("__len__")());
   object keys = source.iterkeys();
   dest.clear();
   for (size_t i = 0; i < count; ++i) {
     object pythonKey = keys.attr("next")();
     object pythonValue = source.get(pythonKey);
-    KeyType key = extract<KeyType>(pythonKey);
-    ValueType value = extract<ValueType>(pythonValue);
-    dest[key] = value;
+    string key = extract<string>(pythonKey);
+    string value = extract<string>(pythonValue);
+    dest.set_value(key, value);
   }
 }
 

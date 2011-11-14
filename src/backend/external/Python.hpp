@@ -14,17 +14,22 @@ namespace Backend {
 class Python {
 public:
   Python(const std::string& code);
-  boost::python::object get_function(const std::string & function_name);
+  boost::python::object get_function(const std::string & function_name) const;
 
   template<typename SourceType, typename DestType>
-  static ReturnType convert(const ArgType & source, DestType & dest);
+  static void convert(const SourceType & source, DestType & dest);
+
+  template<typename DestType>
+  static void convert(const boost::python::object & source, DestType & dest);
+
+  void throwError() const;
 private:
   boost::python::object mainModule;
 };
 
 template<typename DestType>
-void convert(const boost::python::object & source, DestType & dest) {
-  dest = extract<DestType>(source);
+void Python::convert(const boost::python::object & source, DestType & dest) {
+  dest = boost::python::extract<DestType>(source);
 }
 
 } // namespace Backend
