@@ -4,19 +4,15 @@
 
 #pragma once
 
-
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/serialization/string.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/nvp.hpp>
-
 #include <cassert>
 #include <string>
 #include <map>
 #include <ostream>
 #include <istream>
 #include <boost/lexical_cast.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/nvp.hpp>
 
 
 namespace PlayToLearn {

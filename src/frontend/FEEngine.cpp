@@ -21,7 +21,7 @@ namespace Frontend {
 // Global variables //
 //////////////////////
 
-boost::scoped_ptr<Display> display(new Frontend::TextDisplay());
+boost::scoped_ptr<Display> display(new Frontend::IrrlichtDisplay());
 boost::scoped_ptr<Backend::Engine> backend(new Backend::Engine());
 
 /////////////////////////
@@ -35,15 +35,15 @@ void loadFrontendEngine();
 ////////////////////////
 
 InteractionResponse::Ptr interaction(Interaction::Ptr interaction) {
-  /*
+
   Backend::AttributeMap m;
   m.set_value(Util::kTextAttribute, "HAHAHAHA");
   m.set_value(Util::kObjectIDAttribute, interaction->object_id().value());
   m.set_value(Util::kStateIDAttribute, 0);
   return InteractionResponse::Ptr(new TextResponse(m));
-  */
 
-  return backend->register_interaction(interaction);
+
+  //return backend->register_interaction(interaction);
 }
 
 void drawScene() {
