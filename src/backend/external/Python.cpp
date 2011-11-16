@@ -1,24 +1,32 @@
-#include <boost/python/detail/wrap_python.hpp>
+/*
+ * File: backend/external/Python.cpp
+ */
 
+#include <boost/python/detail/wrap_python.hpp> // must be included first
 #include "backend/external/Python.hpp"
 #include "util/ErrorTypes.hpp"
-
 #include <sstream>
 #include <string>
 
 using namespace std;
-using namespace boost::python;
+using boost::python::object;
 
 namespace PlayToLearn {
 namespace Backend {
 
+//////////////////////////////////////////
+// Python member implementation details //
+//////////////////////////////////////////
+
+/** public */
+
 Python::Python(const std::string& code) {
   try {
     Py_Initialize();
-    mainModule = import("__main__");
-    boost::python::object mainNamespace = mainModule.attr("__dict__");
-
-    // redirect stdout and stderr output.
+    main_module_ = boost::python::import("__main__");
+    boost::python::object main_namespace = main_module_.attr("__dict__");
+    
+    // Redirect stdout and stderr output:
     #ifdef PYTHON_VERSION_3
       PyRun_SimpleString("import io");
       PyRun_SimpleString("import sys");
@@ -30,44 +38,48 @@ Python::Python(const std::string& code) {
       PyRun_SimpleString("sys.stderr = cStringIO.StringIO()");
       PyRun_SimpleString("sys.stdout = cStringIO.StringIO()");
     #endif
-
-
-    boost::python::object ignored = exec(str(code), mainNamespace);
+    
+    boost::python::exec(boost::python::str(code), main_namespace);
   } catch (const boost::python::error_already_set&) {
-    throwError();
+    throw_error();
   }
 }
 
-boost::python::object Python::get_function(const std::string& function_name) const {
-  return mainModule.attr(str(function_name));
+object Python::get_function(const std::string& function_name) const {
+  return main_module_.attr(boost::python::str(function_name));
 }
 
-void Python::throwError() const {
+void Python::throw_error() const {
   PyErr_Print();
   object sys(boost::python::handle<>(PyImport_ImportModule("sys")));
   object err = sys.attr("stderr");
-  std::string err_text = extract<std::string>(err.attr("getvalue")());
+  std::string err_text = boost::python::extract<std::string>(err.attr("getvalue")());
   PyErr_Clear();
+  
   throw Util::PythonExecutionError(err_text);
 }
 
-template<>
-void Python::convert(const AttributeMap & source, boost::python::dict & dest) {
-  for (AttributeMap::const_iterator it = source.begin(); it != source.end(); ++it)
-    dest[it->first] = it->second;
+//////////////////////////////////////////////////
+// Python class function implementation details //
+//////////////////////////////////////////////////
+
+/** public */
+
+void Python::convert(const AttributeMap& source, boost::python::dict& dest) {
+  for (AttributeMap::const_iterator itr = source.begin(); itr != source.end(); ++itr)
+    dest[itr->first] = itr->second;
 }
 
-template<>
-void Python::convert(const boost::python::dict & source, AttributeMap & dest) {
-  size_t count = extract<size_t>(source.attr("__len__")());
+void Python::convert(const boost::python::dict& source, AttributeMap& dest) {
+  size_t count = boost::python::extract<size_t>(source.attr("__len__")());
   object keys = source.iterkeys();
   dest.clear();
   for (size_t i = 0; i < count; ++i) {
-    object pythonKey = keys.attr("next")();
-    object pythonValue = source.get(pythonKey);
-    string key = extract<string>(pythonKey);
-    string value = extract<string>(pythonValue);
-    dest.set_value(key, value);
+    object python_key = keys.attr("next")();
+    dest.set_value(
+      string(boost::python::extract<string>(python_key)),
+      string(boost::python::extract<string>(source.get(python_key)))
+    );
   }
 }
 

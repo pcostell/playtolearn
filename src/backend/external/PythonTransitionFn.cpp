@@ -1,35 +1,47 @@
-#include "boost/python/detail/wrap_python.hpp"
+/*
+ * File: backend/external/PythonTransitionFn.cpp
+ */
 
+#include <boost/python/detail/wrap_python.hpp> // must be included first
 #include "backend/external/PythonTransitionFn.hpp"
 
-using namespace boost::python;
 using namespace std;
+using boost::python::object;
 
 namespace PlayToLearn {
 namespace Backend {
 
-PythonTransitionFn::PythonTransitionFn(const string& code) : ExternalTransitionFn(code), python(code) {
+//////////////////////////////////////////////////////
+// PythonTransitionFn member implementation details //
+//////////////////////////////////////////////////////
 
+/** public */
+
+PythonTransitionFn::PythonTransitionFn(const string& code) :
+  python_(code)
+{
+  // empty body
 }
 
-
-string PythonTransitionFn::execute(const string & function_name, const AttributeMap & attributes, AttributeMap & scriptGlobalState) const{
+string PythonTransitionFn::execute(const string& function_name, const AttributeMap& interaction_map, AttributeMap& global_state) const {
   try {
-    dict pyAttributes;
-    Python::convert(attributes, pyAttributes);
-    dict pyGlobalState;
-    Python::convert(scriptGlobalState, pyGlobalState);
-    object processFn = python.get_function(function_name);
-
-    object pyResult = processFn(pyAttributes, pyGlobalState);
-
-    Python::convert(pyGlobalState, scriptGlobalState);
+    boost::python::dict py_interaction_map;
+    Python::convert(interaction_map, py_interaction_map);
+    
+    boost::python::dict py_global_state;
+    Python::convert(global_state, py_global_state);
+    
+    object py_function = python_.get_function(function_name);
+    object py_result = py_function(py_interaction_map, py_global_state);
+    Python::convert(py_global_state, global_state);
+    
     string result;
-    Python::convert(pyResult, result);
+    Python::convert(py_result, result);
     return result;
-  } catch (const error_already_set &) {
-    python.throwError();
+  } catch (const boost::python::error_already_set&) {
+    python_.throw_error();
   }
+  
   return string();
 }
 

@@ -4,29 +4,43 @@
 
 #pragma once
 
-#include <map>
-#include <stdexcept>
-#include <string>
-
-#include <boost/python.hpp>
-
 #include "backend/external/ExternalTransitionFn.hpp"
 #include "backend/external/Python.hpp"
+#include <stdexcept>
+#include <string>
+#include <map>
+#include <boost/python.hpp>
 
 namespace PlayToLearn {
 namespace Backend {
 
+////////////////////////////////////////
+// PythonTransitionFn class interface //
+////////////////////////////////////////
+
+/**
+ * The PythonTransitionFn class represents an executable Python script which
+ * describes state transitions.
+ */
 class PythonTransitionFn : public ExternalTransitionFn {
 public:
-  PythonTransitionFn(const std::string & code);
-
-  std::string execute(const std::string & function_name,
-                      const AttributeMap & attributes,
-                      AttributeMap & scriptGlobalState) const;
+  /**
+   * The PythonTransitionFn accepts the Python code which should be executed.
+   */
+  explicit PythonTransitionFn(const std::string & code);
+  
+  /**
+   * See the corresponding comment in ExternalTransitionFn.hpp.
+   */
+  std::string execute(const std::string& function_name,
+                      const AttributeMap& interaction_map,
+                      AttributeMap& global_state) const;
 private:
-  void throwError() const;
-
-  Python python;
+  //////////////////////
+  // member variables //
+  //////////////////////
+  
+  Python python_;
 };
 
 } // namespace Backend
