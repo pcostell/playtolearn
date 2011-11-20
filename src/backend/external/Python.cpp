@@ -40,7 +40,7 @@ Python::Python(const std::string& code) {
     #endif
     
     boost::python::exec(boost::python::str(code), main_namespace);
-  } catch (const boost::python::error_already_set&) {
+  } catch (boost::python::error_already_set&) {
     throw_error();
   }
 }
