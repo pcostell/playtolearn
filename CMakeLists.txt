@@ -27,7 +27,7 @@ find_package(OpenGL)
 ## PYTHON LIBRARIES ##
 ######################
 
-include(FindPythonLibs)
+include(./LocalFindPythonLibs.cmake)
 
 IF(NOT PYTHONLIBS_FOUND)
   MESSAGE(FATAL_ERROR "Could not find python libraries.")
@@ -107,22 +107,23 @@ ExternalProject_Add(boost
 ## IRRLICHT LIBRARIES ##
 ########################
 
-#IF(APPLE)
-#  set(IRRLICHT_BUILD_COMMAND cd <SOURCE_DIR>/source/Irrlicht/MacOSX && xcodebuild -project MacOSX.xcodeproj -sdk ${SDKROOT} -arch i386)
-#  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
-#ELSE()
-#  set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make)
-#  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../lib && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../lib/ && cp -r <SOURCE_DIR>/include ../)
-#ENDIF()
-#
-#ExternalProject_Add(irrlicht
-#  PREFIX third_party/irrlicht/
-#  URL http://www.stanford.edu/~pcostell/irrlicht-${IRRLICHT_VERSION}.tar.gz
-#  BUILD_IN_SOURCE 1
-#  CONFIGURE_COMMAND ""
-#  BUILD_COMMAND  ${IRRLICHT_BUILD_COMMAND}
-#  INSTALL_COMMAND ${IRRLICHT_INSTALL_COMMAND}
-#)
+IF(APPLE)
+  set(IRRLICHT_BUILD_COMMAND cd <SOURCE_DIR>/source/Irrlicht/MacOSX && xcodebuild -project MacOSX.xcodeproj -sdk ${SDKROOT} -arch i386)
+  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
+ELSE()
+  set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make)
+  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && mkdir -p ../../include && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../../lib/ && cp <SOURCE_DIR>/include/* ../../include/
+(cp -r <SOURCE_DIR>/include ../../ 2> /dev/null || true ))
+ENDIF()
+
+ExternalProject_Add(irrlicht
+  PREFIX third_party/irrlicht/
+  SVN_REPOSITORY https://irrlicht.svn.sourceforge.net/svnroot/irrlicht/branches/releases/1.7
+  BUILD_IN_SOURCE 1
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND  ${IRRLICHT_BUILD_COMMAND}
+  INSTALL_COMMAND ${IRRLICHT_INSTALL_COMMAND}
+)
 
 
 ##################
@@ -151,7 +152,7 @@ ENDFOREACH()
 #######################
 
 SET(STATIC_LIBS Irrlicht boost_python boost_serialization)
-SET(DYNAMIC_LIBS dl m)
+SET(DYNAMIC_LIBS dl m util)
 
 IF(APPLE)
   list(APPEND DYNAMIC_LIBS python)
@@ -184,6 +185,7 @@ FILE(GLOB main "src/frontend/FEEngine.cpp")
 LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main})
 
 add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
+add_dependencies(playtolearnlibrary irrlicht boost)
 
 #############
 ## BUNDLES ##
@@ -204,6 +206,8 @@ ENDIF()
 
 add_executable(playtolearn WIN32 MACOSX_BUNDLE ${main})
 target_link_libraries(playtolearn playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
+add_dependencies(playtolearn playtolearnlibrary)
+
 
 if(APPLE)
   set_target_properties(playtolearn PROPERTIES RESOURCE "${MAC_RESOURCES}")
@@ -214,6 +218,7 @@ install(TARGETS playtolearn
         BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
+
 ##################
 ## TEST BUNDLES ##
 ##################
@@ -223,4 +228,5 @@ FOREACH(t ${TEST_SRCS})
   add_executable(${name} ${t})
   target_link_libraries(${name} playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
   add_test(${name} ${name})
+  add_dependencies(${name} playtolearnlibrary)
 ENDFOREACH()
