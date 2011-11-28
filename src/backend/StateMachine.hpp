@@ -141,14 +141,6 @@ inline State& StateMachine::state(State::ID id) {
   return const_cast<State&>(const_this.state(id));
 }
 
-inline void StateMachine::add_state(const State& state) {
-  state_map_.insert(std::make_pair(state.id(), state));
-}
-
-inline void StateMachine::remove_state(State::ID id) {
-  state_map_.erase(id);
-}
-
 inline bool StateMachine::contains_transition_fn(TransitionFn::ID id) const {
   return transition_fn_map_.count(id);
 }
@@ -156,14 +148,6 @@ inline bool StateMachine::contains_transition_fn(TransitionFn::ID id) const {
 inline TransitionFn& StateMachine::transition_fn(TransitionFn::ID id) {
   const StateMachine& const_this = *this;
   return const_cast<TransitionFn&>(const_this.transition_fn(id));
-}
-
-inline void StateMachine::add_transition_fn(const TransitionFn& transition_fn) {
-  transition_fn_map_.insert(std::make_pair(transition_fn.id(), transition_fn));
-}
-
-inline void StateMachine::remove_transition_fn(TransitionFn::ID id) {
-  transition_fn_map_.erase(id);
 }
 
 ////////////////////////////////////////////

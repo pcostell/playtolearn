@@ -25,16 +25,24 @@ namespace Backend {
 class PythonTransitionFn : public ExternalTransitionFn {
 public:
   /**
+   * The Ptr typedef allows us to refer to shared_ptr<PythonTransitionFn> smart
+   * pointers as PythonTransitionFn::Ptr. A const version is provided as well.
+   */
+  typedef boost::shared_ptr<PythonTransitionFn> Ptr;
+  typedef boost::shared_ptr<const PythonTransitionFn> ConstPtr;
+  
+  /**
    * The PythonTransitionFn accepts the Python code which should be executed.
    */
-  explicit PythonTransitionFn(const std::string & code);
+  explicit PythonTransitionFn(const std::string& code);
   
   /**
    * See the corresponding comment in ExternalTransitionFn.hpp.
    */
-  std::string execute(const std::string& function_name,
-                      const AttributeMap& interaction_map,
-                      AttributeMap& global_state) const;
+  int execute(const std::string& function_name,
+              const AttributeMap& interaction_map,
+              AttributeMap& global_state) const;
+
 private:
   //////////////////////
   // member variables //

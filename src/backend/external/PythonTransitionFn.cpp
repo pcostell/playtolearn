@@ -23,26 +23,28 @@ PythonTransitionFn::PythonTransitionFn(const string& code) :
   // empty body
 }
 
-string PythonTransitionFn::execute(const string& function_name, const AttributeMap& interaction_map, AttributeMap& global_state) const {
+int PythonTransitionFn::execute(const string& function_name, const AttributeMap& interaction, AttributeMap& global_state) const {
   try {
-    boost::python::dict py_interaction_map;
-    Python::convert(interaction_map, py_interaction_map);
+    boost::python::dict py_interaction;
+    Python::convert(interaction, py_interaction);
     
     boost::python::dict py_global_state;
     Python::convert(global_state, py_global_state);
     
     object py_function = python_.get_function(function_name);
-    object py_result = py_function(py_interaction_map, py_global_state);
+    object py_result = py_function(py_interaction, py_global_state);
     Python::convert(py_global_state, global_state);
     
-    string result;
+    int result;
     Python::convert(py_result, result);
     return result;
   } catch (const boost::python::error_already_set&) {
     python_.throw_error();
   }
   
-  return string();
+  // This point should never be reached, but we put this code here to appease
+  // the compiler's warnings:
+  return -1;
 }
 
 } // namespace Backend

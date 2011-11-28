@@ -49,7 +49,6 @@ public:
   
   /**
    * throw_error throws a PythonExecutionError with relevant information.
-   * TODO: does this need to be public?
    */
   void throw_error() const;
 

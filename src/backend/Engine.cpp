@@ -31,7 +31,7 @@ Frontend::InteractionResponse::Ptr Engine::register_interaction(Frontend::Intera
   
   // Move to the new state:
   const TransitionFn& transition_fn = state_machine_.transition_fn(fn_id);
-  State::ID new_state_id = transition_fn.next_state(interaction->attribute_map());
+  State::ID new_state_id = transition_fn.next_state(interaction->attribute_map(), global_state_);
   state_machine_.set_current_state(new_state_id);
   
   // Return the proper interaction response:

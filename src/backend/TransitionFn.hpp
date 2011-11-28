@@ -5,9 +5,10 @@
 #pragma once
 
 #include "util/UniqueID.hpp"
-//#include "backend/PythonTransitionFn.hpp"
 #include "backend/AttributeMap.hpp"
+#include "backend/external/ExternalTransitionFn.hpp"
 #include <string>
+#include <vector>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/string.hpp>
@@ -52,24 +53,47 @@ public:
   ID id() const;
   
   /**
-   * set_python_fn sets the underlying python script to the code passed in as
-   * a string object. That code will be executed the next time the underlying
-   * PythonTransitionFn object is invoked.
+   * num_states returns the number of states to which this transition function
+   * may apply.
    */
-  void set_python_fn(const std::string& python_code);
+  int num_states() const;
   
   /**
-   * reset_python_fn erases the underlying python script and sets the internal
-   * PythonTransitionFn pointer to NULL.
+   * state_at returns the state ID associated with the state at the specified
+   * index. The index must be non-negative and less than num_states; otherwise,
+   * state_at throws a InvalidStateIndexError exception.
    */
-  void reset_python_fn();
+  Util::UniqueID<State> state_at(int index) const;
+  
+  /**
+   * add_state adds a new state ID to the list of states to which this
+   * transition function is able to move.
+   */
+  void add_state(Util::UniqueID<State> state_id);
+  
+  /**
+   * remove_state removes the state ID at the specified index from this
+   * transition function's list of reachable states. If the index is out of
+   * bounds, the function throws a InvalidStateIndexError exception.
+   */
+  void remove_state(int index);
+  
+  /**
+   * set_python_function changes the internal ExternalTransitionFn script to be
+   * a PythonTransitionFn object with the specified code and function name.
+   */
+  void set_python_function(const std::string& python_code, const std::string& function_name);
   
   /**
    * next_state returns the ID of the next state based on the given interaction
    * elements and environmental status. interaction is an map of attributes
    * containing all of the data which describes the transition action.
+   * global_state is a modifiable map containing state pertaining to the game
+   * world which the transition scripts can update. If the transition function
+   * has not yet been assigned a transition script, the function throws a
+   * MissingScriptError exception.
    */
-  Util::UniqueID<State> next_state(const AttributeMap& interaction) const;
+  Util::UniqueID<State> next_state(const AttributeMap& interaction, AttributeMap& global_state) const;
   
   /**
    * serialize reads or writes the underlying ID using Boost's serialization
@@ -85,7 +109,17 @@ private:
   
   ID id_;
   
-  //boost::scoped_ptr<PythonTransitionFn> python_fn_;
+  std::vector<Util::UniqueID<State> > state_ids_;
+  
+  ExternalTransitionFn::Ptr script_fn_;
+  
+  std::string function_name_;
+  
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  void check_state_index(int index) const;
 };
 
 ////////////////////////////////////
@@ -98,12 +132,8 @@ inline TransitionFn::ID TransitionFn::id() const {
   return id_;
 }
 
-inline void TransitionFn::set_python_fn(const std::string& python_code) {
-  //python_fn_.reset(new PythonTransitionFn(python_code));
-}
-
-inline void TransitionFn::reset_python_fn() {
-  //python_fn_.reset();
+inline int TransitionFn::num_states() const {
+  return static_cast<int>(state_ids_.size());
 }
 
 ////////////////////////////////////////////
@@ -115,6 +145,7 @@ inline void TransitionFn::reset_python_fn() {
 template <typename Archive>
 void TransitionFn::serialize(Archive& ar, const unsigned int version) {
   ar & boost::serialization::make_nvp("id", id_);
+  ar & boost::serialization::make_nvp("state_ids", state_ids_);
 }
 
 } // namespace Backend

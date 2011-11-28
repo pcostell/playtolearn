@@ -25,7 +25,7 @@ struct ValidSetup {
 	}
 };
 
-const string ValidSetup::validFnString = "def translate(m, g):\n\tif m['state'] == '11':\n\t\treturn '2'\n\treturn '25'";
+const string ValidSetup::validFnString = "def translate(m, g):\n\tif m['state'] == '11':\n\t\treturn 2\n\treturn 25";
 
 BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
 
@@ -33,8 +33,8 @@ BOOST_FIXTURE_TEST_SUITE(ValidPython, ValidSetup)
 BOOST_AUTO_TEST_CASE( normal_use_test )
 {
 	BOOST_CHECK_EQUAL(data.value<string>("state"), "11");
-	string result = func.execute("translate", data, globalState);
-	BOOST_CHECK_EQUAL(result, "2");
+	int result = func.execute("translate", data, globalState);
+	BOOST_CHECK_EQUAL(result, 2);
 }
 
 /* Test calling bad function name. */
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE( bad_method_name)
                     PlayToLearn::Util::PythonExecutionError);
 }
 
-/* Test accessing date that doesn't exist. */
+/* Test accessing data that doesn't exist. */
 BOOST_AUTO_TEST_CASE( bad_attr_access )
 {
   data.clear();
@@ -55,11 +55,11 @@ BOOST_AUTO_TEST_CASE( bad_attr_access )
 /* Test that multiple executions works. */
 BOOST_AUTO_TEST_CASE ( multiple_function_call )
 {
-  string result = func.execute("translate", data, globalState);
-  BOOST_CHECK_EQUAL(result, "2");
+  int result = func.execute("translate", data, globalState);
+  BOOST_CHECK_EQUAL(result, 2);
   data.set_value("state", ":22");
   result = func.execute("translate", data, globalState);
-  BOOST_CHECK_EQUAL(result, "25");
+  BOOST_CHECK_EQUAL(result, 25);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -83,8 +83,8 @@ BOOST_AUTO_TEST_CASE( invalid_code_inside_function ) {
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_CASE( can_change_global_state ) {
-  PythonTransitionFn func("def translate(m, n):\n\tn['hello'] = 'world'\n\treturn \"12\"");
+  PythonTransitionFn func("def translate(m, n):\n\tn['hello'] = 'world'\n\treturn 12");
   AttributeMap m, n;
-  BOOST_CHECK_EQUAL(func.execute("translate", m, n), "12");
+  BOOST_CHECK_EQUAL(func.execute("translate", m, n), 12);
   BOOST_CHECK_EQUAL(n.value<string>("hello"), "world");;
 }

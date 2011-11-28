@@ -57,6 +57,8 @@ private:
   double player_x_;
   double player_y_;
   
+  AttributeMap global_state_;
+  
   std::map<TransitionFn::ID, AttributeMap> transition_data_;
 };
 

@@ -7,7 +7,6 @@
 #include "util/ErrorTypes.hpp"
 #include <string>
 #include <map>
-#include <sstream>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/string.hpp>
@@ -131,11 +130,8 @@ template <typename T>
 T AttributeMap::value(const std::string& attribute) const {
   // Check that the attribute name is in the map:
   std::map<std::string, std::string>::const_iterator itr = attributes_.find(attribute);
-  if (itr == attributes_.end()) {
-    std::stringstream err_ss;
-    err_ss << "Requested attribute not in map: " << attribute;
-    throw Util::MissingAttributeError(err_ss.str());
-  }
+  if (itr == attributes_.end())
+    throw Util::MissingAttributeError(attribute);
   
   // We perform the conversion using lexical_cast. If the attribute's value is
   // invalid, the operation will throw a bad_lexical_cast exception.

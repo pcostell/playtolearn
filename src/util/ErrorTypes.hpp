@@ -26,9 +26,16 @@ class MissingAttributeError : public std::runtime_error {
 public:
   /**
    * The MissingAttributeError constructor creates the error object with the
-   * specified description string.
+   * missing attribute specified.
    */
-  explicit MissingAttributeError(const std::string& what_arg);
+  explicit MissingAttributeError(const std::string& attribute);
+
+private:
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  std::string form_error_message(const std::string& attribute) const;
 };
 
 //////////////////////////////
@@ -42,23 +49,17 @@ public:
 class InvalidStateError : public std::runtime_error {
 public:
   /**
-   * The InvalidStateError constructor creates the error object with the
-   * specified description string.
+   * The InvalidStateError constructor creates the error object with the invalid
+   * state ID specified.
    */
-  InvalidStateError(const std::string& what_arg, int id);
-  
-  /**
-   * state_id returns the ID of the state which caused the exception to be
-   * thrown.
-   */
-  int state_id() const;
+  explicit InvalidStateError(int state_id);
 
 private:
   //////////////////////
-  // member variables //
+  // member functions //
   //////////////////////
   
-  int state_id_;
+  std::string form_error_message(int state_id) const;
 };
 
 /**
@@ -70,22 +71,61 @@ class InvalidTransitionFnError : public std::runtime_error {
 public:
   /**
    * The InvalidTransitionFnError constructor creates the error object with the
-   * specified description string.
+   * invalid transition function ID specified.
    */
-  InvalidTransitionFnError(const std::string& what_arg, int id);
-  
-  /**
-   * transition_fn_id returns the ID of the transition function which caused the
-   * exception to be thrown.
-   */
-  int transition_fn_id() const;
+  explicit InvalidTransitionFnError(int transition_fn_id);
 
 private:
   //////////////////////
-  // member variables //
+  // member functions //
   //////////////////////
   
-  int transition_fn_id_;
+  std::string form_error_message(int transition_fn_id) const;
+};
+
+//////////////////////////////
+// TransitionFn error types //
+//////////////////////////////
+
+/**
+ * The InvalidStateIndexError class represents the exception thrown when a query
+ * is made to a transition function for a state index that is out of bounds.
+ */
+class InvalidStateIndexError : public std::runtime_error {
+public:
+  /**
+   * The InvalidStateIndexError constructor creates the error object with the
+   * invalid state index and transition function ID specified.
+   */
+  InvalidStateIndexError(int transition_fn_id, int state_index);
+
+private:
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  std::string form_error_message(int transition_fn_id, int state_index) const;
+};
+
+/**
+ * The MissingScriptError class represents the exception thrown when a state
+ * transition is requested on a TransitionFn object which hasn't yet been
+ * assigned a corresponding ExternalTransitionFn object.
+ */
+class MissingScriptError : public std::runtime_error {
+public:
+  /**
+   * The MissingScriptError constructor creates the error object with the
+   * transition function ID specified.
+   */
+  MissingScriptError(int transition_fn_id);
+
+private:
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  std::string form_error_message(int transition_fn_id) const;
 };
 
 ////////////////////////////////////
@@ -104,26 +144,6 @@ public:
    */
   explicit PythonExecutionError(const std::string& what_arg);
 };
-
-/////////////////////////////////////////
-// InvalidStateError inlined functions //
-/////////////////////////////////////////
-
-/** public */
-
-inline int InvalidStateError::state_id() const {
-  return state_id_;
-}
-
-////////////////////////////////////////////////
-// InvalidTransitionFnError inlined functions //
-////////////////////////////////////////////////
-
-/** public */
-
-inline int InvalidTransitionFnError::transition_fn_id() const {
-  return transition_fn_id_;
-}
 
 } // namespace Util
 } // namespace PlayToLearn

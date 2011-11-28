@@ -7,6 +7,7 @@
 #include "backend/AttributeMap.hpp"
 #include <string>
 #include <map>
+#include <boost/shared_ptr.hpp>
 
 namespace PlayToLearn {
 namespace Backend {
@@ -22,13 +23,21 @@ namespace Backend {
 class ExternalTransitionFn {
 public:
   /**
+   * The Ptr typedef allows us to refer to shared_ptr<ExternalTransitionFn>
+   * smart pointers as ExternalTransitionFn::Ptr. A const version is provided as 
+   * well.
+   */
+  typedef boost::shared_ptr<ExternalTransitionFn> Ptr;
+  typedef boost::shared_ptr<const ExternalTransitionFn> ConstPtr;
+  
+  /**
    * execute accepts the name of a function that may be executed, the map of
    * attributes describing the transition, and a global state which can be
-   * modified by the script.
+   * modified by the script. It returns the index of the player's new state.
    */
-  virtual std::string execute(const std::string& function_name,
-                              const AttributeMap& interaction_map,
-                              AttributeMap& global_state) const = 0;
+  virtual int execute(const std::string& function_name,
+                      const AttributeMap& interaction,
+                      AttributeMap& global_state) const = 0;
 };
 
 } // namespace Backend
