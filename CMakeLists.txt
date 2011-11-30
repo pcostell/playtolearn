@@ -20,8 +20,14 @@ set(IRRLICHT_VERSION 1.7.2)
 ## GENERIC PACKAGES ##
 ######################
 
+SET ( QT_USE_OPENGL true)
+
 find_package(GLUT)
 find_package(OpenGL)
+find_package(Qt4 REQUIRED)
+
+INCLUDE(${QT_USE_FILE})
+INCLUDE_DIRECTORIES(${QT_INCLUDE_DIR})
 
 ######################
 ## PYTHON LIBRARIES ##
@@ -111,9 +117,8 @@ IF(APPLE)
   set(IRRLICHT_BUILD_COMMAND cd <SOURCE_DIR>/source/Irrlicht/MacOSX && xcodebuild -project MacOSX.xcodeproj -sdk ${SDKROOT} -arch i386)
   set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
 ELSE()
-  set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make)
-  set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && mkdir -p ../../include && cp <SOURCE_DIR>/lib/Linux/libIrrlicht.a  ../../lib/ && cp <SOURCE_DIR>/include/* ../../include/
-(cp -r <SOURCE_DIR>/include ../../ 2> /dev/null || true ))
+  set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make sharedlib)
+  set(IRRLICHT_INSTALL_COMMAND cp -r <SOURCE_DIR>/lib/Linux ../../lib 2> /dev/null || cp -r <SOURCE_DIR>/include ../../include 2> /dev/null || true)
 ENDIF()
 
 ExternalProject_Add(irrlicht
@@ -152,7 +157,7 @@ ENDFOREACH()
 #######################
 
 SET(STATIC_LIBS Irrlicht boost_python boost_serialization)
-SET(DYNAMIC_LIBS dl m util)
+SET(DYNAMIC_LIBS dl m util ${QT_LIBRARIES})
 
 IF(APPLE)
   list(APPEND DYNAMIC_LIBS python)
@@ -174,6 +179,10 @@ include_directories(src)
 FILE(GLOB_RECURSE SRCS "src/**.cpp")
 FILE(GLOB_RECURSE TEST_SRCS "src/test/**.cpp")
 
+FILE(GLOB_RECURSE PRE_MOC_FILES "src/ui/*.hpp")
+QT4_WRAP_CPP(HEADERS_MOC ${PRE_MOC_FILES})
+LIST(APPEND SRCS ${HEADERS_MOC})
+
 # Remove test files from $SRC
 FOREACH(t ${TEST_SRCS})
   LIST(REMOVE_ITEM SRCS ${t})
@@ -182,7 +191,9 @@ ENDFOREACH()
 # Remove main from ALL_NONMAIN_SRCS
 LIST(APPEND ALL_NONMAIN_SRCS ${SRCS})
 FILE(GLOB main "src/frontend/FEEngine.cpp")
+FILE(GLOB main2 "src/ui/main.cpp")
 LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main})
+LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main2})
 
 add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
 add_dependencies(playtolearnlibrary irrlicht boost)
@@ -208,6 +219,9 @@ add_executable(playtolearn WIN32 MACOSX_BUNDLE ${main})
 target_link_libraries(playtolearn playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
 add_dependencies(playtolearn playtolearnlibrary)
 
+add_executable(playtolearnteacher WIN32 MACOSX_BUNDLE ${main2})
+target_link_libraries(playtolearnteacher playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
+add_dependencies(playtolearnteacher playtolearnlibrary)
 
 if(APPLE)
   set_target_properties(playtolearn PROPERTIES RESOURCE "${MAC_RESOURCES}")
