@@ -68,13 +68,13 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(InvalidPython)
 
 BOOST_AUTO_TEST_CASE( invalid_python_code_outside_function ) {
-  BOOST_CHECK_THROW(PythonTransitionFn func("blahblahblah\ndef translate(m, n):\n\tprint m['state']"),
+  BOOST_CHECK_THROW(PythonTransitionFn func("blahblahblah\ndef translate(m, n):\n\ta = m['state']"),
                     PlayToLearn::Util::PythonExecutionError);
 }
 
 /* Test that invalid code inside function throws error on execution. */
 BOOST_AUTO_TEST_CASE( invalid_code_inside_function ) {
-  PythonTransitionFn func("def translate(m, n):\n\tBLAH\n\tprint m['state']");
+  PythonTransitionFn func("def translate(m, n):\n\tBLAH\n\ta = m['state']");
   AttributeMap m, n;
   BOOST_CHECK_THROW(func.execute("translate", m, n),
                     PlayToLearn::Util::PythonExecutionError);

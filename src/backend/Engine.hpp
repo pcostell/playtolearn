@@ -8,6 +8,7 @@
 #include "frontend/InteractionResponses.hpp"
 #include "backend/StateMachine.hpp"
 #include "backend/TransitionFn.hpp"
+#include <string>
 #include <utility>
 
 namespace PlayToLearn {
@@ -26,6 +27,7 @@ public:
    * load_level instructs the game engine to load all of the data associated
    * with a particular level of the game.
    */
+  void load_level(const std::string& level_name);
   
   /**
    * player_x and player_y return the x and y coordinates of the player's

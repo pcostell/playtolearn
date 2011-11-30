@@ -3,6 +3,8 @@
  */
 
 #include "backend/Engine.hpp"
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -14,6 +16,15 @@ namespace Backend {
 ///////////////////////////////////////////////////
 
 /** public */
+
+void Engine::load_level(const string& level_name) {
+  // Open the file with the level's information:
+  stringstream level_file_name;
+  level_file_name << "data/level/" << level_file_name;
+  ifstream input_file(level_file_name.str().c_str());
+  
+  
+}
 
 Frontend::InteractionResponse::Ptr Engine::register_interaction(Frontend::Interaction::Ptr interaction) {
   // Check if the object has an interaction available for this state:

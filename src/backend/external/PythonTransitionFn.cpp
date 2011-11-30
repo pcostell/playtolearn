@@ -38,7 +38,7 @@ int PythonTransitionFn::execute(const string& function_name, const AttributeMap&
     int result;
     Python::convert(py_result, result);
     return result;
-  } catch (const boost::python::error_already_set&) {
+  } catch (boost::python::error_already_set&) {
     python_.throw_error();
   }
   
