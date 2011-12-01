@@ -92,5 +92,55 @@ const std::string kFreeResponseResponseTypeValue("free_response_response");
 const std::string kMultipleChoiceResponseTypeValue("multiple_choice_response");
 const std::string kNewLevelResponseTypeValue("new_level_response");
 
+////////////////////////////
+// TransitionFn constants //
+////////////////////////////
+
+/**
+ * The kTransitionFnScriptFunctionName constant represents the name of the
+ * script function which performs the transition function operation.
+ */
+const std::string kTransitionFnScriptFunctionName("state_transition");
+
+//////////////////////
+// Engine constants //
+//////////////////////
+
+/**
+ * The kLevelDirectoryPrefix constant represents the file prefix of all level
+ * folders in the game. The prefix is followed by the index of the level.
+ */
+const std::string kLevelDirectoryPrefix("data/level");
+
+/**
+ * The kLevelStateMachineFile constant represents the name of the file
+ * containing StateMachine information for a particular level.
+ */
+const std::string kLevelStateMachineFile("sm.xml");
+
+/**
+ * The kLevelTransitionFnFile constant represents the name of the file
+ * containing information regarding all transition function external scripts in
+ * a particular level.
+ */
+const std::string kLevelTransitionFnFile("tfn.dat");
+
+/**
+ * The kLevelTransitionFnScriptDirectory constant represents the name of the
+ * directory containing all of the transition function scripts for a particular
+ * level.
+ */
+const std::string kLevelTransitionFnScriptDirectory("tfn_scripts/");
+
+/////////////////////////
+// scripting constants //
+/////////////////////////
+
+/**
+ * The kPythonExtension constant represents the file extension used to store
+ * Python scripts.
+ */
+const std::string kPythonExtension("py");
+
 } // namespace Util
 } // namespace PlayToLearn

@@ -45,7 +45,7 @@ public:
    * The State constructor initializes a State object with the specified unique
    * identifier.
    */
-  explicit State(ID id);
+  explicit State(ID id = ID());
   
   /**
    * id returns the unique ID of this particular state object.
@@ -60,8 +60,8 @@ public:
   
   /**
    * transition_fn returns the transition function associated with this state/
-   * object pair. It doesn't perform a check for existence; use object_exists
-   * before calling this function.
+   * object pair. If no such object_id exists, the function will throw an
+   * InvalidObjectError exception.
    */
   TransitionFn::ID transition_fn_id(Object::ID object_id) const;
   
@@ -121,18 +121,6 @@ inline State::ID State::id() const {
 
 inline bool State::object_exists(Object::ID id) const {
   return object_ids_.count(id);
-}
-
-inline TransitionFn::ID State::transition_fn_id(Object::ID object_id) const {
-  return object_ids_.find(object_id)->second;
-}
-
-inline void State::insert_object(Object::ID object_id, TransitionFn::ID fn_id) {
-  object_ids_[object_id] = fn_id;
-}
-
-inline void State::remove_object(Object::ID id) {
-  object_ids_.erase(id);
 }
 
 inline State::const_object_iterator State::object_begin() const {

@@ -83,6 +83,30 @@ private:
   std::string form_error_message(int transition_fn_id) const;
 };
 
+///////////////////////
+// State error types //
+///////////////////////
+
+/**
+ * The InvalidObjectError class represents the exception thrown when a query is
+ * made to a State object for an object ID which doesn't exist for that state.
+ */
+class InvalidObjectError : public std::runtime_error {
+public:
+  /**
+   * The InvalidObjectError constructor creates the error object with the state
+   * ID and invalid object ID specified.
+   */
+  InvalidObjectError(int state_id, int object_id);
+
+private:
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  std::string form_error_message(int state_id, int object_id) const;
+};
+
 //////////////////////////////
 // TransitionFn error types //
 //////////////////////////////
@@ -108,17 +132,17 @@ private:
 };
 
 /**
- * The MissingScriptError class represents the exception thrown when a state
- * transition is requested on a TransitionFn object which hasn't yet been
- * assigned a corresponding ExternalTransitionFn object.
+ * The MissingTransitionFnScriptError class represents the exception thrown when
+ * a state transition is requested on a TransitionFn object which hasn't yet
+ * been assigned a corresponding ExternalTransitionFn object.
  */
-class MissingScriptError : public std::runtime_error {
+class MissingTransitionFnScriptError : public std::runtime_error {
 public:
   /**
-   * The MissingScriptError constructor creates the error object with the
-   * transition function ID specified.
+   * The MissingTransitionFnScriptError constructor creates the error object
+   * with the transition function ID specified.
    */
-  MissingScriptError(int transition_fn_id);
+  MissingTransitionFnScriptError(int transition_fn_id);
 
 private:
   //////////////////////
@@ -126,6 +150,50 @@ private:
   //////////////////////
   
   std::string form_error_message(int transition_fn_id) const;
+};
+
+///////////////////////////
+// scripting error types //
+///////////////////////////
+
+/**
+ * The InvalidScriptTypeError class represents the type of exception thrown when
+ * a script of an unsupported type is encountered when loading game data.
+ */
+class InvalidScriptTypeError : public std::runtime_error {
+public:
+  /**
+   * The InvalidScriptTypeError constructor creates the error object with the
+   * specified invalid script extension.
+   */
+  explicit InvalidScriptTypeError(const std::string& script_type);
+
+private:
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  std::string form_error_message(const std::string& script_type) const;
+};
+
+/**
+ * The MissingScriptError class represents the type of exception thrown when a
+ * script is missing from the data section of the game.
+ */
+class MissingScriptError : public std::runtime_error {
+public:
+  /**
+   * The MissingScriptError constructor creates the error object with the
+   * specified script path name.
+   */
+  explicit MissingScriptError(const std::string& script_name);
+
+private:
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  std::string form_error_message(const std::string& script_name) const;
 };
 
 ////////////////////////////////////

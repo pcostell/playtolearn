@@ -5,6 +5,7 @@
 #include "backend/TransitionFn.hpp"
 #include "backend/State.hpp"
 #include "backend/external/PythonTransitionFn.hpp"
+#include "util/Constants.hpp"
 #include "util/ErrorTypes.hpp"
 #include <stdexcept>
 #include <sstream>
@@ -38,16 +39,15 @@ void TransitionFn::remove_state(int index) {
   state_ids_.erase(state_ids_.begin() + index);
 }
 
-void TransitionFn::set_python_function(const string& python_code, const string& function_name) {
+void TransitionFn::set_python_function(const string& python_code) {
   script_fn_.reset(new PythonTransitionFn(python_code));
-  function_name_ = function_name;
 }
 
 State::ID TransitionFn::next_state(const AttributeMap& interaction, AttributeMap& global_state) const {
   if (!script_fn_)
-    throw Util::MissingScriptError(id_.value());
+    throw Util::MissingTransitionFnScriptError(id_.value());
   
-  return state_at(script_fn_->execute(function_name_, interaction, global_state));
+  return state_at(script_fn_->execute(Util::kTransitionFnScriptFunctionName, interaction, global_state));
 }
 
 /** private */

@@ -70,6 +70,26 @@ string InvalidTransitionFnError::form_error_message(int transition_fn_id) const 
   return err_ss.str();
 }
 
+//////////////////////////////////////////////////////
+// InvalidObjectError member implementation details //
+//////////////////////////////////////////////////////
+
+/** public */
+
+InvalidObjectError::InvalidObjectError(int state_id, int object_id) :
+  runtime_error(form_error_message(state_id, object_id))
+{
+  // empty body
+}
+
+/** private */
+
+string InvalidObjectError::form_error_message(int state_id, int object_id) const {
+  stringstream err_ss;
+  err_ss << "Invalid object ID requested for state " << state_id << ": " << object_id;
+  return err_ss.str();
+}
+
 //////////////////////////////////////////////////////////
 // InvalidStateIndexError member implementation details //
 //////////////////////////////////////////////////////////
@@ -90,13 +110,13 @@ string InvalidStateIndexError::form_error_message(int transition_fn_id, int stat
   return err_ss.str();
 }
 
-//////////////////////////////////////////////////////
-// MissingScriptError member implementation details //
-//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+// MissingTransitionFnScriptError member implementation details //
+//////////////////////////////////////////////////////////////////
 
 /** public */
 
-MissingScriptError::MissingScriptError(int transition_fn_id) :
+MissingTransitionFnScriptError::MissingTransitionFnScriptError(int transition_fn_id) :
   runtime_error(form_error_message(transition_fn_id))
 {
   // empty body
@@ -104,9 +124,49 @@ MissingScriptError::MissingScriptError(int transition_fn_id) :
 
 /** private */
 
-string MissingScriptError::form_error_message(int transition_fn_id) const {
+string MissingTransitionFnScriptError::form_error_message(int transition_fn_id) const {
   stringstream err_ss;
   err_ss << "Missing external script for transition function: " << transition_fn_id;
+  return err_ss.str();
+}
+
+//////////////////////////////////////////////////////////
+// InvalidScriptTypeError member implementation details //
+//////////////////////////////////////////////////////////
+
+/** public */
+
+InvalidScriptTypeError::InvalidScriptTypeError(const string& script_type) :
+  runtime_error(form_error_message(script_type))
+{
+  // empty body
+}
+
+/** private */
+
+string InvalidScriptTypeError::form_error_message(const string& script_type) const {
+  stringstream err_ss;
+  err_ss << "Unsupported script type: " << script_type;
+  return err_ss.str();
+}
+
+//////////////////////////////////////////////////////
+// MissingScriptError member implementation details //
+//////////////////////////////////////////////////////
+
+/** public */
+
+MissingScriptError::MissingScriptError(const string& script_name) :
+  runtime_error(form_error_message(script_name))
+{
+  // empty body
+}
+
+/** private */
+
+string MissingScriptError::form_error_message(const string& script_name) const {
+  stringstream err_ss;
+  err_ss << "Missing script: " << script_name;
   return err_ss.str();
 }
 

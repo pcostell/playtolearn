@@ -25,9 +25,11 @@ class Engine {
 public:
   /**
    * load_level instructs the game engine to load all of the data associated
-   * with a particular level of the game.
+   * with a particular level of the game. If any of the TransitionFn objects in
+   * this level attempt to utilize an unsupported script type, an
+   * InvalidScriptTypeError exception is thrown.
    */
-  void load_level(const std::string& level_name);
+  void load_level(int level_index);
   
   /**
    * player_x and player_y return the x and y coordinates of the player's
@@ -62,6 +64,15 @@ private:
   AttributeMap global_state_;
   
   std::map<TransitionFn::ID, AttributeMap> transition_data_;
+  
+  //////////////////////
+  // member functions //
+  //////////////////////
+  
+  void load_state_machine(const std::string& level_name);
+  void load_transition_fns(const std::string& level_name);
+  void load_python_transition_fn_script(int transition_fn_id, const std::string& script_name);
+  
 };
 
 //////////////////////////////

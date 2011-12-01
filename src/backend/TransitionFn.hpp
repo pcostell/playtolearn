@@ -12,7 +12,7 @@
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/string.hpp>
-#include <boost/serialization/map.hpp>
+#include <boost/serialization/vector.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/scoped_ptr.hpp>
 
@@ -45,7 +45,7 @@ public:
    * The TransitionFn constructor initializes a TransitionFn object with the
    * specified unique identifier.
    */
-  explicit TransitionFn(ID id);
+  explicit TransitionFn(ID id = ID());
   
   /**
    * id returns the unique ID of this particular transition function object.
@@ -82,7 +82,7 @@ public:
    * set_python_function changes the internal ExternalTransitionFn script to be
    * a PythonTransitionFn object with the specified code and function name.
    */
-  void set_python_function(const std::string& python_code, const std::string& function_name);
+  void set_python_function(const std::string& python_code);
   
   /**
    * next_state returns the ID of the next state based on the given interaction
@@ -91,7 +91,7 @@ public:
    * global_state is a modifiable map containing state pertaining to the game
    * world which the transition scripts can update. If the transition function
    * has not yet been assigned a transition script, the function throws a
-   * MissingScriptError exception.
+   * MissingTransitionFnScriptError exception.
    */
   Util::UniqueID<State> next_state(const AttributeMap& interaction, AttributeMap& global_state) const;
   
@@ -112,8 +112,6 @@ private:
   std::vector<Util::UniqueID<State> > state_ids_;
   
   ExternalTransitionFn::Ptr script_fn_;
-  
-  std::string function_name_;
   
   //////////////////////
   // member functions //

@@ -77,6 +77,18 @@ private:
   static int next_available_id_;
 };
 
+/////////////////////////////
+// UniqueID free functions //
+/////////////////////////////
+
+/** public */
+
+/**
+ * operator<< allows a UniqueID object to be written to an output stream.
+ */
+template <typename T>
+inline std::ostream& operator<<(std::ostream& output, const UniqueID<T>& id);
+
 ////////////////////////////////
 // UniqueID inlined functions //
 ////////////////////////////////
@@ -136,6 +148,17 @@ const UniqueID<T> UniqueID<T>::create() {
 
 template <typename T>
 int UniqueID<T>::next_available_id_ = 0;
+
+///////////////////////////////////////////////////
+// UniqueID free function implementation details //
+///////////////////////////////////////////////////
+
+/** public */
+
+template <typename T>
+std::ostream& operator<<(std::ostream& output, const UniqueID<T>& id) {
+  return output << id.value();
+}
 
 } // namespace Util
 } // namespace PlayToLearn
