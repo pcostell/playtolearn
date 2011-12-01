@@ -20,6 +20,10 @@ set(IRRLICHT_VERSION 1.7.2)
 ## GENERIC PACKAGES ##
 ######################
 
+########
+## Qt ##
+########
+
 SET ( QT_USE_OPENGL true)
 
 find_package(GLUT)
@@ -118,7 +122,7 @@ IF(APPLE)
   set(IRRLICHT_INSTALL_COMMAND mkdir -p ../../lib && cp <SOURCE_DIR>/source/Irrlicht/MacOSX/build/Release/libIrrlicht.a ../../lib/ && cp -r <SOURCE_DIR>/include ../../)
 ELSE()
   set(IRRLICHT_BUILD_COMMAND cd source/Irrlicht && make sharedlib)
-  set(IRRLICHT_INSTALL_COMMAND cp -r <SOURCE_DIR>/lib/Linux ../../lib 2> /dev/null || cp -r <SOURCE_DIR>/include ../../include 2> /dev/null || true)
+  set(IRRLICHT_INSTALL_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/IrrlichtInstallUnix.sh <SOURCE_DIR> ${IRRLICHT_VERSION})
 ENDIF()
 
 ExternalProject_Add(irrlicht
@@ -152,12 +156,18 @@ FOREACH(s ${STATIC_LIBS_FILES} )
   MESSAGE("Adding library \"${name}\"\n\tfrom location \"${s}\"")
 ENDFOREACH()
 
+FILE(GLOB DYNAMIC_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/*/lib")
+FOREACH(s ${DYNAMIC_LIBS_DIR})
+  LINK_DIRECTORIES(${s})
+  MESSAGE("Linking directory: ${s}")
+ENDFOREACH()
+
 #######################
 ## SETTING LIBRARIES ##
 #######################
 
-SET(STATIC_LIBS Irrlicht boost_python boost_serialization)
-SET(DYNAMIC_LIBS dl m util ${QT_LIBRARIES})
+#SET(STATIC_LIBS Irrlicht boost_python boost_serialization)
+SET(DYNAMIC_LIBS dl m util ${QT_LIBRARIES} Irrlicht boost_python boost_serialization)
 
 IF(APPLE)
   list(APPEND DYNAMIC_LIBS python)

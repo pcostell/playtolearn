@@ -5,7 +5,6 @@
 #include <QGraphicsView>
 
 #include "ui/UIMenuBar.hpp"
-#include "ui/NodeCreator.hpp"
 #include "ui/NodeScene.hpp"
 
 int main( int argc, char **argv )
