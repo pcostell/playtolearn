@@ -2,11 +2,11 @@
  * File: backend/Engine.cpp
  */
 
-#include "util/Constants.hpp"
-#include "util/ErrorTypes.hpp"
 #include "backend/Engine.hpp"
+
 #include <fstream>
 #include <sstream>
+
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -14,16 +14,18 @@
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/utility.hpp>
 
+#include "util/Constants.hpp"
+#include "util/ErrorTypes.hpp"
+#include "backend/TransitionFn.hpp"
+#include "frontend/Interactions.hpp"
+#include "frontend/InteractionResponses.hpp"
+
 using namespace std;
 
 namespace PlayToLearn {
 namespace Backend {
 
-///////////////////////////////////////////////////
-// Engine member function implementation details //
-///////////////////////////////////////////////////
-
-/** public */
+/** Engine member functions, public */
 
 void Engine::load_level(int level_index) {
   // Locate the directory with the level's information:
@@ -39,7 +41,7 @@ void Engine::load_level(int level_index) {
 Frontend::InteractionResponse::Ptr Engine::register_interaction(Frontend::Interaction::Ptr interaction) {
   // Check if the object has an interaction available for this state:
   const State& current_state = state_machine_.current_state();
-  if (!current_state.object_exists(interaction->object_id()))
+  if (!current_state.contains_object(interaction->object_id()))
     return Frontend::InteractionResponse::Ptr();
   
   // This is the transition function associated with this object/state pair:
@@ -57,19 +59,17 @@ Frontend::InteractionResponse::Ptr Engine::register_interaction(Frontend::Intera
   
   // Return the proper interaction response:
   const State& new_state = state_machine_.current_state();
-  if (!interaction->requesting_data() || !new_state.object_exists(interaction->object_id()))
+  if (!interaction->requesting_data() || !new_state.contains_object(interaction->object_id()))
     return Frontend::InteractionResponse::Ptr();
   
   fn_id = new_state.transition_fn_id(interaction->object_id());
   return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
 }
 
-/** private */
+/** Engine member function, private */
 
-/*
- * load_state_machine uses Boost serialization to load the StateMachine data for
- * the level with the specified name.
- */
+// load_state_machine uses Boost serialization to load the StateMachine data for
+// the level with the specified name.
 void Engine::load_state_machine(const string& level_name) {
   // Open the file with the level's information:
   stringstream file_name_ss;
@@ -81,10 +81,8 @@ void Engine::load_state_machine(const string& level_name) {
   input_archive >> boost::serialization::make_nvp("StateMachine", state_machine_);
 }
 
-/*
- * load_transition_fns loads the scripting data for all of the TransitionFn
- * objects associated with the level with the specified name.
- */
+// load_transition_fns loads the scripting data for all of the TransitionFn
+// objects associated with the level with the specified name.
 void Engine::load_transition_fns(const string& level_name) {
   // Read the transition function data:
   stringstream file_name_ss;
@@ -119,11 +117,9 @@ void Engine::load_transition_fns(const string& level_name) {
   }
 }
 
-/*
- * load_python_transition_fn_script reads the file for a specific transition
- * function script written in Python and assigns it to the appropriate
- * TransitionFn object.
- */
+// load_python_transition_fn_script reads the file for a specific transition
+// function script written in Python and assigns it to the appropriate
+// TransitionFn object.
 void Engine::load_python_transition_fn_script(int transition_fn_id, const string& script_name) {
   // Read the individual transition function script data:
   ifstream input_file(script_name.c_str());

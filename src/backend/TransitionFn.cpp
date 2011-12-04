@@ -3,23 +3,23 @@
  */
 
 #include "backend/TransitionFn.hpp"
-#include "backend/State.hpp"
-#include "backend/external/PythonTransitionFn.hpp"
-#include "util/Constants.hpp"
-#include "util/ErrorTypes.hpp"
+
 #include <stdexcept>
 #include <sstream>
+
+#include "util/Constants.hpp"
+#include "util/ErrorTypes.hpp"
+#include "backend/AttributeMap.hpp"
+#include "backend/State.hpp"
+#include "backend/external/ExternalTransitionFn.hpp"
+#include "backend/external/PythonTransitionFn.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Backend {
 
-////////////////////////////////////////////////
-// TransitionFn member implementation details //
-////////////////////////////////////////////////
-
-/** public */
+/** TransitionFn member functions, public */
 
 TransitionFn::TransitionFn(ID id) : id_(id) {
   // empty body
@@ -50,12 +50,10 @@ State::ID TransitionFn::next_state(const AttributeMap& interaction, AttributeMap
   return state_at(script_fn_->execute(Util::kTransitionFnScriptFunctionName, interaction, global_state));
 }
 
-/** private */
+/** TransitionFn member functions, private */
 
-/*
- * check_state_index checks that the specified index is within valid bounds. If
- * it isn't, the member function throws a InvalidStateIndexError exception.
- */
+// check_state_index checks that the specified index is within valid bounds. If
+// it isn't, the member function throws a InvalidStateIndexError exception.
 void TransitionFn::check_state_index(int index) const {
   if (index < 0 || index >= num_states())
     throw Util::InvalidStateIndexError(id_.value(), index);

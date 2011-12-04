@@ -2,22 +2,25 @@
  * File: backend/State.cpp
  */
 
-#include "util/ErrorTypes.hpp"
 #include "backend/State.hpp"
+
+#include "util/ErrorTypes.hpp"
+#include "backend/Object.hpp"
+#include "backend/TransitionFn.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Backend {
 
-/////////////////////////////////////////
-// State member implementation details //
-/////////////////////////////////////////
-
-/** public */
+/** State member functions, public */
 
 State::State(ID id) : id_(id) {
   // empty body
+}
+
+bool State::contains_object(Object::ID id) const {
+  return object_ids_.count(id);
 }
 
 TransitionFn::ID State::transition_fn_id(Object::ID object_id) const {

@@ -3,19 +3,17 @@
  */
 
 #include "backend/StateMachine.hpp"
-#include "util/ErrorTypes.hpp"
+
 #include <sstream>
+
+#include "util/ErrorTypes.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Backend {
 
-////////////////////////////////////////////////
-// StateMachine member implementation details //
-////////////////////////////////////////////////
-
-/** public */
+/** StateMachine member functions, public */
 
 const State& StateMachine::state(State::ID id) const {
   map<State::ID, State>::const_iterator itr = state_map_.find(id);
@@ -23,6 +21,10 @@ const State& StateMachine::state(State::ID id) const {
     throw Util::InvalidStateError(id.value());
   
   return itr->second;
+}
+
+bool StateMachine::contains_state(State::ID id) const {
+  return state_map_.count(id);
 }
 
 void StateMachine::add_state(const State& state) {
@@ -39,6 +41,10 @@ const TransitionFn& StateMachine::transition_fn(TransitionFn::ID id) const {
     throw Util::InvalidTransitionFnError(id.value());
   
   return itr->second;
+}
+
+bool StateMachine::contains_transition_fn(TransitionFn::ID id) const {
+  return transition_fn_map_.count(id);
 }
 
 void StateMachine::add_transition_fn(const TransitionFn& transition_fn) {

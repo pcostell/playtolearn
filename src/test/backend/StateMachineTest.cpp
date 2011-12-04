@@ -4,14 +4,18 @@
 
 #define BOOST_TEST_MODULE StateMachine test
 
-#include "util/ErrorTypes.hpp"
-#include "backend/StateMachine.hpp"
 #include <fstream>
+
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/utility.hpp>
 #include <boost/test/unit_test.hpp>
+
+#include "util/ErrorTypes.hpp"
+#include "backend/StateMachine.hpp"
+#include "backend/State.hpp"
+#include "backend/TransitionFn.hpp"
 
 using namespace std;
 using PlayToLearn::Util::InvalidStateError;
