@@ -26,7 +26,7 @@ bool State::contains_object(Object::ID id) const {
 TransitionFn::ID State::transition_fn_id(Object::ID object_id) const {
   map<Object::ID, TransitionFn::ID>::const_iterator itr = object_ids_.find(object_id);
   if (itr == object_ids_.end())
-    throw Util::InvalidObjectError(id_.value(), object_id.value());
+    throw Util::InvalidObjectError(id_, object_id);
   
   return object_ids_.find(object_id)->second;
 }

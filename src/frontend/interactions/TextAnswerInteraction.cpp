@@ -4,16 +4,14 @@
 
 #include "frontend/interactions/TextAnswerInteraction.hpp"
 
+#include "backend/Object.hpp"
+
 using namespace std;
 
 namespace PlayToLearn {
 namespace Frontend {
 
-/////////////////////////////////////////////////////////
-// TextAnswerInteraction member implementation details //
-/////////////////////////////////////////////////////////
-
-/** public */
+/** TextAnswerInteraction member functions, public */
 
 TextAnswerInteraction::TextAnswerInteraction(Backend::Object::ID object_id) :
   Interaction(object_id)

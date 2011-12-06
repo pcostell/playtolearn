@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "backend/Object.hpp"
+
 using namespace PlayToLearn;
 using namespace PlayToLearn::Frontend;
 using namespace std;

@@ -18,7 +18,7 @@ namespace Backend {
 const State& StateMachine::state(State::ID id) const {
   map<State::ID, State>::const_iterator itr = state_map_.find(id);
   if (itr == state_map_.end())
-    throw Util::InvalidStateError(id.value());
+    throw Util::InvalidStateError(id);
   
   return itr->second;
 }
@@ -38,7 +38,7 @@ void StateMachine::remove_state(State::ID id) {
 const TransitionFn& StateMachine::transition_fn(TransitionFn::ID id) const {
   map<TransitionFn::ID, TransitionFn>::const_iterator itr = transition_fn_map_.find(id);
   if (itr == transition_fn_map_.end())
-    throw Util::InvalidTransitionFnError(id.value());
+    throw Util::InvalidTransitionFnError(id);
   
   return itr->second;
 }

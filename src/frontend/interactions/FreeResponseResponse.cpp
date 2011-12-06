@@ -2,19 +2,17 @@
  * File: frontend/interactions/FreeResponseResponse.cpp
  */
 
-#include "util/Constants.hpp"
 #include "frontend/interactions/FreeResponseResponse.hpp"
+
+#include "util/Constants.hpp"
+#include "backend/AttributeMap.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Frontend {
 
-////////////////////////////////////////////////////////
-// FreeResponseResponse member implementation details //
-////////////////////////////////////////////////////////
-
-/** public */
+/** FreeResponseResponse member functions, public */
 
 FreeResponseResponse::FreeResponseResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data),
