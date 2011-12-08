@@ -76,37 +76,49 @@ BOOST_AUTO_TEST_CASE(bad_state_test) {
 }
 
 BOOST_AUTO_TEST_CASE(python_code_test) {
-  // Create a transition function and add some states:
-  TransitionFn fn;
-  fn.add_state(State::ID(3));
-  fn.add_state(State::ID(2));
-  fn.add_state(State::ID());
-  fn.add_state(State::ID(50));
+  // Create two transition functions and add some states:
+  TransitionFn fn_a(TransitionFn::ID(0));
+  fn_a.add_state(State::ID(3));
+  fn_a.add_state(State::ID(2));
+  fn_a.add_state(State::ID());
+  fn_a.add_state(State::ID(50));
+  TransitionFn fn_b(TransitionFn::ID(1));
+  fn_b.add_state(State::ID(1));
+  fn_b.add_state(State::ID(8));
   
   // The Python code:
-  string code = "def state_transition(am, gs):\n";
-  code += "\tif am['answer'] == 'A':\n";
-  code += "\t\treturn 0\n";
-  code += "\telif am['answer'] == 'B':\n";
-  code += "\t\treturn 1\n";
-  code += "\telif am['answer'] == 'C':\n";
-  code += "\t\treturn 2\n";
-  code += "\treturn 3\n";
-  fn.set_python_function(code);
+  string code = "def state_transition_0(am, gs):\n";
+  code += "  if am['answer'] == 'A':\n";
+  code += "    return 0\n";
+  code += "  elif am['answer'] == 'B':\n";
+  code += "    return 1\n";
+  code += "  elif am['answer'] == 'C':\n";
+  code += "    return 2\n";
+  code += "  return 3\n";
+  fn_a.set_python_function(code);
+  code  = "def state_transition_1(am, gs):\n";
+  code += "  if am['answer'] == 'A':\n";
+  code += "    return 0\n";
+  code += "  return 1\n";
+  fn_b.set_python_function(code);
   AttributeMap interaction, global_state;
   
   // Execute the code and test for the right answers:
   interaction.set_value("answer", "A");
-  BOOST_CHECK_EQUAL(fn.next_state(interaction, global_state), State::ID(3));
+  BOOST_CHECK_EQUAL(fn_a.next_state(interaction, global_state), State::ID(3));
+  BOOST_CHECK_EQUAL(fn_b.next_state(interaction, global_state), State::ID(1));
   
   interaction.set_value("answer", "B");
-  BOOST_CHECK_EQUAL(fn.next_state(interaction, global_state), State::ID(2));
+  BOOST_CHECK_EQUAL(fn_a.next_state(interaction, global_state), State::ID(2));
+  BOOST_CHECK_EQUAL(fn_b.next_state(interaction, global_state), State::ID(8));
   
   interaction.set_value("answer", "C");
-  BOOST_CHECK_EQUAL(fn.next_state(interaction, global_state), State::ID());
+  BOOST_CHECK_EQUAL(fn_a.next_state(interaction, global_state), State::ID());
+  BOOST_CHECK_EQUAL(fn_b.next_state(interaction, global_state), State::ID(8));
   
   interaction.set_value("answer", "D");
-  BOOST_CHECK_EQUAL(fn.next_state(interaction, global_state), State::ID(50));
+  BOOST_CHECK_EQUAL(fn_a.next_state(interaction, global_state), State::ID(50));
+  BOOST_CHECK_EQUAL(fn_b.next_state(interaction, global_state), State::ID(8));
 }
 
 BOOST_AUTO_TEST_CASE(bad_script_test) {

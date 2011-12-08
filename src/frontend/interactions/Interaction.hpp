@@ -32,7 +32,7 @@ public:
   // pointers as Interaction::Ptr. A const version is provided as well.
   typedef boost::shared_ptr<Interaction> Ptr;
   typedef boost::shared_ptr<const Interaction> ConstPtr;
-
+  
   // The Type enum describes what kind of interaction this object represents.
   enum Type {
     INTERACT_GENERIC,
@@ -40,15 +40,15 @@ public:
     INTERACT_FREE_RESPONSE_ANSWER,
     INTERACT_MULTIPLE_CHOICE_ANSWER,
   };
-
+  
   // The Interaction constructor initializes an Interaction object with the
   // specified target of the interaction.
   explicit Interaction(Util::UniqueID<Backend::Object> object_id);
-
+  
   // The Interaction destructor is declared virtual so that the class may be
   // used polymorphically.
   virtual ~Interaction();
-
+  
   // type returns the specific subclass of Interaction represented by this
   // object.
   virtual Type type() const = 0;
@@ -58,18 +58,18 @@ public:
   // It will return false when the interaction is instead requesting a state
   // transition.
   virtual bool requesting_data() const = 0;
-
+  
   // object_id returns the ID of the interactive object with which the user
   // wants to interact.
   Util::UniqueID<Backend::Object> object_id() const;
-
+  
   // attribute_map converts this particular Interaction object into an
   // AttributeMap object that can be passed to the backend.
   const Backend::AttributeMap& attribute_map() const;
 
 protected:
   // member functions
-
+  
   template <typename T>
   void set_value(const std::string& attribute, const T& value);
 

@@ -47,7 +47,9 @@ State::ID TransitionFn::next_state(const AttributeMap& interaction, AttributeMap
   if (!script_fn_)
     throw Util::MissingTransitionFnScriptError(id_);
   
-  return state_at(script_fn_->execute(Util::kTransitionFnScriptFunctionName, interaction, global_state));
+  stringstream function_name_ss;
+  function_name_ss << Util::kTransitionFnScriptFunctionName << id_;
+  return state_at(script_fn_->execute(function_name_ss.str(), interaction, global_state));
 }
 
 /** TransitionFn member functions, private */

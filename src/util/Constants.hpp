@@ -60,7 +60,7 @@ const std::string kMCAnswerIndexAttribute("mc_answer_index");
 
 // The following constants represent the various values associated with the
 // interaction response type attribute for different InteractionResponse
-// subclasses.
+// subclasses. They should be paired with kInteractionResponseTypeAttribute.
 const std::string kTextResponseTypeValue("text_response");
 const std::string kFreeResponseResponseTypeValue("free_response_response");
 const std::string kMultipleChoiceResponseTypeValue("multiple_choice_response");
@@ -70,7 +70,7 @@ const std::string kNewLevelResponseTypeValue("new_level_response");
 
 // The kTransitionFnScriptFunctionName constant represents the name of the
 // script function which performs the transition function operation.
-const std::string kTransitionFnScriptFunctionName("state_transition");
+const std::string kTransitionFnScriptFunctionName("state_transition_");
 
 /** Engine constants */
 
@@ -81,6 +81,10 @@ const std::string kLevelDirectoryPrefix("data/level");
 // The kLevelStateMachineFile constant represents the name of the file
 // containing StateMachine information for a particular level.
 const std::string kLevelStateMachineFile("sm.xml");
+
+// The kLevelTransitionDataFile constant represents the name of the file
+// containing transition data information for a particular level.
+const std::string kLevelTransitionDataFile("tdata.xml");
 
 // The kLevelTransitionFnFile constant represents the name of the file
 // containing information regarding all transition function external scripts in

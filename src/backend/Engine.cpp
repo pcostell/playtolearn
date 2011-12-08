@@ -13,10 +13,10 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/utility.hpp>
+#include <boost/serialization/map.hpp>
 
 #include "util/Constants.hpp"
 #include "util/ErrorTypes.hpp"
-#include "backend/TransitionFn.hpp"
 #include "frontend/Interactions.hpp"
 #include "frontend/InteractionResponses.hpp"
 
@@ -27,6 +27,11 @@ namespace Backend {
 
 /** Engine member functions, public */
 
+Engine::Engine(int initial_level_index, State::ID initial_state_id) {
+  load_level(initial_level_index);
+  state_machine_.set_current_state(initial_state_id);
+}
+
 void Engine::load_level(int level_index) {
   // Locate the directory with the level's information:
   stringstream level_name_ss;
@@ -35,6 +40,7 @@ void Engine::load_level(int level_index) {
   
   // Load data:
   load_state_machine(level_name);
+  load_transition_data(level_name);
   load_transition_fns(level_name);
 }
 
@@ -59,14 +65,15 @@ Frontend::InteractionResponse::Ptr Engine::register_interaction(Frontend::Intera
   
   // Return the proper interaction response:
   const State& new_state = state_machine_.current_state();
-  if (!interaction->requesting_data() || !new_state.contains_object(interaction->object_id()))
+  //if (!interaction->requesting_data() || !new_state.contains_object(interaction->object_id()))
+  if (!new_state.contains_object(interaction->object_id()))
     return Frontend::InteractionResponse::Ptr();
   
   fn_id = new_state.transition_fn_id(interaction->object_id());
   return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
 }
 
-/** Engine member function, private */
+/** Engine member functions, private */
 
 // load_state_machine uses Boost serialization to load the StateMachine data for
 // the level with the specified name.
@@ -79,6 +86,19 @@ void Engine::load_state_machine(const string& level_name) {
   // Read the XML data into the StateMachine object:
   boost::archive::xml_iarchive input_archive(input_file);
   input_archive >> boost::serialization::make_nvp("StateMachine", state_machine_);
+}
+
+// load_transition_data loads the attribute maps associated with each transition
+// function for this particular level.
+void Engine::load_transition_data(const string& level_name) {
+  // Open the file with the level's information:
+  stringstream file_name_ss;
+  file_name_ss << level_name << Util::kLevelTransitionDataFile;
+  ifstream input_file(file_name_ss.str().c_str());
+  
+  // Read the XML data into the transition data map:
+  boost::archive::xml_iarchive input_archive(input_file);
+  input_archive >> boost::serialization::make_nvp("transition_data", transition_data_);
 }
 
 // load_transition_fns loads the scripting data for all of the TransitionFn

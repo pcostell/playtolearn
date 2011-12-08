@@ -1,24 +1,29 @@
+/*
+ * File: frontend/display/text/TextDisplay.cpp
+ */
+
 #include "frontend/display/text/TextDisplay.hpp"
 
 #include <iostream>
 
 #include "backend/Object.hpp"
 
-using namespace PlayToLearn;
-using namespace PlayToLearn::Frontend;
 using namespace std;
 
+namespace PlayToLearn {
+namespace Frontend {
+
 void TextDisplay::main_display_loop() {
-
   cout << "Welcome to PlayToLearn" << endl;
-  DrawScene();
-  Interaction::Ptr it(new GenericInteraction(Backend::Object::ID(0)));
-  current_response_ = Interaction(it);
-
+  draw_scene();
+  Interaction::Ptr initial_interaction(new GenericInteraction(Backend::Object::ID(0)));
+  current_response_ = interact(initial_interaction);
+  
   while (current_response_) {
     displayInteraction(current_response_);
     Interaction::Ptr interaction = handleInteraction(current_response_);
-    if(interaction) current_response_ = Interaction(interaction);
+    if (interaction)
+      current_response_ = interact(interaction);
   }
 }
 
@@ -31,6 +36,7 @@ Interaction::Ptr TextDisplay::handleInteraction(InteractionResponse::Ptr respons
     case InteractionResponse::IR_MULTIPLE_CHOICE:
       return handleMultipleChoiceInteraction(boost::static_pointer_cast<MultipleChoiceResponse>(response));
   }
+  
   return boost::shared_ptr<Frontend::Interaction>();
 }
 
@@ -39,7 +45,6 @@ TextAnswerInteraction::Ptr TextDisplay::handleTextInteraction(TextResponse::Ptr 
 }
 
 FreeResponseAnswerInteraction::Ptr TextDisplay::handleFreeResponseInteraction(FreeResponseResponse::Ptr response) {
-  cout << response->text() << endl;
   string line = GetLine();
   return boost::shared_ptr<FreeResponseAnswerInteraction>(new FreeResponseAnswerInteraction(response->object_id(), line));
 }
@@ -56,7 +61,6 @@ MultipleChoiceAnswerInteraction::Ptr TextDisplay::handleMultipleChoiceInteractio
     }
   }
 }
-
 
 void TextDisplay::displayInteraction(InteractionResponse::Ptr response) {
   switch (response->type()) {
@@ -83,7 +87,7 @@ void TextDisplay::displayFreeResponseInteraction(FreeResponseResponse::Ptr respo
 void TextDisplay::displayMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response) {
   cout << response->text() << endl;
   for (size_t i = 0; i < response->num_choices(); ++i) {
-    cout << ('A' + i) << " : " << response->choice(i) << endl;
+    cout << ('A' + i) << ": " << response->choice(i) << endl;
   }
 }
 
@@ -101,3 +105,6 @@ string TextDisplay::GetLine() {
   getline(cin, line);
   return line;
 }
+
+} // namespace Frontend
+} // namespace PlayToLearn

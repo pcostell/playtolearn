@@ -11,6 +11,8 @@
 
 #include "backend/AttributeMap.hpp"
 #include "backend/StateMachine.hpp"
+#include "backend/State.hpp"
+#include "backend/TransitionFn.hpp"
 
 namespace PlayToLearn {
 
@@ -23,15 +25,16 @@ namespace Frontend {
 
 namespace Backend {
 
-/** class declarations */
-
-class TransitionFn;
-
 /** class definitions */
 
 // The Engine class drives the entire backend portion of the program.
 class Engine {
 public:
+  // The Engine constructor accepts a single level index as an argument. It
+  // initializes the backend starting at the specified level in the specified
+  // initial state.
+  explicit Engine(int initial_level_index, State::ID initial_state_id);
+  
   // load_level instructs the game engine to load all of the data associated
   // with a particular level of the game. If any of the TransitionFn objects in
   // this level attempt to utilize an unsupported script type, an
@@ -60,14 +63,14 @@ private:
   double player_y_;
   AttributeMap global_state_;
   
-  std::map<Util::UniqueID<TransitionFn>, AttributeMap> transition_data_;
+  std::map<TransitionFn::ID, AttributeMap> transition_data_;
   
   // member functions
   
   void load_state_machine(const std::string& level_name);
+  void load_transition_data(const std::string& level_name);
   void load_transition_fns(const std::string& level_name);
   void load_python_transition_fn_script(int transition_fn_id, const std::string& script_name);
-  
 };
 
 /** Engine inlined member functions, public */

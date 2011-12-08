@@ -13,8 +13,6 @@
 namespace PlayToLearn {
 namespace Backend {
 
-/** class declarations */
-
 // The State and TransitionFn classes are not forward-declared because
 // incomplete types are disallowed in STL containers.
 
