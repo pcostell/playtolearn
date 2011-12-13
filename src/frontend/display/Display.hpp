@@ -21,22 +21,22 @@ public:
 
   class Error : public std::runtime_error {
   public:
-    explicit Error (const std::string& what);
+    explicit Error(const std::string& what);
   };
 
-  virtual ~Display() {};
-  virtual void main_display_loop() {};
+  virtual ~Display() {}
+  virtual void main_display_loop() {}
 
-  virtual void display_dialog() {};
-  //virtual void draw_object(const Object & npc) {};
+  virtual void display_dialog() {}
+  //virtual void draw_object(const Object & npc) {}
 
   void register_draw_scene_function(void (*fn)());
   void register_interaction_function(InteractionResponse::Ptr (*fn)(Interaction::Ptr response));
 
 protected:
-  void DrawScene();
-  InteractionResponse::Ptr Interaction(Interaction::Ptr interaction);
-  void LoadGame();
+  void draw_scene();
+  InteractionResponse::Ptr interact(Interaction::Ptr interaction);
+  void load_game();
 
 private:
   void (*drawScene_)();

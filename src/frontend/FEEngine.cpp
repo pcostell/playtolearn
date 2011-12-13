@@ -1,77 +1,61 @@
+/*
+ * File: FEEngine.cpp
+ */
 
 #include <iostream>
 #include <fstream>
 
 #include <boost/scoped_ptr.hpp>
 
+#include "util/Constants.hpp"
+#include "backend/AttributeMap.hpp"
+#include "backend/Engine.hpp"
 #include "frontend/InteractionResponses.hpp"
 #include "frontend/display/Display.hpp"
 #include "frontend/display/text/TextDisplay.hpp"
 #include "frontend/display/graphics/IrrlichtDisplay.hpp"
 
-#include "backend/Engine.hpp"
-#include "backend/AttributeMap.hpp"
-
-#include "util/Constants.hpp"
-
 namespace PlayToLearn {
 namespace Frontend {
 
-//////////////////////
-// Global variables //
-//////////////////////
+/** global variables */
 
-boost::scoped_ptr<Display> display(new Frontend::IrrlichtDisplay());
-boost::scoped_ptr<Backend::Engine> backend(new Backend::Engine());
+boost::scoped_ptr<Display> display;
+boost::scoped_ptr<Backend::Engine> engine;
 
-/////////////////////////
-// Function prototypes //
-/////////////////////////
+/** free function declarations */
 
-void loadFrontendEngine();
+void LoadFrontendEngine();
 
-////////////////////////
-// Callback functions //
-////////////////////////
+/** callback functions */
 
-InteractionResponse::Ptr interaction(Interaction::Ptr interaction) {
-
-  Backend::AttributeMap m;
-  m.set_value(Util::kTextAttribute, "HAHAHAHA");
-  m.set_value(Util::kObjectIDAttribute, interaction->object_id().value());
-  m.set_value(Util::kStateIDAttribute, 0);
-  return InteractionResponse::Ptr(new TextResponse(m));
-
-
-  //return backend->register_interaction(interaction);
+InteractionResponse::Ptr HandleInteraction(Interaction::Ptr interaction) {
+  return engine->register_interaction(interaction);
 }
 
-void drawScene() {
-
+void DrawScene() {
+  // empty for text program
 }
 
+/** free functions, private */
 
-//////////////////////
-// Helper Functions //
-//////////////////////
-
-void loadFrontendEngine() {
-  display->register_interaction_function(interaction);
-  display->register_draw_scene_function(drawScene);
+void LoadFrontendEngine() {
+  // Initialize the front end's variables:
+  display.reset(new Frontend::TextDisplay());
+  engine.reset(new Backend::Engine(0, Backend::State::ID(0)));
+  
+  display->register_interaction_function(HandleInteraction);
+  display->register_draw_scene_function(DrawScene);
   display->main_display_loop();
 }
 
 } // namespace Frontend
 } // namespace PlayToLearn
 
-///////////////////
-// Main function //
-///////////////////
+/** program entry point */
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   //handleOSXPaths();
-  PlayToLearn::Frontend::loadFrontendEngine();
+  PlayToLearn::Frontend::LoadFrontendEngine();
   return 0;
 }
-

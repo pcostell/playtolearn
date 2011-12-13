@@ -2,20 +2,19 @@
  * File: frontend/interactions/MultipleChoiceResponse.cpp
  */
 
-#include "util/Constants.hpp"
 #include "frontend/interactions/MultipleChoiceResponse.hpp"
+
 #include <boost/lexical_cast.hpp>
+
+#include "util/Constants.hpp"
+#include "backend/AttributeMap.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Frontend {
 
-//////////////////////////////////////////////////////////
-// MultipleChoiceResponse member implementation details //
-//////////////////////////////////////////////////////////
-
-/** public */
+/** MultipleChoiceResponse member functions, public */
 
 MultipleChoiceResponse::MultipleChoiceResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data),

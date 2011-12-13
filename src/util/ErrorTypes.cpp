@@ -3,18 +3,19 @@
  */
 
 #include "util/ErrorTypes.hpp"
+
 #include <sstream>
+
+#include "backend/State.hpp"
+#include "backend/Object.hpp"
+#include "backend/TransitionFn.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Util {
 
-/////////////////////////////////////////////////////////
-// MissingAttributeError member implementation details //
-/////////////////////////////////////////////////////////
-
-/** public */
+/** MissingAttributeError member functions, public */
 
 MissingAttributeError::MissingAttributeError(const string& attribute) :
   runtime_error(form_error_message(attribute))
@@ -22,7 +23,7 @@ MissingAttributeError::MissingAttributeError(const string& attribute) :
   // empty body
 }
 
-/** private */
+/** MissingAttributeError member functions, private */
 
 string MissingAttributeError::form_error_message(const string& attribute) const {
   stringstream err_ss;
@@ -30,91 +31,119 @@ string MissingAttributeError::form_error_message(const string& attribute) const 
   return err_ss.str();
 }
 
-/////////////////////////////////////////////////////
-// InvalidStateError member implementation details //
-/////////////////////////////////////////////////////
+/** InvalidStateError member functions, public */
 
-/** public */
-
-InvalidStateError::InvalidStateError(int state_id) :
-  runtime_error(form_error_message(state_id))
+InvalidStateError::InvalidStateError(Backend::State::ID id) :
+  runtime_error(form_error_message(id))
 {
   // empty body
 }
 
-/** private */
+/** InvalidStateError member functions, private */
 
-string InvalidStateError::form_error_message(int state_id) const {
+string InvalidStateError::form_error_message(Backend::State::ID id) const {
   stringstream err_ss;
-  err_ss << "Invalid state ID requested: " << state_id;
+  err_ss << "Invalid state ID requested: " << id.value();
   return err_ss.str();
 }
 
-////////////////////////////////////////////////////////////
-// InvalidTransitionFnError member implementation details //
-////////////////////////////////////////////////////////////
+/** InvalidTransitionFnError member functions, public */
 
-/** public */
-
-InvalidTransitionFnError::InvalidTransitionFnError(int transition_fn_id) :
-  runtime_error(form_error_message(transition_fn_id))
+InvalidTransitionFnError::InvalidTransitionFnError(Backend::TransitionFn::ID id) :
+  runtime_error(form_error_message(id))
 {
   // empty body
 }
 
-/** private */
+/** InvalidTransitionFnError member functions, private */
 
-string InvalidTransitionFnError::form_error_message(int transition_fn_id) const {
+string InvalidTransitionFnError::form_error_message(Backend::TransitionFn::ID id) const {
   stringstream err_ss;
-  err_ss << "Invalid transition function ID requested: " << transition_fn_id;
+  err_ss << "Invalid transition function ID requested: " << id.value();
   return err_ss.str();
 }
 
-//////////////////////////////////////////////////////////
-// InvalidStateIndexError member implementation details //
-//////////////////////////////////////////////////////////
+/** InvalidObjectError member functions, public */
 
-/** public */
+InvalidObjectError::InvalidObjectError(Backend::State::ID state_id, Backend::Object::ID object_id) :
+  runtime_error(form_error_message(state_id, object_id))
+{
+  // empty body
+}
 
-InvalidStateIndexError::InvalidStateIndexError(int transition_fn_id, int state_index) :
+/** InvalidObjectError member functions, private */
+
+string InvalidObjectError::form_error_message(Backend::State::ID state_id, Backend::Object::ID object_id) const {
+  stringstream err_ss;
+  err_ss << "Invalid object ID requested for state " << state_id.value() << ": " << object_id.value();
+  return err_ss.str();
+}
+
+/** InvalidStateIndexError member functions, public */
+
+InvalidStateIndexError::InvalidStateIndexError(Backend::TransitionFn::ID transition_fn_id, int state_index) :
   runtime_error(form_error_message(transition_fn_id, state_index))
 {
   // empty body
 }
 
-/** private */
+/** InvalidStateIndexError member functions, private */
 
-string InvalidStateIndexError::form_error_message(int transition_fn_id, int state_index) const {
+string InvalidStateIndexError::form_error_message(Backend::TransitionFn::ID transition_fn_id, int state_index) const {
   stringstream err_ss;
-  err_ss << "State index out of bounds for transition " << transition_fn_id << ": " << state_index;
+  err_ss << "State index out of bounds for transition " << transition_fn_id.value() << ": " << state_index;
   return err_ss.str();
 }
 
-//////////////////////////////////////////////////////
-// MissingScriptError member implementation details //
-//////////////////////////////////////////////////////
+/** MissingTransitionFnScriptError member functions, public */
 
-/** public */
-
-MissingScriptError::MissingScriptError(int transition_fn_id) :
-  runtime_error(form_error_message(transition_fn_id))
+MissingTransitionFnScriptError::MissingTransitionFnScriptError(Backend::TransitionFn::ID id) :
+  runtime_error(form_error_message(id))
 {
   // empty body
 }
 
-/** private */
+/** MissingTransitionFnScriptError member functions, private */
 
-string MissingScriptError::form_error_message(int transition_fn_id) const {
+string MissingTransitionFnScriptError::form_error_message(Backend::TransitionFn::ID id) const {
   stringstream err_ss;
-  err_ss << "Missing external script for transition function: " << transition_fn_id;
+  err_ss << "Missing external script for transition function: " << id.value();
   return err_ss.str();
 }
 
-////////////////////////////////////////////////////////
-// PythonExecutionError member implementation details //
-////////////////////////////////////////////////////////
+/** InvalidScriptTypeError member functions, public */
 
-/** public */
+InvalidScriptTypeError::InvalidScriptTypeError(const string& script_type) :
+  runtime_error(form_error_message(script_type))
+{
+  // empty body
+}
+
+/** InvalidScriptTypeError member functions, private */
+
+string InvalidScriptTypeError::form_error_message(const string& script_type) const {
+  stringstream err_ss;
+  err_ss << "Unsupported script type: " << script_type;
+  return err_ss.str();
+}
+
+/** MissingScriptError member functions, public */
+
+MissingScriptError::MissingScriptError(const string& script_name) :
+  runtime_error(form_error_message(script_name))
+{
+  // empty body
+}
+
+/** MissingScriptError member functions, private */
+
+string MissingScriptError::form_error_message(const string& script_name) const {
+  stringstream err_ss;
+  err_ss << "Missing script: " << script_name;
+  return err_ss.str();
+}
+
+/** PythonExecutionError member functions, public */
 
 PythonExecutionError::PythonExecutionError(const string& what_arg) :
   runtime_error(what_arg)

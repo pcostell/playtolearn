@@ -2,19 +2,17 @@
  * File: frontend/interactions/TextResponse.cpp
  */
 
-#include "util/Constants.hpp"
 #include "frontend/interactions/TextResponse.hpp"
+
+#include "util/Constants.hpp"
+#include "backend/AttributeMap.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Frontend {
 
-////////////////////////////////////////////////
-// TextResponse member implementation details //
-////////////////////////////////////////////////
-
-/** public */
+/** TextResponse member functions, public */
 
 TextResponse::TextResponse(const Backend::AttributeMap& data) :
   InteractionResponse(data),

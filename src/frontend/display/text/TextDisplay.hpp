@@ -1,25 +1,27 @@
+/*
+ * File: frontend/display/text/TextDisplay.hpp
+ */
 
 #pragma once
 
-#include "frontend/display/Display.hpp"
-
-#include "frontend/InteractionResponses.hpp"
-#include "frontend/Interactions.hpp"
-
 #include <string>
 
+#include "frontend/Interactions.hpp"
+#include "frontend/InteractionResponses.hpp"
+#include "frontend/display/Display.hpp"
 
 namespace PlayToLearn {
 namespace Frontend {
 
 class TextDisplay : public Display {
 public:
-
+  // The Ptr typedef allows us to refer to shared_ptr<TextDisplay> smart
+  // pointers as TextDisplay::Ptr. A const version is provided as well.
   typedef boost::shared_ptr<TextDisplay> Ptr;
   typedef boost::shared_ptr<const TextDisplay> ConstPtr;
-
+  
   void main_display_loop();
-
+  
   //void draw_object(const Object & object);
 
 private:

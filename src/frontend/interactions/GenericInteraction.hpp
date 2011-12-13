@@ -7,51 +7,42 @@
 #include "frontend/interactions/Interaction.hpp"
 
 namespace PlayToLearn {
+
+/** outside class declarations */
+
+namespace Backend {
+  class Object;
+}
+
 namespace Frontend {
 
-////////////////////////////////////////
-// GenericInteraction class interface //
-////////////////////////////////////////
+/** class definitions */
 
-/**
- * The GenericInteraction class represents a specific type of Interaction for
- * generic interactions with no special attributes. As a result, it holds no
- * additional data members of its own.
- */
+// The GenericInteraction class represents a specific type of Interaction for
+// generic interactions with no special attributes. As a result, it holds no
+// additional data members of its own.
 class GenericInteraction : public Interaction {
 public:
-  /**
-   * The Ptr typedef allows us to refer to shared_ptr<GenericInteraction> smart
-   * pointers as GenericInteraction::Ptr. A const version is provided as well.
-   */
+  // The Ptr typedef allows us to refer to shared_ptr<GenericInteraction> smart
+  // pointers as GenericInteraction::Ptr. A const version is provided as well.
   typedef boost::shared_ptr<GenericInteraction> Ptr;
   typedef boost::shared_ptr<const GenericInteraction> ConstPtr;
 
-  /**
-   * The GenericInteraction constructor simply forwards the specified object_id
-   * to the superclass, Interaction.
-   */
-  explicit GenericInteraction(Backend::Object::ID object_id);
+  // The GenericInteraction constructor simply forwards the specified object_id
+  // to the superclass, Interaction.
+  explicit GenericInteraction(Util::UniqueID<Backend::Object> object_id);
 
-  /**
-   * type returns what kind of interaction this object represents. This version
-   * always returns INTERACT_GENERIC.
-   */
+  // type returns what kind of interaction this object represents. This version
+  // always returns INTERACT_GENERIC.
   Type type() const;
   
-  /**
-   * This version of requesting_data returns true, since a GenericInteraction
-   * is created to initiate an interaction and is expecting information about
-   * that interaction in return.
-   */
+  // This version of requesting_data returns true, since a GenericInteraction
+  // is created to initiate an interaction and is expecting information about
+  // that interaction in return.
   bool requesting_data() const;
 };
 
-//////////////////////////////////////////
-// GenericInteraction inlined functions //
-//////////////////////////////////////////
-
-/** public */
+/** GenericInteraction inlined member functions, public */
 
 inline Interaction::Type GenericInteraction::type() const {
   return INTERACT_GENERIC;

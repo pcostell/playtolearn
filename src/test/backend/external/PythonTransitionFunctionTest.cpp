@@ -1,13 +1,18 @@
-#define BOOST_TEST_MODULE PythonTransitionFn test
-#include <boost/test/unit_test.hpp>
+/*
+ * Good Boost Unit Test Tutorial:
+ * http://www.boost.org/doc/libs/1_47_0/libs/test/doc/html/tutorials/new-year-resolution.html
+ */
 
-/* Good Boost Unit Test Tutorial:
-http://www.boost.org/doc/libs/1_47_0/libs/test/doc/html/tutorials/new-year-resolution.html
-*/
+#define BOOST_TEST_MODULE PythonTransitionFn test
+
 #include <string>
 #include <map>
-#include "backend/external/PythonTransitionFn.hpp"
+
+#include <boost/test/unit_test.hpp>
+
 #include "util/ErrorTypes.hpp"
+#include "backend/AttributeMap.hpp"
+#include "backend/external/PythonTransitionFn.hpp"
 
 using namespace std;
 using PlayToLearn::Backend::AttributeMap;

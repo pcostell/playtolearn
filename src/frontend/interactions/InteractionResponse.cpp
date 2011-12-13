@@ -1,26 +1,28 @@
 /*
- * File: frontend/interactions/InteractionResponse.hpp
+ * File: frontend/interactions/InteractionResponse.cpp
  */
 
-#include "util/Constants.hpp"
 #include "frontend/interactions/InteractionResponse.hpp"
+
+#include <stdexcept>
+#include <sstream>
+
+#include <boost/make_shared.hpp>
+
+#include "util/Constants.hpp"
 #include "frontend/interactions/TextResponse.hpp"
 #include "frontend/interactions/FreeResponseResponse.hpp"
 #include "frontend/interactions/MultipleChoiceResponse.hpp"
-#include <stdexcept>
-#include <sstream>
-#include <boost/make_shared.hpp>
+#include "backend/AttributeMap.hpp"
+#include "backend/State.hpp"
+#include "backend/Object.hpp"
 
 using namespace std;
 
 namespace PlayToLearn {
 namespace Frontend {
 
-///////////////////////////////////////////////////////
-// InteractionResponse member implementation details //
-///////////////////////////////////////////////////////
-
-/** public */
+/** InteractionResponse member functions, public */
 
 InteractionResponse::InteractionResponse(const Backend::AttributeMap& data) :
   state_id_(data.value<int>(Util::kStateIDAttribute)),
@@ -33,11 +35,7 @@ InteractionResponse::~InteractionResponse() {
   // empty body
 }
 
-//////////////////////////////////////////////////////
-// InteractionResponse class implementation details //
-//////////////////////////////////////////////////////
-
-/** public */
+/** InteractionResponse class functions, public */
 
 InteractionResponse::Ptr InteractionResponse::create(const Backend::AttributeMap& data) {
   // Extract the response type as a string and check to see if it's a valid

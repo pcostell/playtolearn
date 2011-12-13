@@ -22,16 +22,15 @@ void Display::register_interaction_function(InteractionResponse::Ptr (*fn)(Inter
   interact_ = fn;
 }
 
-
 ///////////////////////////////
 // Display protected methods //
 ///////////////////////////////
 
-void Display::DrawScene() {
+void Display::draw_scene() {
   drawScene_();
 }
 
-InteractionResponse::Ptr Display::Interaction(Interaction::Ptr interaction) {
+InteractionResponse::Ptr Display::interact(Interaction::Ptr interaction) {
   return interact_(interaction);
 }
 
