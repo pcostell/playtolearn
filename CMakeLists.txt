@@ -76,11 +76,12 @@ IF(APPLE)
                      CORE_FOUNDATION_LIBRARY
                      OPENGL_LIBRARY)
    SET(EXTRA_LIBS ${CARBON_LIBRARY} ${COCOA_LIBRARY} ${IOKIT_LIBRARY} ${CORE_FOUNDATION_LIBRARY} ${OPENGL_LIBRARY})
+   SET (SDKROOT "/Developer/SDKs/MacOSX10.6.sdk")
+   SET (CMAKE_OSX_SYSROOT "${SDKROOT}")
+   SET (CMAKE_OSX_ARCHITECTURES "i386")
 ENDIF()
 
-#SET (SDKROOT "/Developer/SDKs/MacOSX10.6.sdk")
-#SET (CMAKE_OSX_SYSROOT "${SDKROOT}")
-#SET (CMAKE_OSX_ARCHITECTURES "i386")
+
 
 ####################
 ## UNIX LIBRARIES ##
@@ -101,7 +102,6 @@ find_package(Boost REQUIRED COMPONENTS
 if (Boost_FOUND)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
-ADD_DEFINITIONS(-DBOOST_AUTO_TEST_MAIN)
 ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK)
 endif(Boost_FOUND)
 
@@ -268,11 +268,19 @@ install(TARGETS playtolearn
 ## TEST BUNDLES ##
 ##################
 
+SET(test_names "")
 FOREACH(t ${TEST_SRCS})
   STRING(REGEX REPLACE ".*/(.*)\\.cpp" "\\1" name "${t}")
-  add_executable(${name} ${t})
+  LIST(APPEND test_names ${name})
+  add_executable(${name} EXCLUDE_FROM_ALL ${t})
   target_link_libraries(${name} playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
   add_test(${name} ${name})
   add_dependencies(${name} playtolearnlibrary)
 ENDFOREACH()
 
+# This will explicitly build all the tests. We need this
+# because we added EXCLUDE_FROM_ALL to the test exes. This
+# greatly speeds up compilation because when we change code
+# in our main library, we don't need to build our tests.
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
+                  DEPENDS ${test_names})
