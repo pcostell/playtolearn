@@ -254,3 +254,4 @@ FOREACH(t ${TEST_SRCS})
   add_test(${name} ${name})
   add_dependencies(${name} playtolearnlibrary)
 ENDFOREACH()
+
