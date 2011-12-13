@@ -18,7 +18,8 @@ namespace Backend {
 
 Level::Level(const string& level_file_name) {
   ifstream input_file(level_file_name.c_str());
-  
+  string k = "BLAH";
+  k[0] = 'L';
 }
 
 } // namespace Backend
