@@ -48,6 +48,7 @@ int main(int argc, char** argv) {
   Backend::TransitionFn tfn_0(Backend::TransitionFn::ID(0));
   Backend::TransitionFn tfn_1(Backend::TransitionFn::ID(1));
   Backend::TransitionFn tfn_2(Backend::TransitionFn::ID(2));
+  //Backend::TransitionFn tfn_3(Backend::TransitionFn::ID(3));
   
   state_0.insert_object(object_0.id(), tfn_0.id());
   sm.add_state(state_0);
@@ -58,7 +59,9 @@ int main(int argc, char** argv) {
   state_2.insert_object(object_0.id(), tfn_2.id());
   sm.add_state(state_2);
   
+  //state_3.insert_object(object_0.id(), tfn_3.id());
   sm.add_state(state_3);
+  
   sm.add_state(state_4);
   
   // TransitionFn #0
