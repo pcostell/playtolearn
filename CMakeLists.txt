@@ -11,6 +11,8 @@ set (EduGame_VERSION_MINOR 1)
 #           THIRD PARTY LIBRARIES             #
 ###############################################
 
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR})
+
 include(ExternalProject)
 
 set(BOOST_VERSION 1.47.0)
@@ -20,14 +22,14 @@ set(IRRLICHT_VERSION 1.7.2)
 ## GENERIC PACKAGES ##
 ######################
 
-########
-## Qt ##
-########
+#################
+## Qt and GLUT ##
+#################
 
 SET ( QT_USE_OPENGL true)
 
-find_package(GLUT)
-find_package(OpenGL)
+find_package(GLUT REQUIRED)
+find_package(OpenGL REQUIRED)
 find_package(Qt4 REQUIRED)
 
 INCLUDE(${QT_USE_FILE})
@@ -74,44 +76,57 @@ IF(APPLE)
                      CORE_FOUNDATION_LIBRARY
                      OPENGL_LIBRARY)
    SET(EXTRA_LIBS ${CARBON_LIBRARY} ${COCOA_LIBRARY} ${IOKIT_LIBRARY} ${CORE_FOUNDATION_LIBRARY} ${OPENGL_LIBRARY})
+   SET (SDKROOT "/Developer/SDKs/MacOSX10.6.sdk")
+   SET (CMAKE_OSX_SYSROOT "${SDKROOT}")
+   SET (CMAKE_OSX_ARCHITECTURES "i386")
 ENDIF()
 
-SET (SDKROOT "/Developer/SDKs/MacOSX10.6.sdk")
-SET (CMAKE_OSX_SYSROOT "${SDKROOT}")
-SET (CMAKE_OSX_ARCHITECTURES "i386")
+
 
 ####################
 ## UNIX LIBRARIES ##
 ####################
 
 if(UNIX)
-  FIND_LIBRARY(X11_LIBRARY X11)
+  FIND_PACKAGE (X11 REQUIRED)
 endif()
 
 #######################
 ## BOOOST LIBRARIES ##
 #######################
 
-set(BOOST_LIBS thread,python,serialization,test)
-set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS})
+find_package(Boost REQUIRED COMPONENTS  
+                              python
+                              serialization
+                              unit_test_framework)
+if (Boost_FOUND)
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
+ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK)
+endif(Boost_FOUND)
 
-IF(APPLE)
-  set(BOOST_ARGS ${BOOST_ARGS} toolset=darwin architecture=x86 address-model=32 threading=single)
-ENDIF()
 
+#set(BOOST_LIBS thread,python,serialization,test)
+#set(BOOST_ARGS include=${PYTHON_INCLUDE_DIRS})
 
-STRING(REGEX REPLACE "(.*)\\.(.*)\\.(.*)" "\\1_\\2_\\3"
-        BOOST_UNDERSCORE_VERSION "${BOOST_VERSION}")
+#IF(APPLE)
+#  set(BOOST_ARGS ${BOOST_ARGS} toolset=darwin architecture=x86 address-model=32 threading=single)
+#ENDIF()
 
-ExternalProject_Add(boost
-  PREFIX third_party/boost/
-  BUILD_IN_SOURCE 1
-  SVN_REPOSITORY http://svn.boost.org/svn/boost/tags/release/Boost_${BOOST_UNDERSCORE_VERSION}/
-  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh --with-python-version=${PYTHON_VERSION} --prefix="<INSTALL_DIR>" --libdir="<INSTALL_DIR>/lib" --with-libraries=${BOOST_LIBS}
-  BUILD_COMMAND <SOURCE_DIR>/bjam ${BOOST_ARGS} install
-  INSTALL_COMMAND ""
-  UPDATE_COMMAND ""
-)
+# BUILD USING APT-GET
+#
+#STRING(REGEX REPLACE "(.*)\\.(.*)\\.(.*)" "\\1_\\2_\\3"
+#        BOOST_UNDERSCORE_VERSION "${BOOST_VERSION}")
+
+#ExternalProject_Add(boost
+#  PREFIX third_party/boost/
+#  BUILD_IN_SOURCE 1
+#  SVN_REPOSITORY http://svn.boost.org/svn/boost/tags/release/Boost_${BOOST_UNDERSCORE_VERSION}/
+#  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh --with-python-version=${PYTHON_VERSION} --prefix="<INSTALL_DIR>" --libdir="<INSTALL_DIR>/lib" --with-libraries=${BOOST_LIBS}
+#  BUILD_COMMAND <SOURCE_DIR>/bjam ${BOOST_ARGS} install
+#  INSTALL_COMMAND ""
+#  UPDATE_COMMAND ""
+#)
 
 ########################
 ## IRRLICHT LIBRARIES ##
@@ -125,6 +140,8 @@ ELSE()
   set(IRRLICHT_INSTALL_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/IrrlichtInstallUnix.sh <SOURCE_DIR> ${IRRLICHT_VERSION})
 ENDIF()
 
+IF(NOT Irrlicht_FOUND)
+
 ExternalProject_Add(irrlicht
   PREFIX third_party/irrlicht/
   SVN_REPOSITORY https://irrlicht.svn.sourceforge.net/svnroot/irrlicht/branches/releases/1.7
@@ -133,6 +150,10 @@ ExternalProject_Add(irrlicht
   BUILD_COMMAND  ${IRRLICHT_BUILD_COMMAND}
   INSTALL_COMMAND ${IRRLICHT_INSTALL_COMMAND}
 )
+
+SET(Irrlicht_FOUND true CACHE STRING "If Irrlicht has been found or not." FORCE)
+
+ENDIF()
 
 
 ##################
@@ -167,7 +188,7 @@ ENDFOREACH()
 #######################
 
 #SET(STATIC_LIBS Irrlicht boost_python boost_serialization)
-SET(DYNAMIC_LIBS dl m util ${QT_LIBRARIES} Irrlicht boost_python boost_serialization)
+SET(DYNAMIC_LIBS dl m util ${QT_LIBRARIES} Irrlicht boost_serialization boost_python)
 
 IF(APPLE)
   list(APPEND DYNAMIC_LIBS python)
@@ -206,7 +227,7 @@ LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main})
 LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main2})
 
 add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
-add_dependencies(playtolearnlibrary irrlicht boost)
+add_dependencies(playtolearnlibrary irrlicht)
 
 #############
 ## BUNDLES ##
@@ -247,10 +268,19 @@ install(TARGETS playtolearn
 ## TEST BUNDLES ##
 ##################
 
+SET(test_names "")
 FOREACH(t ${TEST_SRCS})
   STRING(REGEX REPLACE ".*/(.*)\\.cpp" "\\1" name "${t}")
-  add_executable(${name} ${t})
+  LIST(APPEND test_names ${name})
+  add_executable(${name} EXCLUDE_FROM_ALL ${t})
   target_link_libraries(${name} playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
   add_test(${name} ${name})
   add_dependencies(${name} playtolearnlibrary)
 ENDFOREACH()
+
+# This will explicitly build all the tests. We need this
+# because we added EXCLUDE_FROM_ALL to the test exes. This
+# greatly speeds up compilation because when we change code
+# in our main library, we don't need to build our tests.
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
+                  DEPENDS ${test_names})
