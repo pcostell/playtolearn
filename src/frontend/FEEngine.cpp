@@ -11,7 +11,7 @@
 #include "backend/AttributeMap.hpp"
 #include "backend/Engine.hpp"
 #include "backend/Object.hpp"
-#include "frontend/InteractionResponses.hpp"
+#include "frontend/InteractionPrompts.hpp"
 #include "frontend/display/Display.hpp"
 #include "frontend/display/text/TextDisplay.hpp"
 #include "frontend/display/graphics/IrrlichtDisplay.hpp"
@@ -30,7 +30,7 @@ void LoadFrontendEngine();
 
 /** callback functions */
 
-InteractionResponse::Ptr RequestInteraction(Backend::Object::ID id) {
+InteractionPrompt::Ptr RequestInteraction(Backend::Object::ID id) {
   return engine->request_interaction(id);
 }
 

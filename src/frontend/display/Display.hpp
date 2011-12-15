@@ -11,7 +11,7 @@
 
 #include "util/UniqueID.hpp"
 #include "frontend/Interactions.hpp"
-#include "frontend/InteractionResponses.hpp"
+#include "frontend/InteractionPrompts.hpp"
 
 namespace PlayToLearn {
 
@@ -46,7 +46,7 @@ public:
   
   // set_request_interaction_fn sets the function invoked when requesting data
   // associated with an interaction.
-  void set_request_interaction_fn(InteractionResponse::Ptr (*fn)(Util::UniqueID<Backend::Object> id));
+  void set_request_interaction_fn(InteractionPrompt::Ptr (*fn)(Util::UniqueID<Backend::Object> id));
   
   // set_register_interaction_fn sets the function invoked when registering a
   // player interaction.
@@ -66,14 +66,14 @@ public:
 
 protected:
   // member functions
-  InteractionResponse::Ptr request_interaction(Util::UniqueID<Backend::Object> id);
+  InteractionPrompt::Ptr request_interaction(Util::UniqueID<Backend::Object> id);
   void register_interaction(Interaction::Ptr interaction);
   void draw_scene();
   void load_game();
 
 private:
   // member variables
-  InteractionResponse::Ptr (*request_interaction_fn_)(Util::UniqueID<Backend::Object> id);
+  InteractionPrompt::Ptr (*request_interaction_fn_)(Util::UniqueID<Backend::Object> id);
   void (*register_interaction_fn_)(Interaction::Ptr);
   void (*draw_scene_fn_)();
 };

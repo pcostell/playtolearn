@@ -5,7 +5,6 @@
 #include "frontend/interactions/Interaction.hpp"
 
 #include "util/Constants.hpp"
-#include "backend/Object.hpp"
 
 using namespace std;
 
@@ -14,7 +13,7 @@ namespace Frontend {
 
 /** Interaction member functions, public */
 
-Interaction::Interaction(Backend::Object::ID object_id) : object_id_(object_id)
+Interaction::Interaction(Util::UniqueID<Backend::Object> object_id) : object_id_(object_id)
 {
   set_value(Util::kObjectIDAttribute, object_id.value());
 }

@@ -21,7 +21,7 @@ namespace PlayToLearn {
 
 namespace Frontend {
   class Interaction;
-  class InteractionResponse;
+  class InteractionPrompt;
 }
 
 namespace Backend {
@@ -58,7 +58,7 @@ public:
   // request_interaction retrieves the interaction data associated with the
   // specified interactive object while in the current state. It will return
   // a NULL smart pointer if no such data exists.
-  boost::shared_ptr<Frontend::InteractionResponse> request_interaction(Util::UniqueID<Object> id) const;
+  boost::shared_ptr<Frontend::InteractionPrompt> request_interaction(Util::UniqueID<Object> id) const;
   
   // register_interaction handles the backend processing required when the user
   // interacts with some object in the game world.

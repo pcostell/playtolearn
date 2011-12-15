@@ -21,7 +21,7 @@ namespace Util {
 /** AttributeMap attribute name constants */
 
 // The kStateIDAttribute constant represents the name of the attribute that
-// should be paired with the corresponding text field needed by a TextResponse
+// should be paired with the corresponding text field needed by a TextPrompt
 // object.
 const std::string kStateIDAttribute("state_id");
 
@@ -29,11 +29,11 @@ const std::string kStateIDAttribute("state_id");
 // should be paired with the corresponding object ID involved in an interaction.
 const std::string kObjectIDAttribute("object_id");
 
-// The kInteractionResponseType attribute represents the name of the attribute
-// that should be paired with the type of InteractionResponse object described
+// The kInteractionPromptType attribute represents the name of the attribute
+// that should be paired with the type of InteractionPrompt object described
 // by the AttributeMap which contains the related data. See the below constants
 // for the corresponding values.
-const std::string kInteractionResponseTypeAttribute("interaction_response_type");
+const std::string kInteractionPromptTypeAttribute("interaction_prompt_type");
 
 // The kTextAttribute constant represents the name of the attribute that should
 // be paired with text describing a question or dialog.
@@ -63,12 +63,12 @@ const std::string kMCAnswerIndexAttribute("mc_answer_index");
 /** AttributeMap value constants */
 
 // The following constants represent the various values associated with the
-// interaction response type attribute for different InteractionResponse
-// subclasses. They should be paired with kInteractionResponseTypeAttribute.
-const std::string kTextResponseTypeValue("text_response");
-const std::string kFreeResponseResponseTypeValue("free_response_response");
-const std::string kMultipleChoiceResponseTypeValue("multiple_choice_response");
-const std::string kNewLevelResponseTypeValue("new_level_response");
+// interaction prompt type attribute for different InteractionPrompt subclasses.
+// They should be paired with kInteractionPromptTypeAttribute.
+const std::string kTextPromptTypeValue("text_prompt");
+const std::string kFreeResponsePromptTypeValue("free_response_prompt");
+const std::string kMultipleChoicePromptTypeValue("multiple_choice_prompt");
+const std::string kNewLevelPromptTypeValue("new_level_prompt");
 
 /** Object constants */
 

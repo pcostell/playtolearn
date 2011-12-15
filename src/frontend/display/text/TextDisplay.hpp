@@ -7,7 +7,7 @@
 #include <string>
 
 #include "frontend/Interactions.hpp"
-#include "frontend/InteractionResponses.hpp"
+#include "frontend/InteractionPrompts.hpp"
 #include "frontend/display/Display.hpp"
 
 namespace PlayToLearn {
@@ -20,24 +20,27 @@ public:
   typedef boost::shared_ptr<TextDisplay> Ptr;
   typedef boost::shared_ptr<const TextDisplay> ConstPtr;
   
+  // See the related comment in the Display.hpp file.
   void main_display_loop();
   
   //void draw_object(const Object & object);
 
 private:
-  void displayInteraction(InteractionResponse::Ptr response);
-  Interaction::Ptr handleInteraction(InteractionResponse::Ptr response);
+  // member functions
+  
+  void display_interaction_prompt(InteractionPrompt::Ptr prompt);
+  Interaction::Ptr handle_interaction(InteractionPrompt::Ptr prompt);
 
-  void displayTextInteraction(TextResponse::Ptr response);
-  TextAnswerInteraction::Ptr handleTextInteraction(TextResponse::Ptr response);
+  void display_text_prompt(TextPrompt::Ptr prompt);
+  TextAnswer::Ptr handle_text_interaction(TextPrompt::Ptr prompt);
 
-  void displayFreeResponseInteraction(FreeResponseResponse::Ptr response);
-  FreeResponseAnswerInteraction::Ptr handleFreeResponseInteraction(FreeResponseResponse::Ptr response);
+  void display_free_response_prompt(FreeResponsePrompt::Ptr prompt);
+  FreeResponseAnswer::Ptr handle_free_response_interaction(FreeResponsePrompt::Ptr prompt);
 
-  void displayMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response);
-  MultipleChoiceAnswerInteraction::Ptr handleMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response);
+  void display_multiple_choice_prompt(MultipleChoicePrompt::Ptr prompt);
+  MultipleChoiceAnswer::Ptr handle_multiple_choice_interaction(MultipleChoicePrompt::Ptr prompt);
 
-  std::string GetLine();
+  std::string prompt_user();
 };
 
 } // namespace Frontend

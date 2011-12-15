@@ -23,7 +23,7 @@
 #include "backend/Object.hpp"
 #include "backend/TransitionFn.hpp"
 #include "frontend/Interactions.hpp"
-#include "frontend/InteractionResponses.hpp"
+#include "frontend/InteractionPrompts.hpp"
 
 using namespace std;
 namespace Util = PlayToLearn::Util;
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
   sm.add_transition_fn(tfn_0);
   
   Backend::AttributeMap tfn_data_0;
-  tfn_data_0.set_value(Util::kInteractionResponseTypeAttribute, Util::kFreeResponseResponseTypeValue);
+  tfn_data_0.set_value(Util::kInteractionPromptTypeAttribute, Util::kFreeResponsePromptTypeValue);
   tfn_data_0.set_value(Util::kStateIDAttribute, 0);
   tfn_data_0.set_value(Util::kObjectIDAttribute, -2);
   tfn_data_0.set_value(Util::kTextAttribute, "What is your favorite color? ");
@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
   sm.add_transition_fn(tfn_1);
   
   Backend::AttributeMap tfn_data_1;
-  tfn_data_1.set_value(Util::kInteractionResponseTypeAttribute, Util::kTextResponseTypeValue);
+  tfn_data_1.set_value(Util::kInteractionPromptTypeAttribute, Util::kTextPromptTypeValue);
   tfn_data_1.set_value(Util::kStateIDAttribute, 1);
   tfn_data_1.set_value(Util::kObjectIDAttribute, -2);
   tfn_data_1.set_value(Util::kTextAttribute, "Correct! You chose red!");
@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
   sm.add_transition_fn(tfn_2);
   
   Backend::AttributeMap tfn_data_2;
-  tfn_data_2.set_value(Util::kInteractionResponseTypeAttribute, Util::kTextResponseTypeValue);
+  tfn_data_2.set_value(Util::kInteractionPromptTypeAttribute, Util::kTextPromptTypeValue);
   tfn_data_2.set_value(Util::kStateIDAttribute, 2);
   tfn_data_2.set_value(Util::kObjectIDAttribute, -2);
   tfn_data_2.set_value(Util::kTextAttribute, "Wrong color!");

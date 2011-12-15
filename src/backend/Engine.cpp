@@ -19,7 +19,7 @@
 #include "util/ErrorTypes.hpp"
 #include "backend/Object.hpp"
 #include "frontend/Interactions.hpp"
-#include "frontend/InteractionResponses.hpp"
+#include "frontend/InteractionPrompts.hpp"
 
 using namespace std;
 
@@ -45,15 +45,15 @@ void Engine::load_level(int level_index) {
   load_transition_fns(level_name);
 }
 
-Frontend::InteractionResponse::Ptr Engine::request_interaction(Object::ID id) const {
+Frontend::InteractionPrompt::Ptr Engine::request_interaction(Object::ID id) const {
   // Check if the object has an interaction available for this state:
   const State& current_state = state_machine_.current_state();
   if (!current_state.contains_object(id))
-    return Frontend::InteractionResponse::Ptr();
+    return Frontend::InteractionPrompt::Ptr();
   
   // This is the transition function associated with this object/state pair:
   TransitionFn::ID fn_id = current_state.transition_fn_id(id);
-  return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
+  return Frontend::InteractionPrompt::create(transition_data_.find(fn_id)->second);
 }
 
 void Engine::register_interaction(Frontend::Interaction::Ptr interaction) {

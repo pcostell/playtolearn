@@ -151,5 +151,21 @@ PythonExecutionError::PythonExecutionError(const string& what_arg) :
   // empty body
 }
 
+/** InvalidInteractionPromptTypeError member functions, public */
+
+InvalidInteractionPromptTypeError::InvalidInteractionPromptTypeError(const string& prompt_type) :
+  runtime_error(form_error_message(prompt_type))
+{
+  // empty body
+}
+
+/** InvalidInteractionPromptTypeError member functions, private */
+
+string InvalidInteractionPromptTypeError::form_error_message(const string& prompt_type) const {
+  stringstream err_ss;
+  err_ss << "Invalid value for interaction prompt type: " << prompt_type;
+  return err_ss.str();
+}
+
 } // namespace Util
 } // namespace PlayToLearn

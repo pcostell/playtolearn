@@ -25,7 +25,7 @@ Display::~Display() {
   // empty body
 }
 
-void Display::set_request_interaction_fn(InteractionResponse::Ptr (*fn)(Util::UniqueID<Backend::Object> id)) {
+void Display::set_request_interaction_fn(InteractionPrompt::Ptr (*fn)(Util::UniqueID<Backend::Object> id)) {
   request_interaction_fn_ = fn;
 }
 
@@ -39,7 +39,7 @@ void Display::set_draw_scene_fn(void (*fn)()) {
 
 /** Display member functions, protected */
 
-InteractionResponse::Ptr Display::request_interaction(Util::UniqueID<Backend::Object> id) {
+InteractionPrompt::Ptr Display::request_interaction(Util::UniqueID<Backend::Object> id) {
   return request_interaction_fn_(id);
 }
 

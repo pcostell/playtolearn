@@ -153,5 +153,20 @@ public:
   explicit PythonExecutionError(const std::string& what_arg);
 };
 
+/** InteractionPrompt error class definitions */
+
+// The InvalidInteractionPromptTypeError class represents the type of exception
+// thrown when an interaction prompt type which doesn't exist is requested.
+class InvalidInteractionPromptTypeError : public std::runtime_error {
+public:
+  // The InvalidInteractionPromptTypeError constructor creates the error object
+  // with the specified invlaid prompt type.
+  explicit InvalidInteractionPromptTypeError(const std::string& prompt_type);
+
+private:
+  // member functions
+  std::string form_error_message(const std::string& prompt_type) const;
+};
+
 } // namespace Util
 } // namespace PlayToLearn

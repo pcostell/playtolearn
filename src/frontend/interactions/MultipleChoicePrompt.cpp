@@ -1,8 +1,8 @@
 /*
- * File: frontend/interactions/MultipleChoiceResponse.cpp
+ * File: frontend/interactions/MultipleChoicePrompt.cpp
  */
 
-#include "frontend/interactions/MultipleChoiceResponse.hpp"
+#include "frontend/interactions/MultipleChoicePrompt.hpp"
 
 #include <boost/lexical_cast.hpp>
 
@@ -14,10 +14,10 @@ using namespace std;
 namespace PlayToLearn {
 namespace Frontend {
 
-/** MultipleChoiceResponse member functions, public */
+/** MultipleChoicePrompt member functions, public */
 
-MultipleChoiceResponse::MultipleChoiceResponse(const Backend::AttributeMap& data) :
-  InteractionResponse(data),
+MultipleChoicePrompt::MultipleChoicePrompt(const Backend::AttributeMap& data) :
+  InteractionPrompt(data),
   text_(data.value<string>(Util::kTextAttribute)),
   choices_(data.value<int>(Util::kNumMCChoicesAttribute))
 {
