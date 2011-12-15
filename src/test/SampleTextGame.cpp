@@ -44,22 +44,21 @@ int main(int argc, char** argv) {
   Backend::State state_2(Backend::State::ID(2));
   Backend::State state_3(Backend::State::ID(3));
   Backend::State state_4(Backend::State::ID(4));
-  Backend::Object object_0(Backend::Object::ID(0));
   Backend::TransitionFn tfn_0(Backend::TransitionFn::ID(0));
   Backend::TransitionFn tfn_1(Backend::TransitionFn::ID(1));
   Backend::TransitionFn tfn_2(Backend::TransitionFn::ID(2));
   //Backend::TransitionFn tfn_3(Backend::TransitionFn::ID(3));
   
-  state_0.insert_object(object_0.id(), tfn_0.id());
+  state_0.insert_object(Util::kDefaultObject, tfn_0.id());
   sm.add_state(state_0);
   
-  state_1.insert_object(object_0.id(), tfn_1.id());
+  state_1.insert_object(Util::kDefaultObject, tfn_1.id());
   sm.add_state(state_1);
   
-  state_2.insert_object(object_0.id(), tfn_2.id());
+  state_2.insert_object(Util::kDefaultObject, tfn_2.id());
   sm.add_state(state_2);
   
-  //state_3.insert_object(object_0.id(), tfn_3.id());
+  //state_3.insert_object(Util::kDefaultObject, tfn_3.id());
   sm.add_state(state_3);
   
   sm.add_state(state_4);
@@ -78,7 +77,7 @@ int main(int argc, char** argv) {
   Backend::AttributeMap tfn_data_0;
   tfn_data_0.set_value(Util::kInteractionResponseTypeAttribute, Util::kFreeResponseResponseTypeValue);
   tfn_data_0.set_value(Util::kStateIDAttribute, 0);
-  tfn_data_0.set_value(Util::kObjectIDAttribute, 0);
+  tfn_data_0.set_value(Util::kObjectIDAttribute, -2);
   tfn_data_0.set_value(Util::kTextAttribute, "What is your favorite color? ");
   transition_fn_data.insert(make_pair(tfn_0.id(), tfn_data_0));
   
@@ -93,7 +92,7 @@ int main(int argc, char** argv) {
   Backend::AttributeMap tfn_data_1;
   tfn_data_1.set_value(Util::kInteractionResponseTypeAttribute, Util::kTextResponseTypeValue);
   tfn_data_1.set_value(Util::kStateIDAttribute, 1);
-  tfn_data_1.set_value(Util::kObjectIDAttribute, 0);
+  tfn_data_1.set_value(Util::kObjectIDAttribute, -2);
   tfn_data_1.set_value(Util::kTextAttribute, "Correct! You chose red!");
   transition_fn_data.insert(make_pair(tfn_1.id(), tfn_data_1));
   
@@ -108,7 +107,7 @@ int main(int argc, char** argv) {
   Backend::AttributeMap tfn_data_2;
   tfn_data_2.set_value(Util::kInteractionResponseTypeAttribute, Util::kTextResponseTypeValue);
   tfn_data_2.set_value(Util::kStateIDAttribute, 2);
-  tfn_data_2.set_value(Util::kObjectIDAttribute, 0);
+  tfn_data_2.set_value(Util::kObjectIDAttribute, -2);
   tfn_data_2.set_value(Util::kTextAttribute, "Wrong color!");
   transition_fn_data.insert(make_pair(tfn_2.id(), tfn_data_2));
   

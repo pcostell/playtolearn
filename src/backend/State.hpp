@@ -29,7 +29,7 @@ class TransitionFn;
 // throughout the game.
 class State {
 public:
-  // The State::ID type represents a uniquely identifier for a particular state.
+  // The State::ID type represents a unique identifier for a particular state.
   typedef Util::UniqueID<State> ID;
   
   // object_iterator and const_object_iterator define iterators over the object-
@@ -39,7 +39,7 @@ public:
   
   // The State constructor initializes a State object with the specified unique
   // identifier.
-  explicit State(ID id = ID());
+  explicit State(ID = ID());
   
   // id returns the unique ID of this particular state object.
   ID id() const;

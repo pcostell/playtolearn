@@ -11,8 +11,6 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "util/Constants.hpp"
-
 namespace PlayToLearn {
 namespace Util {
 
@@ -27,7 +25,7 @@ public:
   // underlying integer value that should represent this particular ID. If no ID
   // is specified, the underlying value is the constant, kInvalidID. For a new
   // unique ID, the create class function should be used.
-  explicit UniqueID(int value = kInvalidID);
+  explicit UniqueID(int value = kInvalidIDValue);
   
   // value returns the identifying integer so that it may be displayed.
   int value() const;
@@ -49,6 +47,9 @@ public:
   static const UniqueID create();
 
 private:
+  // class constants
+  static const int kInvalidIDValue = -1;
+  
   // member variables
   int value_;
   

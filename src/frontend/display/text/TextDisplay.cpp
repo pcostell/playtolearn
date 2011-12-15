@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "util/Constants.hpp"
 #include "backend/Object.hpp"
 
 using namespace std;
@@ -14,16 +15,20 @@ namespace PlayToLearn {
 namespace Frontend {
 
 void TextDisplay::main_display_loop() {
-  cout << "Welcome to PlayToLearn" << endl;
+  // Display a generic welcome message:
+  cout << "Welcome to PlayToLearn text adventure!" << endl;
+  cout << "--------------------------------------" << endl;
   draw_scene();
-  Interaction::Ptr initial_interaction(new GenericInteraction(Backend::Object::ID(0)));
-  current_response_ = interact(initial_interaction);
   
-  while (current_response_) {
-    displayInteraction(current_response_);
-    Interaction::Ptr interaction = handleInteraction(current_response_);
+  while (true) {
+    // Pull the next interaction data and see if we should continue:
+    InteractionResponse::Ptr interaction_data = request_interaction(Util::kDefaultObject);
+    if (!interaction_data) break;
+    
+    displayInteraction(interaction_data);
+    Interaction::Ptr interaction = handleInteraction(interaction_data);
     if (interaction)
-      current_response_ = interact(interaction);
+      register_interaction(interaction);
   }
 }
 
@@ -50,7 +55,7 @@ FreeResponseAnswerInteraction::Ptr TextDisplay::handleFreeResponseInteraction(Fr
 }
 
 MultipleChoiceAnswerInteraction::Ptr TextDisplay::handleMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response) {
-  while(true) {
+  while (true) {
     string line = GetLine();
     if (line.length() != 1) {
       cout << "Please choose a character." << endl;
@@ -86,7 +91,7 @@ void TextDisplay::displayFreeResponseInteraction(FreeResponseResponse::Ptr respo
 
 void TextDisplay::displayMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response) {
   cout << response->text() << endl;
-  for (size_t i = 0; i < response->num_choices(); ++i) {
+  for (int i = 0; i < response->num_choices(); ++i) {
     cout << ('A' + i) << ": " << response->choice(i) << endl;
   }
 }

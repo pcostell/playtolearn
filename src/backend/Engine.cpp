@@ -17,6 +17,7 @@
 
 #include "util/Constants.hpp"
 #include "util/ErrorTypes.hpp"
+#include "backend/Object.hpp"
 #include "frontend/Interactions.hpp"
 #include "frontend/InteractionResponses.hpp"
 
@@ -44,33 +45,29 @@ void Engine::load_level(int level_index) {
   load_transition_fns(level_name);
 }
 
-Frontend::InteractionResponse::Ptr Engine::register_interaction(Frontend::Interaction::Ptr interaction) {
+Frontend::InteractionResponse::Ptr Engine::request_interaction(Object::ID id) const {
   // Check if the object has an interaction available for this state:
   const State& current_state = state_machine_.current_state();
-  if (!current_state.contains_object(interaction->object_id()))
+  if (!current_state.contains_object(id))
     return Frontend::InteractionResponse::Ptr();
   
   // This is the transition function associated with this object/state pair:
-  TransitionFn::ID fn_id = current_state.transition_fn_id(interaction->object_id());
-  
-  // Check if the frontend is simply asking for the data needed to set up an
-  // interaction:
-  if (interaction->requesting_data())
-    return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
+  TransitionFn::ID fn_id = current_state.transition_fn_id(id);
+  return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
+}
+
+void Engine::register_interaction(Frontend::Interaction::Ptr interaction) {
+  // Check if the object has an interaction available for this state:
+  const State& current_state = state_machine_.current_state();
+  if (!current_state.contains_object(interaction->object_id()))
+    // TODO: throw error here
+    return;
   
   // Move to the new state:
+  TransitionFn::ID fn_id = current_state.transition_fn_id(interaction->object_id());
   const TransitionFn& transition_fn = state_machine_.transition_fn(fn_id);
   State::ID new_state_id = transition_fn.next_state(interaction->attribute_map(), global_state_);
   state_machine_.set_current_state(new_state_id);
-  
-  // Return the proper interaction response:
-  const State& new_state = state_machine_.current_state();
-  //if (!interaction->requesting_data() || !new_state.contains_object(interaction->object_id()))
-  if (!new_state.contains_object(interaction->object_id()))
-    return Frontend::InteractionResponse::Ptr();
-  
-  fn_id = new_state.transition_fn_id(interaction->object_id());
-  return Frontend::InteractionResponse::create(transition_data_.find(fn_id)->second);
 }
 
 /** Engine member functions, private */

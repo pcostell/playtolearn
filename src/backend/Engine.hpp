@@ -9,6 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include "util/UniqueID.hpp"
 #include "backend/AttributeMap.hpp"
 #include "backend/StateMachine.hpp"
 #include "backend/State.hpp"
@@ -24,6 +25,10 @@ namespace Frontend {
 }
 
 namespace Backend {
+
+/** class declarations */
+
+class Object;
 
 /** class definitions */
 
@@ -50,10 +55,14 @@ public:
   // distances.
   void move_player(double dx, double dy);
   
+  // request_interaction retrieves the interaction data associated with the
+  // specified interactive object while in the current state. It will return
+  // a NULL smart pointer if no such data exists.
+  boost::shared_ptr<Frontend::InteractionResponse> request_interaction(Util::UniqueID<Object> id) const;
+  
   // register_interaction handles the backend processing required when the user
-  // interacts with some object in the game world. It returns a pointer to the
-  // InteractionResponse object associated with the interaction request.
-  boost::shared_ptr<Frontend::InteractionResponse> register_interaction(boost::shared_ptr<Frontend::Interaction> interaction);
+  // interacts with some object in the game world.
+  void register_interaction(boost::shared_ptr<Frontend::Interaction> interaction);
 
 private:
   // member variables

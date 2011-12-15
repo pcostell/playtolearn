@@ -35,7 +35,6 @@ public:
   
   // The Type enum describes what kind of interaction this object represents.
   enum Type {
-    INTERACT_GENERIC,
     INTERACT_TEXT_ANSWER,
     INTERACT_FREE_RESPONSE_ANSWER,
     INTERACT_MULTIPLE_CHOICE_ANSWER,
@@ -52,12 +51,6 @@ public:
   // type returns the specific subclass of Interaction represented by this
   // object.
   virtual Type type() const = 0;
-  
-  // requesting_data returns a boolean value which is true if and only if this
-  // Interaction object is requesting information to set up another interaction.
-  // It will return false when the interaction is instead requesting a state
-  // transition.
-  virtual bool requesting_data() const = 0;
   
   // object_id returns the ID of the interactive object with which the user
   // wants to interact.

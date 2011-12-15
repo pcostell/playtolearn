@@ -10,6 +10,7 @@
 #include "util/Constants.hpp"
 #include "backend/AttributeMap.hpp"
 #include "backend/Engine.hpp"
+#include "backend/Object.hpp"
 #include "frontend/InteractionResponses.hpp"
 #include "frontend/display/Display.hpp"
 #include "frontend/display/text/TextDisplay.hpp"
@@ -29,8 +30,12 @@ void LoadFrontendEngine();
 
 /** callback functions */
 
-InteractionResponse::Ptr HandleInteraction(Interaction::Ptr interaction) {
-  return engine->register_interaction(interaction);
+InteractionResponse::Ptr RequestInteraction(Backend::Object::ID id) {
+  return engine->request_interaction(id);
+}
+
+void RegisterInteraction(Interaction::Ptr interaction) {
+  engine->register_interaction(interaction);
 }
 
 void DrawScene() {
@@ -41,11 +46,11 @@ void DrawScene() {
 
 void LoadFrontendEngine() {
   // Initialize the front end's variables:
-  display.reset(new Frontend::TextDisplay());
   engine.reset(new Backend::Engine(0, Backend::State::ID(0)));
-  
-  display->register_interaction_function(HandleInteraction);
-  display->register_draw_scene_function(DrawScene);
+  display.reset(new Frontend::TextDisplay());
+  display->set_request_interaction_fn(RequestInteraction);
+  display->set_register_interaction_fn(RegisterInteraction);
+  display->set_draw_scene_fn(DrawScene);
   display->main_display_loop();
 }
 

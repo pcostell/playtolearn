@@ -39,11 +39,6 @@ public:
   // always returns INTERACT_MULTIPLE_CHOICE_ANSWER.
   Type type() const;
   
-  // This version of requesting_data returns false, since a
-  // MultipleChoiceAnswerInteraction is created in response to a multiple choice
-  // interaction and is expecting a state transition in return.
-  bool requesting_data() const;
-  
   // answer_index returns the multiple choice answer given by the user which
   // this MultipleChoiceAnswerInteraction object stores. The integer returned
   // represents an index in the range [0, number of answers).
@@ -58,10 +53,6 @@ private:
 
 inline Interaction::Type MultipleChoiceAnswerInteraction::type() const {
   return INTERACT_MULTIPLE_CHOICE_ANSWER;
-}
-
-inline bool MultipleChoiceAnswerInteraction::requesting_data() const {
-  return false;
 }
 
 inline int MultipleChoiceAnswerInteraction::answer_index() const {

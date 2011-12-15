@@ -6,13 +6,17 @@
 
 #include <string>
 
+#include "util/UniqueID.hpp"
+
 namespace PlayToLearn {
+
+/** outside class declarations */
+
+namespace Backend {
+  class Object;
+}
+
 namespace Util {
-
-/** UniqueID constants */
-
-// kInvalid is a constant which represents an invalid ID's integer.
-const int kInvalidID = -1;
 
 /** AttributeMap attribute name constants */
 
@@ -65,6 +69,12 @@ const std::string kTextResponseTypeValue("text_response");
 const std::string kFreeResponseResponseTypeValue("free_response_response");
 const std::string kMultipleChoiceResponseTypeValue("multiple_choice_response");
 const std::string kNewLevelResponseTypeValue("new_level_response");
+
+/** Object constants */
+
+// kDefaultObject is a constant which represents the ID of an interactive object
+// that should automatically be interacted with upon entering a state.
+const UniqueID<Backend::Object> kDefaultObject(-2);
 
 /** TransitionFn constants */
 

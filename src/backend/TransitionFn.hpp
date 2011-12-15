@@ -31,7 +31,7 @@ class ExternalTransitionFn;
 // to go from one state to another given some interaction.
 class TransitionFn {
 public:
-  // The TransitionFn::ID type represents a uniquely identifier for a particular
+  // The TransitionFn::ID type represents a unique identifier for a particular
   // transition function.
   typedef Util::UniqueID<TransitionFn> ID;
   

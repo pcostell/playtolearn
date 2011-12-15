@@ -37,8 +37,6 @@ private:
   void displayMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response);
   MultipleChoiceAnswerInteraction::Ptr handleMultipleChoiceInteraction(MultipleChoiceResponse::Ptr response);
 
-  InteractionResponse::Ptr current_response_;
-
   std::string GetLine();
 };
 

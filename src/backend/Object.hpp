@@ -17,13 +17,13 @@ namespace Backend {
 // can engage in an interaction.
 class Object {
 public:
-  // The Object::ID type represents a uniquely identifier for a particular
+  // The Object::ID type represents a unique identifier for a particular
   // interactive object.
   typedef Util::UniqueID<Object> ID;
   
   // The Object constructor initializes an interactive object the specified
   // unique identifier.
-  explicit Object(ID id);
+  explicit Object(ID id = ID());
   
   // id returns the unique ID of this particular interactive object.
   ID id() const;

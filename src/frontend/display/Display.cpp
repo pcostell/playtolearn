@@ -1,37 +1,54 @@
+/*
+ * File: frontend/display/Display.cpp
+ */
 
 #include "frontend/display/Display.hpp"
 
 namespace PlayToLearn {
 namespace Frontend {
 
-///////////////////////////////////
-// Display::Error public methods //
-///////////////////////////////////
+/** Display::Error member functions, public */
 
 Display::Error::Error(const std::string & what) : std::runtime_error(what) {}
 
-////////////////////////////
-// Display public methods //
-////////////////////////////
+/** Display member functions, public */
 
-void Display::register_draw_scene_function(void (*fn)()) {
-  drawScene_ = fn;
+Display::Display() :
+  request_interaction_fn_(NULL),
+  register_interaction_fn_(NULL),
+  draw_scene_fn_(NULL)
+{
+  // empty body
 }
 
-void Display::register_interaction_function(InteractionResponse::Ptr (*fn)(Interaction::Ptr)) {
-  interact_ = fn;
+Display::~Display() {
+  // empty body
 }
 
-///////////////////////////////
-// Display protected methods //
-///////////////////////////////
+void Display::set_request_interaction_fn(InteractionResponse::Ptr (*fn)(Util::UniqueID<Backend::Object> id)) {
+  request_interaction_fn_ = fn;
+}
+
+void Display::set_register_interaction_fn(void (*fn)(Interaction::Ptr response)) {
+  register_interaction_fn_ = fn;
+}
+
+void Display::set_draw_scene_fn(void (*fn)()) {
+  draw_scene_fn_ = fn;
+}
+
+/** Display member functions, protected */
+
+InteractionResponse::Ptr Display::request_interaction(Util::UniqueID<Backend::Object> id) {
+  return request_interaction_fn_(id);
+}
+
+void Display::register_interaction(Interaction::Ptr interaction) {
+  register_interaction_fn_(interaction);
+}
 
 void Display::draw_scene() {
-  drawScene_();
-}
-
-InteractionResponse::Ptr Display::interact(Interaction::Ptr interaction) {
-  return interact_(interaction);
+  draw_scene_fn_();
 }
 
 } // namespace Frontend
