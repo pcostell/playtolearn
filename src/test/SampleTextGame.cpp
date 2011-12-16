@@ -43,11 +43,8 @@ int main(int argc, char** argv) {
   Backend::State state_1(Backend::State::ID(1));
   Backend::State state_2(Backend::State::ID(2));
   Backend::State state_3(Backend::State::ID(3));
-  Backend::State state_4(Backend::State::ID(4));
   Backend::TransitionFn tfn_0(Backend::TransitionFn::ID(0));
   Backend::TransitionFn tfn_1(Backend::TransitionFn::ID(1));
-  Backend::TransitionFn tfn_2(Backend::TransitionFn::ID(2));
-  //Backend::TransitionFn tfn_3(Backend::TransitionFn::ID(3));
   
   state_0.insert_object(Util::kDefaultObject, tfn_0.id());
   sm.add_state(state_0);
@@ -55,20 +52,19 @@ int main(int argc, char** argv) {
   state_1.insert_object(Util::kDefaultObject, tfn_1.id());
   sm.add_state(state_1);
   
-  state_2.insert_object(Util::kDefaultObject, tfn_2.id());
   sm.add_state(state_2);
   
-  //state_3.insert_object(Util::kDefaultObject, tfn_3.id());
   sm.add_state(state_3);
-  
-  sm.add_state(state_4);
   
   // TransitionFn #0
   stringstream python_ss_0;
   python_ss_0 << "def " << Util::kTransitionFnScriptFunctionName << "0(am, gs):\n"
               << "  if am['" << Util::kFreeResponseAnswerAttribute << "'] == 'red':\n"
+              << "    gs['" << Util::kInteractionResponseText << "'] = 'Correct! You chose red!'\n"
               << "    return 0\n"
-              << "  return 1\n";
+              << "  else:\n"
+              << "    gs['" << Util::kInteractionResponseText << "'] = 'Wrong color!'\n"
+              << "    return 1\n";
   
   tfn_0.add_state(state_1.id());
   tfn_0.add_state(state_2.id());
@@ -84,32 +80,24 @@ int main(int argc, char** argv) {
   // TransitionFn #1
   stringstream python_ss_1;
   python_ss_1 << "def " << Util::kTransitionFnScriptFunctionName << "1(am, gs):\n"
+              << "  if am['" << Util::kMCAnswerIndexAttribute << "'] == '0':\n"
+              << "    gs['" << Util::kInteractionResponseText << "'] = 'Not fat enough!'\n"
+              << "  else:\n"
+              << "    gs['" << Util::kInteractionResponseText << "'] = 'Correct again!'\n"
               << "  return 0\n";
   
   tfn_1.add_state(state_3.id());
   sm.add_transition_fn(tfn_1);
   
   Backend::AttributeMap tfn_data_1;
-  tfn_data_1.set_value(Util::kInteractionPromptTypeAttribute, Util::kTextPromptTypeValue);
-  tfn_data_1.set_value(Util::kStateIDAttribute, 1);
+  tfn_data_1.set_value(Util::kInteractionPromptTypeAttribute, Util::kMultipleChoicePromptTypeValue);
+  tfn_data_1.set_value(Util::kStateIDAttribute, 3);
   tfn_data_1.set_value(Util::kObjectIDAttribute, -2);
-  tfn_data_1.set_value(Util::kTextAttribute, "Correct! You chose red!");
+  tfn_data_1.set_value(Util::kTextAttribute, "How fat is Patrick?");
+  tfn_data_1.set_value(Util::kNumMCChoicesAttribute, 2);
+  tfn_data_1.set_value(Util::kMCChoiceAttribute + "0", "fat");
+  tfn_data_1.set_value(Util::kMCChoiceAttribute + "1", "extremely fat");
   transition_fn_data.insert(make_pair(tfn_1.id(), tfn_data_1));
-  
-  // TransitionFn #2
-  stringstream python_ss_2;
-  python_ss_2 << "def " << Util::kTransitionFnScriptFunctionName << "2(am, gs):\n"
-              << "  return 0\n";
-  
-  tfn_2.add_state(state_4.id());
-  sm.add_transition_fn(tfn_2);
-  
-  Backend::AttributeMap tfn_data_2;
-  tfn_data_2.set_value(Util::kInteractionPromptTypeAttribute, Util::kTextPromptTypeValue);
-  tfn_data_2.set_value(Util::kStateIDAttribute, 2);
-  tfn_data_2.set_value(Util::kObjectIDAttribute, -2);
-  tfn_data_2.set_value(Util::kTextAttribute, "Wrong color!");
-  transition_fn_data.insert(make_pair(tfn_2.id(), tfn_data_2));
   
   // File output:
   stringstream level_name_ss;
@@ -118,7 +106,6 @@ int main(int argc, char** argv) {
   
   WriteScript(level_name, tfn_0.id(), python_ss_0.str());
   WriteScript(level_name, tfn_1.id(), python_ss_1.str());
-  WriteScript(level_name, tfn_2.id(), python_ss_2.str());
   
   stringstream tfn_file_name_ss;
   tfn_file_name_ss << level_name << Util::kLevelTransitionFnFile;
@@ -126,7 +113,6 @@ int main(int argc, char** argv) {
   
   tfn_output_file << tfn_0.id() << " py\n";
   tfn_output_file << tfn_1.id() << " py\n";
-  tfn_output_file << tfn_2.id() << " py\n";
   
   stringstream sm_file_name_ss;
   sm_file_name_ss << level_name << Util::kLevelStateMachineFile;

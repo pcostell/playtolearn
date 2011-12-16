@@ -22,7 +22,7 @@ MultipleChoicePrompt::MultipleChoicePrompt(const Backend::AttributeMap& data) :
   choices_(data.value<int>(Util::kNumMCChoicesAttribute))
 {
   for (size_t i = 0; i < choices_.size(); ++i)
-    choices_[i] = data.value<int>(Util::kMCChoiceAttribute + boost::lexical_cast<string>(i));
+    choices_[i] = data.value<string>(Util::kMCChoiceAttribute + boost::lexical_cast<string>(i));
 }
 
 } // namespace Frontend

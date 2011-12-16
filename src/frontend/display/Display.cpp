@@ -4,12 +4,10 @@
 
 #include "frontend/display/Display.hpp"
 
+using namespace std;
+
 namespace PlayToLearn {
 namespace Frontend {
-
-/** Display::Error member functions, public */
-
-Display::Error::Error(const std::string & what) : std::runtime_error(what) {}
 
 /** Display member functions, public */
 
@@ -29,7 +27,7 @@ void Display::set_request_interaction_fn(InteractionPrompt::Ptr (*fn)(Util::Uniq
   request_interaction_fn_ = fn;
 }
 
-void Display::set_register_interaction_fn(void (*fn)(Interaction::Ptr response)) {
+void Display::set_register_interaction_fn(string (*fn)(Interaction::Ptr response)) {
   register_interaction_fn_ = fn;
 }
 
@@ -43,8 +41,8 @@ InteractionPrompt::Ptr Display::request_interaction(Util::UniqueID<Backend::Obje
   return request_interaction_fn_(id);
 }
 
-void Display::register_interaction(Interaction::Ptr interaction) {
-  register_interaction_fn_(interaction);
+string Display::register_interaction(Interaction::Ptr interaction) {
+  return register_interaction_fn_(interaction);
 }
 
 void Display::draw_scene() {

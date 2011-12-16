@@ -13,6 +13,8 @@
 namespace PlayToLearn {
 namespace Frontend {
 
+// The TextDisplay class represents the concrete display module which provides
+// a text-only game for the user to play.
 class TextDisplay : public Display {
 public:
   // The Ptr typedef allows us to refer to shared_ptr<TextDisplay> smart

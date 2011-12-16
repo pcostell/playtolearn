@@ -6,10 +6,6 @@
 
 #include <sstream>
 
-#include "backend/State.hpp"
-#include "backend/Object.hpp"
-#include "backend/TransitionFn.hpp"
-
 using namespace std;
 
 namespace PlayToLearn {
@@ -31,9 +27,25 @@ string MissingAttributeError::form_error_message(const string& attribute) const 
   return err_ss.str();
 }
 
+/** MissingInteractiveObjectError member functions, public */
+
+MissingInteractiveObjectError::MissingInteractiveObjectError(UniqueID<Backend::Object> id) :
+  runtime_error(form_error_message(id))
+{
+  // empty body
+}
+
+/** MissingInteractiveObjectError member functions, private */
+
+string MissingInteractiveObjectError::form_error_message(UniqueID<Backend::Object> id) const {
+  stringstream err_ss;
+  err_ss << "Registered interaction with non-existant object: " << id;
+  return err_ss.str();
+}
+
 /** InvalidStateError member functions, public */
 
-InvalidStateError::InvalidStateError(Backend::State::ID id) :
+InvalidStateError::InvalidStateError(UniqueID<Backend::State> id) :
   runtime_error(form_error_message(id))
 {
   // empty body
@@ -41,15 +53,15 @@ InvalidStateError::InvalidStateError(Backend::State::ID id) :
 
 /** InvalidStateError member functions, private */
 
-string InvalidStateError::form_error_message(Backend::State::ID id) const {
+string InvalidStateError::form_error_message(UniqueID<Backend::State> id) const {
   stringstream err_ss;
-  err_ss << "Invalid state ID requested: " << id.value();
+  err_ss << "Invalid state ID requested: " << id;
   return err_ss.str();
 }
 
 /** InvalidTransitionFnError member functions, public */
 
-InvalidTransitionFnError::InvalidTransitionFnError(Backend::TransitionFn::ID id) :
+InvalidTransitionFnError::InvalidTransitionFnError(UniqueID<Backend::TransitionFn> id) :
   runtime_error(form_error_message(id))
 {
   // empty body
@@ -57,15 +69,15 @@ InvalidTransitionFnError::InvalidTransitionFnError(Backend::TransitionFn::ID id)
 
 /** InvalidTransitionFnError member functions, private */
 
-string InvalidTransitionFnError::form_error_message(Backend::TransitionFn::ID id) const {
+string InvalidTransitionFnError::form_error_message(UniqueID<Backend::TransitionFn> id) const {
   stringstream err_ss;
-  err_ss << "Invalid transition function ID requested: " << id.value();
+  err_ss << "Invalid transition function ID requested: " << id;
   return err_ss.str();
 }
 
 /** InvalidObjectError member functions, public */
 
-InvalidObjectError::InvalidObjectError(Backend::State::ID state_id, Backend::Object::ID object_id) :
+InvalidObjectError::InvalidObjectError(UniqueID<Backend::State> state_id, UniqueID<Backend::Object> object_id) :
   runtime_error(form_error_message(state_id, object_id))
 {
   // empty body
@@ -73,15 +85,15 @@ InvalidObjectError::InvalidObjectError(Backend::State::ID state_id, Backend::Obj
 
 /** InvalidObjectError member functions, private */
 
-string InvalidObjectError::form_error_message(Backend::State::ID state_id, Backend::Object::ID object_id) const {
+string InvalidObjectError::form_error_message(UniqueID<Backend::State> state_id, UniqueID<Backend::Object> object_id) const {
   stringstream err_ss;
-  err_ss << "Invalid object ID requested for state " << state_id.value() << ": " << object_id.value();
+  err_ss << "Invalid object ID requested for state " << state_id << ": " << object_id;
   return err_ss.str();
 }
 
 /** InvalidStateIndexError member functions, public */
 
-InvalidStateIndexError::InvalidStateIndexError(Backend::TransitionFn::ID transition_fn_id, int state_index) :
+InvalidStateIndexError::InvalidStateIndexError(UniqueID<Backend::TransitionFn> transition_fn_id, int state_index) :
   runtime_error(form_error_message(transition_fn_id, state_index))
 {
   // empty body
@@ -89,15 +101,15 @@ InvalidStateIndexError::InvalidStateIndexError(Backend::TransitionFn::ID transit
 
 /** InvalidStateIndexError member functions, private */
 
-string InvalidStateIndexError::form_error_message(Backend::TransitionFn::ID transition_fn_id, int state_index) const {
+string InvalidStateIndexError::form_error_message(UniqueID<Backend::TransitionFn> transition_fn_id, int state_index) const {
   stringstream err_ss;
-  err_ss << "State index out of bounds for transition " << transition_fn_id.value() << ": " << state_index;
+  err_ss << "State index out of bounds for transition " << transition_fn_id << ": " << state_index;
   return err_ss.str();
 }
 
 /** MissingTransitionFnScriptError member functions, public */
 
-MissingTransitionFnScriptError::MissingTransitionFnScriptError(Backend::TransitionFn::ID id) :
+MissingTransitionFnScriptError::MissingTransitionFnScriptError(UniqueID<Backend::TransitionFn> id) :
   runtime_error(form_error_message(id))
 {
   // empty body
@@ -105,9 +117,9 @@ MissingTransitionFnScriptError::MissingTransitionFnScriptError(Backend::Transiti
 
 /** MissingTransitionFnScriptError member functions, private */
 
-string MissingTransitionFnScriptError::form_error_message(Backend::TransitionFn::ID id) const {
+string MissingTransitionFnScriptError::form_error_message(UniqueID<Backend::TransitionFn> id) const {
   stringstream err_ss;
-  err_ss << "Missing external script for transition function: " << id.value();
+  err_ss << "Missing external script for transition function: " << id;
   return err_ss.str();
 }
 

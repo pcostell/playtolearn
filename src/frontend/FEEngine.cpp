@@ -2,6 +2,7 @@
  * File: FEEngine.cpp
  */
 
+#include <string>
 #include <iostream>
 #include <fstream>
 
@@ -15,6 +16,8 @@
 #include "frontend/display/Display.hpp"
 #include "frontend/display/text/TextDisplay.hpp"
 #include "frontend/display/graphics/IrrlichtDisplay.hpp"
+
+using namespace std;
 
 namespace PlayToLearn {
 namespace Frontend {
@@ -34,8 +37,8 @@ InteractionPrompt::Ptr RequestInteraction(Backend::Object::ID id) {
   return engine->request_interaction(id);
 }
 
-void RegisterInteraction(Interaction::Ptr interaction) {
-  engine->register_interaction(interaction);
+string RegisterInteraction(Interaction::Ptr interaction) {
+  return engine->register_interaction(interaction);
 }
 
 void DrawScene() {

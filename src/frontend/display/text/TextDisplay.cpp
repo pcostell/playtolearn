@@ -4,6 +4,7 @@
 
 #include "frontend/display/text/TextDisplay.hpp"
 
+#include <cctype>
 #include <iostream>
 
 #include <boost/make_shared.hpp>
@@ -31,8 +32,11 @@ void TextDisplay::main_display_loop() {
     
     display_interaction_prompt(interaction_data);
     Interaction::Ptr interaction = handle_interaction(interaction_data);
-    if (interaction)
-      register_interaction(interaction);
+    if (interaction) {
+      string response = register_interaction(interaction);
+      if (!response.empty())
+        cout << response << endl;
+    }
   }
 }
 
@@ -64,12 +68,15 @@ MultipleChoiceAnswer::Ptr TextDisplay::handle_multiple_choice_interaction(Multip
   while (true) {
     cout << "> ";
     string line = prompt_user();
-    if (line.length() != 1) {
+    if (line.size() != 1) {
       cout << "Please choose a character." << endl;
-    } else if (line[0] < 'A' || line[0] > 'A' + prompt->num_choices()) {
-      cout << "Please choose one of the possible answers." << endl;
     } else {
-      return boost::make_shared<MultipleChoiceAnswer>(prompt->object_id(), line[0] - 'A');
+      char choice = toupper(line[0]);
+      if ('A' <= choice && choice < 'A' + prompt->num_choices()) {
+        return boost::make_shared<MultipleChoiceAnswer>(prompt->object_id(), choice - 'A');
+      } else {
+        cout << "Please choose one of the possible answers." << endl;
+      }
     }
   }
 }
@@ -99,7 +106,7 @@ void TextDisplay::display_free_response_prompt(FreeResponsePrompt::Ptr prompt) {
 void TextDisplay::display_multiple_choice_prompt(MultipleChoicePrompt::Ptr prompt) {
   cout << prompt->text() << endl;
   for (int i = 0; i < prompt->num_choices(); ++i) {
-    cout << '[' << ('A' + i) << "] " << prompt->choice(i) << endl;
+    cout << '[' << static_cast<char>('A' + i) << "] " << prompt->choice(i) << endl;
   }
 }
 

@@ -25,16 +25,16 @@ namespace Frontend {
 
 /** class definitions */
 
+// The Display class provides the general interface for a display module running
+// a game created by PlayToLearn. It is a pure virtual class and should be
+// extended in order to provide functionality specific to the type of game being
+// run.
 class Display {
 public:
-
+  // The Ptr typedef allows us to refer to shared_ptr<Display> smart pointers as
+  // Display::Ptr. A const version is provided as well.
   typedef boost::shared_ptr<Display> Ptr;
   typedef boost::shared_ptr<const Display> ConstPtr;
-
-  class Error : public std::runtime_error {
-  public:
-    explicit Error(const std::string& what);
-  };
   
   // The Display constructor initializes the internal callback functions of the
   // Display class to NULL.
@@ -50,7 +50,7 @@ public:
   
   // set_register_interaction_fn sets the function invoked when registering a
   // player interaction.
-  void set_register_interaction_fn(void (*fn)(Interaction::Ptr response));
+  void set_register_interaction_fn(std::string (*fn)(Interaction::Ptr response));
   
   // set_draw_scene_fn sets the function invoked when drawing a scene.
   void set_draw_scene_fn(void (*fn)());
@@ -67,14 +67,14 @@ public:
 protected:
   // member functions
   InteractionPrompt::Ptr request_interaction(Util::UniqueID<Backend::Object> id);
-  void register_interaction(Interaction::Ptr interaction);
+  std::string register_interaction(Interaction::Ptr interaction);
   void draw_scene();
   void load_game();
 
 private:
   // member variables
   InteractionPrompt::Ptr (*request_interaction_fn_)(Util::UniqueID<Backend::Object> id);
-  void (*register_interaction_fn_)(Interaction::Ptr);
+  std::string (*register_interaction_fn_)(Interaction::Ptr);
   void (*draw_scene_fn_)();
 };
 

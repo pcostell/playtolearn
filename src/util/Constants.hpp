@@ -60,6 +60,11 @@ const std::string kMCChoiceAttribute("mc_choice_");
 // to a multiple choice question.
 const std::string kMCAnswerIndexAttribute("mc_answer_index");
 
+// The kInteractionResponseText constant represents the name of the attribute
+// that should be paired with the text corresponding to the game's response to
+// an interaction. This is stored in the global map passed into the script.
+const std::string kInteractionResponseText("response_text");
+
 /** AttributeMap value constants */
 
 // The following constants represent the various values associated with the

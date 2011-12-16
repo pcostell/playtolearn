@@ -41,6 +41,22 @@ private:
   std::string form_error_message(const std::string& attribute) const;
 };
 
+/** Engine error class definitions */
+
+// The MissingInteractiveObjectError class represents the exception thrown when
+// an interaction is registered for an interactive object which is not
+// associated with the current state.
+class MissingInteractiveObjectError : public std::runtime_error {
+public:
+  // The MissingInteractiveObjectError constructor creates the error object with
+  // the missing attribute specified.
+  explicit MissingInteractiveObjectError(UniqueID<Backend::Object> id);
+
+private:
+  // member functions
+  std::string form_error_message(UniqueID<Backend::Object> id) const;
+};
+
 /** StateMachine error class definitions */
 
 // The InvalidStateError class represents the exception thrown when a query is

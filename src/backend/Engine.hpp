@@ -61,8 +61,9 @@ public:
   boost::shared_ptr<Frontend::InteractionPrompt> request_interaction(Util::UniqueID<Object> id) const;
   
   // register_interaction handles the backend processing required when the user
-  // interacts with some object in the game world.
-  void register_interaction(boost::shared_ptr<Frontend::Interaction> interaction);
+  // interacts with some object in the game world. It returns the response, as
+  // determined by the global map modified by the potential script.
+  std::string register_interaction(boost::shared_ptr<Frontend::Interaction> interaction);
 
 private:
   // member variables

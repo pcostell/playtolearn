@@ -56,18 +56,21 @@ Frontend::InteractionPrompt::Ptr Engine::request_interaction(Object::ID id) cons
   return Frontend::InteractionPrompt::create(transition_data_.find(fn_id)->second);
 }
 
-void Engine::register_interaction(Frontend::Interaction::Ptr interaction) {
+string Engine::register_interaction(Frontend::Interaction::Ptr interaction) {
   // Check if the object has an interaction available for this state:
   const State& current_state = state_machine_.current_state();
   if (!current_state.contains_object(interaction->object_id()))
-    // TODO: throw error here
-    return;
+    throw Util::MissingInteractiveObjectError(interaction->object_id());
   
-  // Move to the new state:
+  // Find the proper transition function:
   TransitionFn::ID fn_id = current_state.transition_fn_id(interaction->object_id());
   const TransitionFn& transition_fn = state_machine_.transition_fn(fn_id);
+  
+  // Execute the transition:
+  global_state_.set_value(Util::kInteractionResponseText, string());
   State::ID new_state_id = transition_fn.next_state(interaction->attribute_map(), global_state_);
   state_machine_.set_current_state(new_state_id);
+  return global_state_.value<string>(Util::kInteractionResponseText);
 }
 
 /** Engine member functions, private */
