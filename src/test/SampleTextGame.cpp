@@ -42,7 +42,6 @@ int main(int argc, char** argv) {
   Backend::State state_0(Backend::State::ID(0));
   Backend::State state_1(Backend::State::ID(1));
   Backend::State state_2(Backend::State::ID(2));
-  Backend::State state_3(Backend::State::ID(3));
   Backend::TransitionFn tfn_0(Backend::TransitionFn::ID(0));
   Backend::TransitionFn tfn_1(Backend::TransitionFn::ID(1));
   
@@ -53,8 +52,6 @@ int main(int argc, char** argv) {
   sm.add_state(state_1);
   
   sm.add_state(state_2);
-  
-  sm.add_state(state_3);
   
   // TransitionFn #0
   stringstream python_ss_0;
@@ -86,12 +83,12 @@ int main(int argc, char** argv) {
               << "    gs['" << Util::kInteractionResponseText << "'] = 'Correct again!'\n"
               << "  return 0\n";
   
-  tfn_1.add_state(state_3.id());
+  tfn_1.add_state(state_2.id());
   sm.add_transition_fn(tfn_1);
   
   Backend::AttributeMap tfn_data_1;
   tfn_data_1.set_value(Util::kInteractionPromptTypeAttribute, Util::kMultipleChoicePromptTypeValue);
-  tfn_data_1.set_value(Util::kStateIDAttribute, 3);
+  tfn_data_1.set_value(Util::kStateIDAttribute, 1);
   tfn_data_1.set_value(Util::kObjectIDAttribute, -2);
   tfn_data_1.set_value(Util::kTextAttribute, "How fat is Patrick?");
   tfn_data_1.set_value(Util::kNumMCChoicesAttribute, 2);
