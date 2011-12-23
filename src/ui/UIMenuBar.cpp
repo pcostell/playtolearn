@@ -3,40 +3,44 @@
 
 #include <iostream>
 
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QFont>
+#include <QObject>
 #include <QMenuBar>
+
+#include "ui/NodeScene.hpp"
+#include "ui/NodePolicy.hpp"
 
 namespace PlayToLearn {
 namespace UI {
 
-  UIMenuBar::UIMenuBar(QWidget * parent, NodeScene * scene) 
-      : QWidget(parent)
+  UIMenuBar::UIMenuBar(QWidget * parent, NodeCreator* creator)
+      : QWidget(parent), creator_(creator)
   {
     QMenuBar* menuBar = new QMenuBar(this);
-    addFilePage(menuBar, scene);
-    addInsertPage(menuBar, scene);
+    mapper_ = new QSignalMapper(this);
+    addFilePage(menuBar);
+    addInsertPage(menuBar);
   }
 
-  void UIMenuBar::addFilePage(QMenuBar* menuBar, NodeScene* scene) {
+  void UIMenuBar::addFilePage(QMenuBar* menuBar) {
     QMenu *menu = menuBar->addMenu("File");
     QAction *nnode = menu->addAction("New");
-    QAction *onode = menu->addAction("Open"); 
+    QAction *onode = menu->addAction("Open");
     QAction *snode = menu->addAction("Save");
     QAction *qqnode = menu->addAction("Quit");
   }
 
-  
+  void UIMenuBar::addInsertPage(QMenuBar* menuBar) {
 
-  void UIMenuBar::addInsertPage(QMenuBar* menuBar, NodeScene* scene) {
+    QMenu* insert_menu = menuBar->addMenu("Insert");
+    QAction* state_action = insert_menu->addAction(creator_->state_name().c_str());
+    connect(state_action, SIGNAL(triggered()), creator_, SLOT(create_state()));
 
-    QMenu *insert = menuBar->addMenu("Insert");
-    QAction *frnode = insert->addAction("Free Response Question");
-    connect(frnode, SIGNAL(triggered()), scene, SLOT(create_free_response_node()));
-
-    QAction *mcnode = insert->addAction("Multiple Choice Question");
-    connect(mcnode, SIGNAL(triggered()), scene, SLOT(create_multiple_choice_node()));
+    for (int i = 0; i < creator_->size(); ++i) {
+      QAction* action = insert_menu->addAction(creator_->node_name(i).c_str());
+      connect(action, SIGNAL(triggered()), mapper_, SLOT(map()));
+      mapper_->setMapping(action, i);
+      connect(mapper_, SIGNAL(mapped(int)), creator_, SLOT(create_node(int)));
+    }
   }
 
 }  // namespace UI
