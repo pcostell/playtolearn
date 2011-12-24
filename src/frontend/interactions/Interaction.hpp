@@ -40,8 +40,8 @@ public:
     INTERACT_MULTIPLE_CHOICE_ANSWER,
   };
   
-  // The Interaction constructor initializes an Interaction object with the
-  // specified target of the interaction.
+  // The Interaction constructor initializes the interaction object by assigning
+  // it the specified ID.
   explicit Interaction(Util::UniqueID<Backend::Object> object_id);
   
   // The Interaction destructor is declared virtual so that the class may be
@@ -52,8 +52,8 @@ public:
   // object.
   virtual Type type() const = 0;
   
-  // object_id returns the ID of the interactive object with which the user
-  // wants to interact.
+  // object_id returns the ID of the interactive object with which this
+  // interaction occurred.
   Util::UniqueID<Backend::Object> object_id() const;
   
   // attribute_map converts this particular Interaction object into an

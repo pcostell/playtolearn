@@ -17,7 +17,6 @@ namespace Frontend {
 /** MultipleChoicePrompt member functions, public */
 
 MultipleChoicePrompt::MultipleChoicePrompt(const Backend::AttributeMap& data) :
-  InteractionPrompt(data),
   text_(data.value<string>(Util::kTextAttribute)),
   choices_(data.value<int>(Util::kNumMCChoicesAttribute))
 {

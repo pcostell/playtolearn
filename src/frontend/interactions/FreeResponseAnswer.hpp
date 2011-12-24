@@ -28,10 +28,9 @@ public:
   typedef boost::shared_ptr<FreeResponseAnswer> Ptr;
   typedef boost::shared_ptr<const FreeResponseAnswer> ConstPtr;
 
-  // The FreeResponseAnswer constructor forwards the specified object ID to the
-  // superclass, Interaction. It also stores the answer provided by the user
+  // The FreeResponseAnswer constructor stores the answer provided by the user
   // internally.
-  FreeResponseAnswer(Util::UniqueID<Backend::Object> id, const std::string& answer);
+  FreeResponseAnswer(Util::UniqueID<Backend::Object> object_id, const std::string& answer);
 
   // type returns what kind of interaction this object represents. This version
   // always returns INTERACT_FREE_RESPONSE_ANSWER.

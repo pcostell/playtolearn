@@ -13,8 +13,8 @@ namespace Frontend {
 
 /** FreeResponseAnswer member functions, public */
 
-FreeResponseAnswer::FreeResponseAnswer(Util::UniqueID<Backend::Object> id, const string& answer) :
-  Interaction(id)
+FreeResponseAnswer::FreeResponseAnswer(Util::UniqueID<Backend::Object> object_id, const string& answer) :
+  Interaction(object_id)
 {
   set_value(Util::kFreeResponseAnswerAttribute, answer);
 }

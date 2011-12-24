@@ -28,10 +28,10 @@ public:
   // as TextAnswer::Ptr. A const version is provided as well.
   typedef boost::shared_ptr<TextAnswer> Ptr;
   typedef boost::shared_ptr<const TextAnswer> ConstPtr;
-
-  // The TextAnswer constructor simply forwards the specified object ID to the
-  // superclass, Interaction.
-  explicit TextAnswer(Util::UniqueID<Backend::Object> id);
+  
+  // The TextAnswer constructor forwards the specified object ID to its
+  // superclass constructor.
+  explicit TextAnswer(Util::UniqueID<Backend::Object> object_id);
 
   // type returns what kind of interaction this object represents. This version
   // always returns INTERACT_TEXT_ANSWER.

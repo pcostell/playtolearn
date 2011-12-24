@@ -23,13 +23,6 @@ namespace Frontend {
 
 /** InteractionPrompt member functions, public */
 
-InteractionPrompt::InteractionPrompt(const Backend::AttributeMap& data) :
-  state_id_(data.value<int>(Util::kStateIDAttribute)),
-  object_id_(data.value<int>(Util::kObjectIDAttribute))
-{
-  // empty body
-}
-
 InteractionPrompt::~InteractionPrompt() {
   // empty body
 }

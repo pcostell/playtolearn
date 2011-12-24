@@ -41,10 +41,6 @@ public:
     //IR_NEW_LEVEL,
   };
 
-  // The InteractionPrompt constructor creates an InteractionPrompt object
-  // populated with information supplied by the specified AttributeMap.
-  explicit InteractionPrompt(const Backend::AttributeMap& data);
-
   // The InteractionPrompt destructor is declared virtual so that the class may
   // be used polymorphically.
   virtual ~InteractionPrompt();
@@ -53,35 +49,12 @@ public:
   // object.
   virtual Type type() const = 0;
 
-  // state_id returns the ID of the state the player was in when the interaction
-  // occurred. This is provided primarily for debugging purposes.
-  Util::UniqueID<Backend::State> state_id() const;
-
-  // object_id returns the ID of the interactive object which triggered the
-  // interaction. This is provided primarily for debugging purposes.
-  Util::UniqueID<Backend::Object> object_id() const;
-  
   // create is a factory function for the InteractionPrompt class. It accepts a
   // single AttributeMap as its argument and, depending on the
   // interaction_prompt_type attribute, creates and returns the proper
   // InteractionPrompt object.
   static Ptr create(const Backend::AttributeMap& data);
-
-private:
-  // member variables
-  Util::UniqueID<Backend::State> state_id_;
-  Util::UniqueID<Backend::Object> object_id_;
 };
-
-/** InteractionPrompt inlined member functions, public */
-
-inline Util::UniqueID<Backend::State> InteractionPrompt::state_id() const {
-  return state_id_;
-}
-
-inline Util::UniqueID<Backend::Object> InteractionPrompt::object_id() const {
-  return object_id_;
-}
 
 } // namespace Frontend
 } // namespace PlayToLearn

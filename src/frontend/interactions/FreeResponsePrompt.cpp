@@ -15,7 +15,6 @@ namespace Frontend {
 /** FreeResponsePrompt member functions, public */
 
 FreeResponsePrompt::FreeResponsePrompt(const Backend::AttributeMap& data) :
-  InteractionPrompt(data),
   text_(data.value<string>(Util::kTextAttribute))
 {
   // empty body
