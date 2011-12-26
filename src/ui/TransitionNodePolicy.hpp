@@ -8,7 +8,7 @@
 namespace PlayToLearn {
 namespace UI {
 
-class NodePolicy {
+class TransitionNodePolicy {
 public:
   enum ColorType {
     Default,

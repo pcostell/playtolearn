@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QTableWidget>
 
-#include "ui/NodeItem.hpp"
+#include "ui/TransitionNode.hpp"
 #include "ui/UITextBoxWithLabel.hpp"
 
 namespace PlayToLearn {
@@ -20,14 +20,18 @@ public:
 
 
 public slots:
-  void display(NodeItem* item);
+  void display(TransitionNode* item);
   void save();
+
+private slots:
+  void addRow();
+
 
 private:
   QTableWidget* table_;
   UITextBoxWithLabel* object_label_;
   UITextBoxWithLabel* script_label_;
-  NodeItem* current_node_;
+  TransitionNode* current_node_;
 };
 
 }  /* namespace UI */

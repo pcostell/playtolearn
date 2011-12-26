@@ -7,8 +7,8 @@
 #include <QMenuBar>
 #include <QSignalMapper>
 
-#include "ui/NodeCreator.hpp"
-#include "ui/NodePolicy.hpp"
+#include "ui/TransitionNodeCreator.hpp"
+#include "ui/TransitionNodePolicy.hpp"
 
 namespace PlayToLearn {
 namespace UI {
@@ -17,14 +17,14 @@ class UIMenuBar : public QWidget {
   Q_OBJECT
 
 public:
-  UIMenuBar(QWidget* parent, NodeCreator* creator);
+  UIMenuBar(QWidget* parent, TransitionNodeCreator* creator);
 
 private:
   void addInsertPage(QMenuBar* menuBar);
   void addFilePage(QMenuBar* menuBar);
 
   QSignalMapper* mapper_;
-  NodeCreator* creator_;
+  TransitionNodeCreator* creator_;
 };
 
 }  // namespace UI

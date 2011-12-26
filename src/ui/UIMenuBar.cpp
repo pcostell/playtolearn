@@ -6,13 +6,10 @@
 #include <QObject>
 #include <QMenuBar>
 
-#include "ui/NodeScene.hpp"
-#include "ui/NodePolicy.hpp"
-
 namespace PlayToLearn {
 namespace UI {
 
-  UIMenuBar::UIMenuBar(QWidget * parent, NodeCreator* creator)
+  UIMenuBar::UIMenuBar(QWidget * parent, TransitionNodeCreator* creator)
       : QWidget(parent), creator_(creator)
   {
     QMenuBar* menuBar = new QMenuBar(this);

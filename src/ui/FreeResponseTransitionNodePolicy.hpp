@@ -3,13 +3,13 @@
 
 #include "backend/AttributeMap.hpp"
 #include "backend/TransitionFn.hpp"
-#include "ui/NodePolicy.hpp"
+#include "ui/TransitionNodePolicy.hpp"
 #include "util/Constants.hpp"
 
 namespace PlayToLearn {
 namespace UI {
 
-class FreeResponseNodePolicy : public NodePolicy {
+class FreeResponseTransitionNodePolicy : public TransitionNodePolicy {
 public:
 
   virtual QColor color(ColorType type) const {
