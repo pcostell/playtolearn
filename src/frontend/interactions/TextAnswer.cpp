@@ -11,8 +11,8 @@ namespace Frontend {
 
 /** TextAnswer member functions, public */
 
-TextAnswer::TextAnswer(Util::UniqueID<Backend::Object> id) :
-  Interaction(id)
+TextAnswer::TextAnswer(Util::UniqueID<Backend::Object> object_id) :
+  Interaction(object_id)
 {
   // empty body
 }

@@ -29,10 +29,9 @@ public:
   typedef boost::shared_ptr<MultipleChoiceAnswer> Ptr;
   typedef boost::shared_ptr<const MultipleChoiceAnswer> ConstPtr;
 
-  // The MultipleChoiceAnswer constructor forwards the specified object ID to
-  // the superclass, Interaction. It also stores the answer provided by the user
+  // The MultipleChoiceAnswer constructor stores the answer provided by the user
   // internally, represented as an index in the range [0, number of answers).
-  explicit MultipleChoiceAnswer(Util::UniqueID<Backend::Object> id, int answer_index);
+  MultipleChoiceAnswer(Util::UniqueID<Backend::Object> object_id, int answer_index);
 
   // type returns what kind of interaction this object represents. This version
   // always returns INTERACT_MULTIPLE_CHOICE_ANSWER.

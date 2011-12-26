@@ -56,12 +56,12 @@ Interaction::Ptr TextDisplay::handle_interaction(InteractionPrompt::Ptr prompt) 
 }
 
 TextAnswer::Ptr TextDisplay::handle_text_interaction(TextPrompt::Ptr prompt) {
-  return boost::make_shared<TextAnswer>(prompt->object_id());
+  return boost::make_shared<TextAnswer>(Util::kDefaultObject);
 }
 
 FreeResponseAnswer::Ptr TextDisplay::handle_free_response_interaction(FreeResponsePrompt::Ptr prompt) {
   cout << "> ";
-  return boost::make_shared<FreeResponseAnswer>(prompt->object_id(), prompt_user());
+  return boost::make_shared<FreeResponseAnswer>(Util::kDefaultObject, prompt_user());
 }
 
 MultipleChoiceAnswer::Ptr TextDisplay::handle_multiple_choice_interaction(MultipleChoicePrompt::Ptr prompt) {
@@ -73,7 +73,7 @@ MultipleChoiceAnswer::Ptr TextDisplay::handle_multiple_choice_interaction(Multip
     } else {
       char choice = toupper(line[0]);
       if ('A' <= choice && choice < 'A' + prompt->num_choices()) {
-        return boost::make_shared<MultipleChoiceAnswer>(prompt->object_id(), choice - 'A');
+        return boost::make_shared<MultipleChoiceAnswer>(Util::kDefaultObject, choice - 'A');
       } else {
         cout << "Please choose one of the possible answers." << endl;
       }

@@ -13,9 +13,10 @@ namespace Frontend {
 
 /** Interaction member functions, public */
 
-Interaction::Interaction(Util::UniqueID<Backend::Object> object_id) : object_id_(object_id)
+Interaction::Interaction(Util::UniqueID<Backend::Object> object_id) :
+  object_id_(object_id)
 {
-  set_value(Util::kObjectIDAttribute, object_id.value());
+  // empty body
 }
 
 Interaction::~Interaction() {
