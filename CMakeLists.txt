@@ -160,14 +160,14 @@ ENDIF()
 ## Adding Library Files ##
 ##########################
 
-FILE(GLOB _INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/*/include")
-MESSAGE("Current working directory: ${CMAKE_CURRENT_SOURCE_DIR}")
+FILE(GLOB _INCLUDE_DIRS "${CMAKE_BINARY_DIR}/third_party/*/include")
+MESSAGE("Current working directory: ${CMAKE_BINARY_DIR}")
 FOREACH(s ${_INCLUDE_DIRS})
 MESSAGE("Including directory: ${s}")
 include_directories(${s})
 ENDFOREACH()
 
-FILE(GLOB STATIC_LIBS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/third_party/*/lib/*.a")
+FILE(GLOB STATIC_LIBS_FILES "${CMAKE_BINARY_DIR}/third_party/*/lib/*.a")
 FOREACH(s ${STATIC_LIBS_FILES} )
   STRING(REGEX REPLACE ".*/lib(.*)\\.a" "\\1" name "${s}")
   add_library(${name} STATIC IMPORTED)
@@ -177,7 +177,7 @@ FOREACH(s ${STATIC_LIBS_FILES} )
   MESSAGE("Adding library \"${name}\"\n\tfrom location \"${s}\"")
 ENDFOREACH()
 
-FILE(GLOB DYNAMIC_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/*/lib")
+FILE(GLOB DYNAMIC_LIBS_DIR "${CMAKE_BINARY_DIR}/third_party/*/lib")
 FOREACH(s ${DYNAMIC_LIBS_DIR})
   LINK_DIRECTORIES(${s})
   MESSAGE("Linking directory: ${s}")
