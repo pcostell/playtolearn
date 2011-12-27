@@ -28,8 +28,6 @@ public:
 
   virtual void transition_data(Backend::AttributeMap& attributes) const {
     attributes.set_value(Util::kInteractionPromptTypeAttribute, Util::kFreeResponsePromptTypeValue);
-    attributes.set_value(Util::kStateIDAttribute, -1);
-    attributes.set_value(Util::kObjectIDAttribute, -2);
     attributes.set_value(Util::kTextAttribute, "Question text");
   }
 

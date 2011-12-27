@@ -42,6 +42,7 @@ UISidePanel::UISidePanel() : current_node_(NULL)
 
 void UISidePanel::addRow() {
   current_node_->transition_data().set_value("new_row", "new_value");
+  display(current_node_);
 }
 
 void UISidePanel::display(TransitionNode* node) {

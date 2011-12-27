@@ -25,8 +25,6 @@ public:
 
   virtual void transition_data(Backend::AttributeMap& attributes) const {
     attributes.set_value(Util::kInteractionPromptTypeAttribute, Util::kMultipleChoicePromptTypeValue);
-    attributes.set_value(Util::kStateIDAttribute, 3);
-    attributes.set_value(Util::kObjectIDAttribute, -2);
     attributes.set_value(Util::kTextAttribute, "How fat is Patrick?");
     attributes.set_value(Util::kNumMCChoicesAttribute, 2);
     attributes.set_value(Util::kMCChoiceAttribute + "0", "fat");

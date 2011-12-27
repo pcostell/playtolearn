@@ -16,7 +16,7 @@ class NodeLine : public QObject, public QGraphicsItem {
   Q_OBJECT
   Q_INTERFACES(QGraphicsItem)
 public:
-  NodeLine(Node* start, Node* end, QGraphicsItem* parent, QGraphicsScene* scene);
+  NodeLine(Node* start, Node* end, const std::string& text, QGraphicsItem* parent, QGraphicsScene* scene);
 
   virtual QPainterPath shape() const;
 
@@ -33,6 +33,8 @@ private:
   // private data
   Node* start_;
   Node* end_;
+  std::string text_;
+  QRectF last_rect_;
 
 };
 

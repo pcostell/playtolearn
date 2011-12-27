@@ -1,4 +1,6 @@
 
+#include <boost/lexical_cast.hpp>
+
 #include <QGraphicsScene>
 
 #include "ui/NodeAttacherVisitor.hpp"
@@ -18,9 +20,9 @@ void NodeAttacherVisitor::accept(TransitionNode* node) {
     std::cout << "Adding " << state_->state().id() << " as a destination." << std::endl;
     node->connect_from(state_);
     if(node->attached_source() == state_) {
-      new NodeArcLine(node, state_, NULL, node->scene());
+      new NodeArcLine(node, state_, boost::lexical_cast<std::string>(node->destinations().size() - 1), NULL, node->scene());
     } else {
-      new NodeLine(node, state_, NULL, node->scene());
+      new NodeLine(node, state_, boost::lexical_cast<std::string>(node->destinations().size() - 1), NULL, node->scene());
     }
     std::cout << "scene: " << node->scene() << std::endl;
   } else {
