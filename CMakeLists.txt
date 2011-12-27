@@ -95,7 +95,7 @@ endif()
 ## BOOOST LIBRARIES ##
 #######################
 
-find_package(Boost REQUIRED COMPONENTS  
+find_package(Boost REQUIRED COMPONENTS
                               python
                               serialization
                               unit_test_framework)
@@ -156,9 +156,9 @@ SET(Irrlicht_FOUND true CACHE STRING "If Irrlicht has been found or not." FORCE)
 ENDIF()
 
 
-##################
-## Adding Files ##
-##################
+##########################
+## Adding Library Files ##
+##########################
 
 FILE(GLOB _INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/*/include")
 MESSAGE("Current working directory: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -187,13 +187,9 @@ ENDFOREACH()
 ## SETTING LIBRARIES ##
 #######################
 
-#SET(STATIC_LIBS Irrlicht boost_python boost_serialization)
-SET(DYNAMIC_LIBS dl m util ${QT_LIBRARIES} Irrlicht boost_serialization boost_python)
+SET(DYNAMIC_LIBS dl m util)
 
-IF(APPLE)
-  list(APPEND DYNAMIC_LIBS python)
-elseif(UNIX)
-  list(APPEND DYNAMIC_LIBS python${PYTHON_VERSION})
+IF(UNIX)
   list(APPEND DYNAMIC_LIBS GL GLU Xxf86vm Xext X11)
 endif()
 
@@ -207,28 +203,8 @@ ADD_DEFINITIONS(-Wall)
 
 include_directories(src)
 
-FILE(GLOB_RECURSE SRCS "src/**.cpp")
-FILE(GLOB_RECURSE TEST_SRCS "src/test/**.cpp")
-
-FILE(GLOB_RECURSE PRE_MOC_FILES "src/ui/*.hpp")
-QT4_WRAP_CPP(HEADERS_MOC ${PRE_MOC_FILES})
-LIST(APPEND SRCS ${HEADERS_MOC})
-
-# Remove test files from $SRC
-FOREACH(t ${TEST_SRCS})
-  LIST(REMOVE_ITEM SRCS ${t})
-ENDFOREACH()
-
-# Remove main from ALL_NONMAIN_SRCS
-LIST(APPEND ALL_NONMAIN_SRCS ${SRCS})
-FILE(GLOB main "src/frontend/FEEngine.cpp")
-FILE(GLOB main2 "src/ui/main.cpp")
-LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main})
-LIST(REMOVE_ITEM ALL_NONMAIN_SRCS ${main2})
-
-add_library(playtolearnlibrary ${ALL_NONMAIN_SRCS} )
-add_dependencies(playtolearnlibrary irrlicht)
-
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(test_src)
 #############
 ## BUNDLES ##
 #############
@@ -246,13 +222,18 @@ if(APPLE)
   LIST(APPEND SRCS ${MAC_RESOURCES})
 ENDIF()
 
-add_executable(playtolearn WIN32 MACOSX_BUNDLE ${main})
-target_link_libraries(playtolearn playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
+#################
+## Executables ##
+#################
+
+add_executable(playtolearn WIN32 MACOSX_BUNDLE "src/frontend/FEEngine.cpp")
+target_link_libraries(playtolearn playtolearnlibrary ${DYNAMIC_LIBS})
 add_dependencies(playtolearn playtolearnlibrary)
 
-add_executable(playtolearnteacher WIN32 MACOSX_BUNDLE ${main2})
-target_link_libraries(playtolearnteacher playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS})
+add_executable(playtolearnteacher WIN32 MACOSX_BUNDLE "src/ui/main.cpp")
+target_link_libraries(playtolearnteacher playtolearnlibrary ${DYNAMIC_LIBS})
 add_dependencies(playtolearnteacher playtolearnlibrary)
+
 
 if(APPLE)
   set_target_properties(playtolearn PROPERTIES RESOURCE "${MAC_RESOURCES}")
@@ -262,25 +243,3 @@ install(TARGETS playtolearn
         RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         BUNDLE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
-
-
-##################
-## TEST BUNDLES ##
-##################
-
-SET(test_names "")
-FOREACH(t ${TEST_SRCS})
-  STRING(REGEX REPLACE ".*/(.*)\\.cpp" "\\1" name "${t}")
-  LIST(APPEND test_names ${name})
-  add_executable(${name} EXCLUDE_FROM_ALL ${t})
-  target_link_libraries(${name} playtolearnlibrary ${STATIC_LIBS} ${EXTRA_LIBS} ${DYNAMIC_LIBS} boost_unit_test_framework)
-  add_test(${name} ${name})
-  add_dependencies(${name} playtolearnlibrary)
-ENDFOREACH()
-
-# This will explicitly build all the tests. We need this
-# because we added EXCLUDE_FROM_ALL to the test exes. This
-# greatly speeds up compilation because when we change code
-# in our main library, we don't need to build our tests.
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
-                  DEPENDS ${test_names})
