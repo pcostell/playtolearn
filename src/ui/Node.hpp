@@ -54,6 +54,9 @@ signals:
   void selected(Node* node);
   void moved(Node* node);
 
+private slots:
+  void source_moved(Node* node);
+
 private:
   static const float kAttachedBuffer;
   // Member data

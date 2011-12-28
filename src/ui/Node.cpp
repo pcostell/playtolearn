@@ -1,12 +1,13 @@
 
+#include <algorithm>
+
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QPen>
 
 #include "ui/Node.hpp"
 
-using std::vector;
-using std::string;
+using namespace std;
 
 namespace PlayToLearn {
 namespace UI {
@@ -32,9 +33,21 @@ void Node::connect_from(Node* dest_node) {
 }
 
 void Node::attach_to(Node* source_node) {
+  if (attached_source_) {
+    disconnect(attached_source_, SIGNAL(moved(Node*)),
+               this, SLOT(source_moved(Node*)));
+    vector<Node*>::iterator toErase = find(attached_source_->attached_destinations().begin(),
+                                                 attached_source_->attached_destinations().end(),
+                                                 this);
+    if (toErase != attached_source_->attached_destinations().end()) {
+      attached_source_->attached_destinations().erase(toErase);
+    }
+  }
   sources_.clear();
   attached_source_ = source_node;
   source_node->attached_destinations_.push_back(this);
+  connect(source_node, SIGNAL(moved(Node*)), this,
+          SLOT(source_moved(Node*)));
 }
 
 void Node::connect_to(Node* source_node) {
@@ -124,10 +137,19 @@ vector<Node*>& Node::destinations() {
   return destinations_;
 }
 
+///////////////////
+// Private Slots //
+///////////////////
+
+void Node::source_moved(Node* source) {
+  setPos(source->attachedPosition(this));
+  emit moved(this);
+}
 
 /////////////////////
 // Private Methods //
 /////////////////////
+
 
 const float Node::kAttachedBuffer = 2;
 
