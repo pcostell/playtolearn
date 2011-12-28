@@ -31,6 +31,8 @@ public:
 
   void disable();
 
+  void setPos(const QPointF& point);
+
   virtual QRectF bounds() const = 0;
 
   // Visitor pattern for subclasses
@@ -56,6 +58,7 @@ signals:
 
 private slots:
   void source_moved(Node* node);
+  void move_animation(qreal frame);
 
 private:
   static const float kAttachedBuffer;

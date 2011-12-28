@@ -2,8 +2,10 @@
 #include <algorithm>
 
 #include <QGraphicsScene>
+#include <QGraphicsItemAnimation>
 #include <QPainter>
 #include <QPen>
+#include <QTimeLine>
 
 #include "ui/Node.hpp"
 
@@ -55,6 +57,11 @@ void Node::connect_to(Node* source_node) {
   source_node->destinations_.push_back(this);
 }
 
+void Node::setPos(const QPointF& point) {
+  emit moved(this);
+  QGraphicsPolygonItem::setPos(point);
+}
+
 ///////////////////////
 // Protected Methods //
 ///////////////////////
@@ -100,10 +107,21 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent * event) {
     }
   }
   if (attached_source_) {
-    setPos(attached_source_->attachedPosition(this));
-    emit moved(this);
+    QTimeLine* timer = new QTimeLine(500);
+    QGraphicsItemAnimation* animation = new QGraphicsItemAnimation;
+    animation->setItem(this);
+    animation->setTimeLine(timer);
+    animation->setPosAt(0., pos());
+    animation->setPosAt(1., attached_source()->attachedPosition(this));
+    connect(timer, SIGNAL(valueChanged(qreal)), this, SLOT(move_animation(qreal)));
+    timer->start();
+    //setPos(attached_source_->attachedPosition(this));
   }
   QGraphicsPolygonItem::mouseReleaseEvent(event);
+}
+
+void Node::move_animation(qreal frame) {
+  emit moved(this);
 }
 
 void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
