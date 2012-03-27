@@ -14,16 +14,26 @@
 namespace PlayToLearn {
 namespace UI {
 
+/** Class definitions **/
+
+// Represents an abstract object on the screen. It must be subclassed to set
+// text, color, and size.
 class Node : public QObject, public QGraphicsPolygonItem {
   Q_OBJECT
 public:
+// Constructor
   Node(QGraphicsItem *parent = 0, QGraphicsScene* scene = 0);
 
+// Get access to attached nodes.
   Node* attached_source();
   std::vector<Node*>& attached_destinations();
   std::vector<Node*>& sources();
   std::vector<Node*>& destinations();
 
+  // Sets attached nodes. There are two settings, attached and connected. When a
+  // node is attached, it 'sticks' to its source. When it is connected, a line
+  // is drawn between the two nodes. Note that a node can only have one attached
+  // source.
   void attach_to(Node* source_node);
   void connect_to(Node* source_node);
   void attach_from(Node* dest_node);
@@ -40,6 +50,7 @@ public:
 
 protected:
 
+  // Sets the text and color of the node.
   virtual std::string text() const = 0;
   virtual QColor color() const = 0;
   virtual QColor selected_color() const = 0;

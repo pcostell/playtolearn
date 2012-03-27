@@ -66,7 +66,8 @@ void Node::setPos(const QPointF& point) {
 // Protected Methods //
 ///////////////////////
 
-
+// Paints the current node using a rounded rectangle. A node may be selected,
+// in which case it is painted using a different color and line style.
 void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
   if (disabled_) return;
 
@@ -89,12 +90,14 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWid
   painter->drawText(bounds(), Qt::AlignCenter, text().c_str());
 }
 
+// selects the current node when pressed
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   //setCursor(Qt::ClosedHandCursor);
   emit selected(this);
   QGraphicsPolygonItem::mousePressEvent(event);
 }
 
+// collides nodes if necessary.
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent * event) {
   //setCursor(Qt::OpenHandCursor);
   QList<QGraphicsItem*> colliders = collidingItems();
@@ -107,6 +110,7 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent * event) {
     }
   }
   if (attached_source_) {
+    // animates the node to the edge of the attached source
     QTimeLine* timer = new QTimeLine(500);
     QGraphicsItemAnimation* animation = new QGraphicsItemAnimation;
     animation->setItem(this);
@@ -115,7 +119,6 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent * event) {
     animation->setPosAt(1., attached_source()->attachedPosition(this));
     connect(timer, SIGNAL(valueChanged(qreal)), this, SLOT(move_animation(qreal)));
     timer->start();
-    //setPos(attached_source_->attachedPosition(this));
   }
   QGraphicsPolygonItem::mouseReleaseEvent(event);
 }
@@ -125,7 +128,6 @@ void Node::move_animation(qreal frame) {
 }
 
 void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  //setCursor(Qt::OpenHandCursor);
   emit moved(this);
   QGraphicsPolygonItem::mouseMoveEvent(event);
 }
@@ -136,7 +138,6 @@ void Node::disable() {
   setFlag(QGraphicsItem::ItemSendsGeometryChanges, false);
   disabled_ = true;
   setEnabled(false);
-  //repaint();
 }
 
 Node* Node::attached_source() {
@@ -159,6 +160,7 @@ vector<Node*>& Node::destinations() {
 // Private Slots //
 ///////////////////
 
+If the source moves, then we need to move ourselves.
 void Node::source_moved(Node* source) {
   setPos(source->attachedPosition(this));
   emit moved(this);
@@ -171,6 +173,9 @@ void Node::source_moved(Node* source) {
 
 const float Node::kAttachedBuffer = 2;
 
+// Calculates the position of the attached node. Since many nodes can be
+// attached to a single source, we have to calculate how far away to place the
+// node.
 QPointF Node::attachedPosition(Node* attached_node) const {
   float x = pos().x() + bounds().x() + bounds().width();
   for (size_t i = 0; i < attached_destinations_.size(); ++i) {

@@ -6,6 +6,9 @@
 namespace PlayToLearn {
 namespace UI {
 
+/** Class Definitions **/
+
+// represents the line between two Nodes.
 class NodeArcLine : public NodeLine {
   Q_OBJECT
 public:
