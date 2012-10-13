@@ -1,7 +1,7 @@
 
 ADD_SUBDIRECTORY(backend)
 ADD_SUBDIRECTORY(frontend)
-ADD_SUBDIRECTORY(ui)
+ADD_SUBDIRECTORY(ui-qt)
 ADD_SUBDIRECTORY(util)
 
 add_library(playtolearnlibrary)
