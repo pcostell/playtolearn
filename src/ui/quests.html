@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>Quests</title>
+    <script type="text/javascript" src="js/Margin.js" ></script>
+    <script type="text/javascript" src="js/Node.js" ></script>
+    <script type="text/javascript" src="js/Graph.js" ></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js" ></script>
+    <script type="text/javascript">
+      $(window).load(function() {
+        var graph = new Graph('canvas_id', 4, 6);
+        
+        $("#task_button").click(function(e) {
+          if (graph.current_node()) {
+            graph.current_node().set_text($("#task_name").val());
+            graph.render();
+          }
+        });
+        
+        $("#new_quest_button").click(function(e) {
+          graph.insert_quest();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="top" style="border: 1px solid black; margin: 2px">
+      <input id="new_quest_button" type="submit" value="New Quest" />
+    </div>
+    <div id="left" style="float:left">
+      <canvas id="canvas_id" width="600px" height="800px" style="border:1px solid black;"></canvas>
+    </div>
+    <div id="right" style="float:right">
+      Task Name:<input id="task_name" type="text" columns=20 /><input id="task_button" type="submit" />
+    </div>
+    <script>
+
+    </script>
+    <div id="debug" width="600px" height="100px" ></div>
+  </body>
+</html>
