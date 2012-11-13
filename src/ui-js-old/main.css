@@ -1,0 +1,75 @@
+.menubar {
+  height:56px;
+}
+
+.task {
+  float:left;
+  width: 40px; 
+  height: 40px; 
+  border: 1px solid black;
+  margin:5px;
+  background-color: red;
+}
+
+.new_task {
+  width: 40px; 
+  height: 40px; 
+  border: 1px solid black; 
+}
+
+.multi-quest input {
+  float: left;
+}
+
+.multi-quest {
+  display: block;
+  height: 56px;
+  padding-top: 8px;
+  text-align: center;
+  margin: 5px; 
+  padding: 5px; 
+  border: 1px solid black; 
+  background-color: green;
+}
+
+.quest {
+  float:left; 
+  margin: 5px; 
+  padding: 5px; 
+  border: 1px solid black; 
+  background-color: blue; 
+  min-height: 56px;
+}
+
+.task :hover {
+  cursor: move;
+  -moz-user-select: none;  
+}
+
+.cursor_pointer {
+  cursor: pointer;
+}
+
+.cursor_move {
+  cursor: move;
+  -moz-user-select: none;
+}
+
+.opacity_40 {
+  opacity: 0.4;
+  -moz-opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+
+.drag_hover_class {
+  border-color: #009900;
+  background-color: #CCFFCC;
+}
+
+.add-item {
+  margin: 5px;
+  float:left;
+  width: 20px;
+  height: 40px;
+  border: 1px dashed black;
+}

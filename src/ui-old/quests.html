@@ -1,19 +1,14 @@
 <html>
   <head>
     <title>Quests</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js" ></script>
     <script type="text/javascript" src="../../external/closure-library/closure/goog/base.js"></script>
     <script type="text/javascript" src="../../build/ui/playtolearn.js" ></script>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+
   </head>
   <body onload="playtolearn.QuestCanvas()">
-    <div class="menubar" style="border: 1px solid black; margin: 2px">
-      <table>
-        <tr>
-          <td><input id="new_quest_button" type="submit" value="New Quest" /></td>
-          <td><input id="populate" type="submit" value="Populate" /></td>
-          <td><div id="new_task"></div></td>
-        </tr>
-      </table>
+    <div id="top" style="border: 1px solid black; margin: 2px">
+      <input id="new_quest_button" type="submit" value="New Quest" />
     </div>
     <!--<div id="left" style="float:left">
       <canvas id="canvas_id" width="600px" height="800px" style="border:1px solid black;"></canvas>
@@ -21,9 +16,11 @@
     <div id="right" style="float:right">
       Task Name:<input id="task_name" type="text" columns=20 /><input id="task_button" type="submit" />
     </div> -->
-    <div id="canvas" style="float:left">
+    <div id="dom_canvas" width="600px" height = "600px">
     </div>
-    <div id="task_display" style="float:left, right: 100%"></div>
+    <script>
+
+    </script>
     <div id="debug" width="600px" height="100px" ></div>
   </body>
 </html>

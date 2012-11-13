@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Quests</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js" ></script>
     <script type="text/javascript" src="../../external/closure-library/closure/goog/base.js"></script>
     <script type="text/javascript" src="../../build/ui/playtolearn.js" ></script>
     <link rel="stylesheet" type="text/css" href="main.css" />
@@ -10,8 +11,8 @@
       <table>
         <tr>
           <td><input id="new_quest_button" type="submit" value="New Quest" /></td>
-          <td><input id="populate" type="submit" value="Populate" /></td>
-          <td><div id="new_task"></div></td>
+          <td><div id="new_task" class="new_task">New Task</div></td>
+          <td><input id="refresh_button" type="submit" value="Refresh" /></td>
         </tr>
       </table>
     </div>
@@ -21,7 +22,7 @@
     <div id="right" style="float:right">
       Task Name:<input id="task_name" type="text" columns=20 /><input id="task_button" type="submit" />
     </div> -->
-    <div id="canvas" style="float:left">
+    <div id="canvas" width="600px" height = "600px" style="float:left">
     </div>
     <div id="task_display" style="float:left, right: 100%"></div>
     <div id="debug" width="600px" height="100px" ></div>

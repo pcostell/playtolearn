@@ -1,0 +1,130 @@
+.menubar {
+  height:56px;
+}
+
+.playtolearn-new-quest-level div {
+  width: 40px; 
+  height: 40px; 
+  border: 1px solid black; 
+}
+
+.multi-quest input {
+  float: left;
+}
+
+.playtolearn-quest-level {
+  display: block;
+  height: 56px;
+  min-width: 56px;
+  padding-top: 8px;
+  text-align: center;
+  margin: 5px; 
+  padding: 5px; 
+}
+
+.playtolearn-temporary-quest-level {
+  display: block;
+  height: 20px;
+  width: 56px;
+  padding-top: 8px;
+  text-align: center;
+  margin: 5px; 
+  padding: 5px; 
+  border: 2px dashed #FFFFFF; 
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.playtolearn-quest {
+  position: relative;
+  float: left; 
+  margin: 5px; 
+  padding: 5px;
+  font-family: sans-serif;
+  font-size: 18px; 
+  color: #ffffff;
+  border: 1px solid black; 
+  background-color: #000044; 
+  min-height: 56px;
+  min-width:50px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.playtolearn-quest:hover {
+  -moz-user-select: none;
+  opacity:0.7;
+  filter:alpha(opacity=70);
+}
+
+.playtolearn-quest-tasks {
+  float: left;
+}
+
+.playtolearn-quest-name {
+  float: left; 
+  position: relative;
+}
+
+.playtolearn-task {
+  float:left;
+  min-width: 40px; 
+  min-height: 40px; 
+  padding: 1px;
+  border: 1px solid black;
+  margin:5px;
+  background-color: #70B8FF;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.playtolearn-task:hover {
+  cursor: move;
+  -moz-user-select: none;
+  opacity:0.4;
+  filter:alpha(opacity=40);
+}
+
+.playtolearn-task-edit {
+  border: 3px solid black;
+}
+
+.playtolearn-taskdisplay {
+  float:right;
+  width:200px;
+  height:100%;
+  border-left:3px solid black;
+}
+
+.playtolearn-graph {
+  width:800px;
+  height:600px;
+};
+
+.cursor_pointer {
+  cursor: pointer;
+}
+
+.cursor_move {
+  cursor: move;
+  -moz-user-select: none;
+}
+
+.opacity_40 {
+  opacity: 0.4;
+  -moz-opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+
+.drag_hover_class {
+  border-color: #009900;
+  background-color: #CCFFCC;
+}
+
+.add-item {
+  margin: 5px;
+  float:left;
+  width: 20px;
+  height: 40px;
+  border: 1px dashed black;
+}
